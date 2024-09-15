@@ -1,5 +1,7 @@
 
 #include <iostream>
+using std::cout;
+using std::endl;
 
 // Abstract base class for MST algorithms
 class MSTSolver {
@@ -11,34 +13,34 @@ public:
 class PrimSolver : public MSTSolver {
 public:
     void findMST() override {
-        std::cout << "Finding MST using Prim's Algorithm" << std::endl;
+        cout << "Finding MST using Prim's Algorithm" << endl;
     }
 };
 
 class KruskalSolver : public MSTSolver {
 public:
     void findMST() override {
-        std::cout << "Finding MST using Kruskal's Algorithm" << std::endl;
+        cout << "Finding MST using Kruskal's Algorithm" << endl;
     }
 };
 
 class BoruvkaSolver : public MSTSolver {
 public:
     void findMST() override {
-        std::cout << "Finding MST using Boruvka's Algorithm" << std::endl;
+        cout << "Finding MST using Boruvka's Algorithm" << endl;
     }
 };
 
 class TarjanSolver : public MSTSolver {
 public:
     void findMST() override {
-        std::cout << "Finding MST using Tarjan's Algorithm" << std::endl;
+        cout << "Finding MST using Tarjan's Algorithm" << endl;
     }
 };
 
 class IntegerMSTSolver : public MSTSolver {
 public:
     void findMST() override {
-        std::cout << "Finding MST using IntegerMST's Algorithm" << std::endl;
+        cout << "Finding MST using IntegerMST's Algorithm" << endl;
     }
 };
