@@ -3,10 +3,11 @@
 #include <iostream>
 #include <memory>
 using std::make_unique;
+using std::unique_ptr;
 
 class MSTFactory {
 public:
-    std::unique_ptr<MSTSolver> MST(char type) {
+    static unique_ptr<MSTSolver> MST(char type) {
         switch(type) {
             case 'b':
                 return make_unique<BoruvkaSolver>();

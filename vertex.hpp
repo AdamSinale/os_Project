@@ -5,10 +5,13 @@
 #include <algorithm>
 #include <iostream>
 
+using std::vector;
+using std::pair;
+
 class Vertex {
 public:
     int id;
-    std::vector<std::pair<Vertex*, int>> neighbors;
+    vector<pair<Vertex*, int>> neighbors;
 
     Vertex() {}
     Vertex(int id) : id(id) {}
@@ -19,6 +22,7 @@ public:
 
     bool hasNeighbor(Vertex* neighbor);
 
+    vector<pair<Vertex*, int>> getNeighbors(){ return neighbors; }
 };
 
 #endif
