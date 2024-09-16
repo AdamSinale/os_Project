@@ -3,20 +3,26 @@
 using std::make_pair;
 using std::find_if;
 using std::any_of;
+using std::shared_ptr;
+using std::weak_ptr;
 
-void Vertex::addNeighbor(Vertex* neighbor, int weight) {
+void Vertex::addNeighbor(shared_ptr<Vertex> neighbor, int weight) {
     if (!hasNeighbor(neighbor)) {
-        neighbors.push_back(make_pair(neighbor, weight));
+        neighbors.push_back(make_pair(weak_ptr<Vertex>(neighbor), weight)); // Store weak_ptr
     }
 }
 
-void Vertex::removeNeighbor(Vertex* neighbor) {
-    auto it = find_if(neighbors.begin(), neighbors.end(),[neighbor](const pair<Vertex*, int>& p) { return p.first == neighbor; });
+void Vertex::removeNeighbor(shared_ptr<Vertex> neighbor) {
+    auto it = find_if(neighbors.begin(), neighbors.end(),[neighbor](const pair<weak_ptr<Vertex>, int>& p) { 
+        return p.first.lock() == neighbor; // lock weak_ptr to get shared_ptr for comparison
+    });
     if (it != neighbors.end()) {
         neighbors.erase(it);
     }
 }
 
-bool Vertex::hasNeighbor(Vertex* neighbor) {
-    return any_of(neighbors.begin(), neighbors.end(),[neighbor](const pair<Vertex*, int>& p) { return p.first == neighbor; });
+bool Vertex::hasNeighbor(shared_ptr<Vertex> neighbor) {
+    return any_of(neighbors.begin(), neighbors.end(),[neighbor](const pair<weak_ptr<Vertex>, int>& p) { 
+        return p.first.lock() == neighbor; // lock weak_ptr to compare with shared_ptr
+    });
 }
