@@ -1,6 +1,7 @@
 #include "graph.hpp"
 
 void Graph::addEdge(shared_ptr<Vertex> v, shared_ptr<Vertex> u, int w) {
+    if(v->id == u->id){ return; }
     v->addNeighbor(u, w);
     u->addNeighbor(v, w);
 }

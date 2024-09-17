@@ -19,6 +19,8 @@ public:
     Vertex() {}
     Vertex(int id) : id(id) {}
 
+    int getID(){ return id; }
+    
     // Add neighbor to the vertex
     void addNeighbor(shared_ptr<Vertex> neighbor, int weight);
 
