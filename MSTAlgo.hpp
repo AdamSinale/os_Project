@@ -1,4 +1,5 @@
 #include "graph.hpp"
+#include "graph.hpp"
 
 #include <iostream>
 #include <vector>
@@ -25,13 +26,13 @@ using std::greater;
 // Abstract base class for MST algorithms
 class MSTSolver {
 public:
-    virtual unique_ptr<Graph> findMST(Graph& g) = 0; // Pure virtual function for finding the MST
+    virtual unique_ptr<Tree> findMST(Graph& g) = 0; // Pure virtual function for finding the MST
     virtual ~MSTSolver() = default;
 };
 
 class PrimSolver : public MSTSolver {
 public:
-    unique_ptr<Graph> findMST(Graph& g) override {
+    unique_ptr<Tree> findMST(Graph& g) override {
         cout << "Finding MST using Prim's Algorithm:" << endl;
         size_t n = g.numVertices();
         vector<shared_ptr<Vertex>> ogVs = g.getVertices();
@@ -42,7 +43,7 @@ public:
         
         vector<shared_ptr<Vertex>> vertices;
         for(size_t i=0; i<n; ++i){ vertices.push_back(make_shared<Vertex>(i)); }
-        unique_ptr<Graph> tree = make_unique<Graph>(vertices);
+        unique_ptr<Tree> tree = make_unique<Tree>(vertices);
 
         key[0] = 0;                                         // Start from 1st vertex
         pq.push(make_tuple(0, 0, 0));                       // {weight,source,destination}
@@ -67,7 +68,7 @@ public:
 
 class KruskalSolver : public MSTSolver {
 public:
-    unique_ptr<Graph> findMST(Graph& g) override {
+    unique_ptr<Tree> findMST(Graph& g) override {
         cout << "Finding MST using Kruskal's Algorithm" << endl;
         size_t n = g.numVertices();
         vector<tuple<shared_ptr<Vertex>, shared_ptr<Vertex>, int>> edges = g.getEdges();
@@ -100,7 +101,7 @@ public:
         for (size_t i = 0; i < n; ++i) {
             vertices.push_back(make_shared<Vertex>(i));
         }
-        unique_ptr<Graph> tree = make_unique<Graph>(vertices);
+        unique_ptr<Tree> tree = make_unique<Tree>(vertices);
 
         int v = get<0>(edge)->id;
         int u = get<1>(edge)->id;
@@ -125,7 +126,7 @@ public:
 
 class BoruvkaSolver : public MSTSolver {
 public:
-    unique_ptr<Graph> findMST(Graph& g) override {
+    unique_ptr<Tree> findMST(Graph& g) override {
         cout << "Finding MST using Boruvka's Algorithm" << endl;
         // Implement Boruvka's algorithm
         return nullptr;
@@ -134,7 +135,7 @@ public:
 
 class TarjanSolver : public MSTSolver {
 public:
-    unique_ptr<Graph> findMST(Graph& g) override {
+    unique_ptr<Tree> findMST(Graph& g) override {
         cout << "Finding MST using Tarjan's Algorithm" << endl;
         // Implement Tarjan's algorithm
         return nullptr;
@@ -143,7 +144,7 @@ public:
 
 class IntegerMSTSolver : public MSTSolver {
 public:
-    unique_ptr<Graph> findMST(Graph& g) override {
+    unique_ptr<Tree> findMST(Graph& g) override {
         cout << "Finding MST using IntegerMST's Algorithm" << endl;
         // Implement IntegerMST algorithm
         return nullptr;

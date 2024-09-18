@@ -20,17 +20,18 @@ public:
     Vertex(int id) : id(id) {}
 
     int getID(){ return id; }
+    vector<pair<weak_ptr<Vertex>, int>> getNeighbors() { return neighbors; }
     
-    // Add neighbor to the vertex
     void addNeighbor(shared_ptr<Vertex> neighbor, int weight);
-
-    // Remove neighbor from the vertex
     void removeNeighbor(shared_ptr<Vertex> neighbor);
-
-    // Check if the vertex has the given neighbor
     bool hasNeighbor(shared_ptr<Vertex> neighbor);
 
-    vector<pair<weak_ptr<Vertex>, int>> getNeighbors() { return neighbors; }
+    bool operator==(Vertex o){ return id == o.id; }
+    bool operator!=(Vertex o){ return id != o.id; }
+    friend std::ostream& operator<<(std::ostream& os, const Vertex& v){
+        os << v.id+1;
+        return os;
+    }
 };
 
 #endif

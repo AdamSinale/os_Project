@@ -74,10 +74,11 @@ int main() {
     cin >> a;
 
     shared_ptr<MSTSolver> algo = MSTFactory::MST(a);
-    shared_ptr<Graph> mst = algo->findMST(graph);
+    shared_ptr<Tree> mst = algo->findMST(graph);
     mst->printGraph();
-
     mst->printWeight();
+    mst->maxDistance();
+    mst->avgDistance();
 
     return 0;
 }
