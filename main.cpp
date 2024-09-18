@@ -76,6 +76,9 @@ int main() {
     shared_ptr<MSTSolver> algo = MSTFactory::MST(a);
     shared_ptr<Graph> mst = algo->findMST(graph);
     mst->printGraph();
+
+    mst->printWeight();
+
     return 0;
 }
 

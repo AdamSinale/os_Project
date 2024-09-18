@@ -32,3 +32,17 @@ void Graph::printGraph(){
         }
     }
 }
+
+
+void Graph::printWeight(){
+    int count = 0;
+    for (const auto& v : vertices) {
+        for (const auto& n : v->neighbors) {
+            if (v->id < n.first.lock()->id) {  // Use weak_ptr's lock() to get shared_ptr
+                count += n.second;
+            }
+        }
+    }
+    cout << "Total weight of MST:" << endl;
+    cout << count << endl;
+}
