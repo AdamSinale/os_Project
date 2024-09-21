@@ -87,3 +87,47 @@ void Tree::avgDistance(){
     cout << "Average distances of MST:" << endl;
     cout << sd/cd << endl;
 }
+
+void Graph::shortestPath(int sID, int tID, shared_ptr<Tree>& tree){  // O((V+E)logV)
+    int s = sID-1;
+    int t = tID-1;
+    
+    vector<int> dist(numVertices(),INT_MAX);
+    vector<int> prev(numVertices(),-1);  // path uses 1+ MST edge -> True
+    vector<bool> hasEdge(numVertices(),false);  // path uses 1+ MST edge -> True
+    dist[s] = 0;
+    // Priority queue to store (distance, vertex) pairs
+    using pqElement = tuple<int,int,bool>;
+    priority_queue<pqElement,vector<pqElement>,greater<pqElement>> pq;
+    pq.push({0, s, false}); 
+
+    while (!pq.empty()) {                                 // for each edge kept  O(m)
+        auto [cd,cv,hasMSTedge] = pq.top();               // get current edge
+        pq.pop(); 
+        if(cv == t && hasMSTedge) break;                  // Target reached - finish
+        for(auto &n : vertices[cv]->getNeighbors()){                // for each neighbor  O(n)
+            auto nv = n.first.lock()->id;
+            int w = n.second;
+            int nd = cd + w;
+            bool edgeInMST = tree->hasEdge(cv,nv);
+            if (nd < dist[nv] || (nd == dist[nv] && hasMSTedge && !hasEdge[nv])){
+                dist[nv] = nd;
+                prev[nv] = cv;
+                hasEdge[nv] = hasMSTedge || edgeInMST;  // update edge 
+                pq.push({nd, nv, hasEdge[nv]});
+            }
+        }
+    }
+    shared_ptr<Vertex> sv = vertices[s];
+    shared_ptr<Vertex> tv = vertices[t];
+    if(dist[t] == INT_MAX){ cout << "No path from "<<*sv<<" to "<<*tv<< endl; }
+    else {
+        cout << "Shortest path from " << *sv << " to " << *tv << " = " << dist[t] << endl;
+        cout << "Path: ";
+        for (shared_ptr<Vertex> v = tv; v != nullptr; v = vertices[prev[v->id]]) {
+            cout << *v << " ";
+            if (v == sv) break;
+        }
+        cout << endl;
+    }
+}

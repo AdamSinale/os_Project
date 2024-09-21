@@ -79,6 +79,7 @@ int main() {
     mst->printWeight();
     mst->maxDistance();
     mst->avgDistance();
+    graph.shortestPath(2,3,mst);
 
     return 0;
 }
