@@ -20,6 +20,7 @@
 #define invalid 0
 #define valid 1
 
+using std::istringstream;
 using std::list;
 using std::string;
 using std::cerr;
@@ -29,6 +30,20 @@ using std::endl;
 using std::vector;
 using std::shared_ptr;
 using std::make_shared;
+
+// Function declarations
+void handleClient(int fd);
+void acceptConnection(int listener);
+vector<string> split(const string &s, char delimiter);
+int checkValid(int n, int m);
+int get_listener_socket();
+void *get_in_addr(struct sockaddr *sa);
+
+void* reactor; // Reactor instance
+Graph graph; // Graph instance
+vector<shared_ptr<Vertex>> vertices;  // Use shared_ptr to manage Vertex objects
+shared_ptr<MSTSolver> algo; // MST algorithm instance
+shared_ptr<Tree> mst; // MST tree instance
 
 int checkValid(int n, int m) {
     if (n <= 0 || m < 0) { return invalid; }  // Should be 1+ vertices and 0+ edges
@@ -51,9 +66,9 @@ void acceptConnection(int listener) {
     dup2(newfd, STDOUT_FILENO); // redirect stdout to client
     cout << "Welcome to the server!" << endl;
     cout << "Here is the commanads:" << endl;
-    cout << "Newgraph n m: Create a new undirected weighted graph with n vertices and m edges." << endl;
-    cout << "Newedge u v: Create a new edge" << endl;
-    cout << "Removeedge u v: Remove an edge" << endl;
+    cout << "Newgraph n,m: Create a new undirected weighted graph with n vertices and m edges." << endl;
+    cout << "Newedge u,v: Create a new edge between vertex u and v" << endl;
+    cout << "Removeedge u,v: Remove an edge between vertex u and v" << endl;
     cout << "--------------------------------------" << endl;
     cout << "-=+ Choosing a MST algorithm +=-" << endl;
     cout << "p: Prim's Algorithm" << endl;
@@ -67,7 +82,7 @@ void acceptConnection(int listener) {
     cout << "printWeight: Print the weight of the graph" << endl;
     cout << "maxDistance: Print the maximum distance between any two vertices" << endl;
     cout << "avgDistance: Print the average distance between any two vertices" << endl;
-    cout << "shortestPath s t: Print the shortest path between s and t" << endl;
+    cout << "shortestPath s,t: Print the shortest path between vertex s and vertex t" << endl;
     cout << "--------------------------------------" << endl;
     cout << "Don't forget- first you create a Graph, then you are choosing a MST algorithm and then you can collect some data on the MST." << endl;
 
@@ -108,6 +123,10 @@ void handleClient(int fd) {
     cout << "Received: " << choice << endl;
 
     if (choice.find("Newgraph") != string::npos) { // Creating a new undirected weighted graph.
+
+        int saved_stdout = dup(STDOUT_FILENO); // save stdout
+        dup2(fd, STDOUT_FILENO); // redirect stdout to client
+
         vector<string> last = split(choice, ',');
         int m = stoi(last[1]);
         vector<string> first = split(last[0], ' ');
@@ -116,13 +135,17 @@ void handleClient(int fd) {
             cout << "Invalid input" << endl;
             return;
         }
+        
         int saved_stdin = dup(STDIN_FILENO); // save stdin
         dup2(fd, STDIN_FILENO); // redirect stdin to client
 
+        vertices.clear(); // Clear the vertices vector
         for (int i = 0; i < n; ++i) {
             vertices.push_back(make_shared<Vertex>(i)); // Create new Vertex using shared_ptr
         }
-        Graph graph(vertices);  // Pass vector of shared_ptr to Graph
+
+        //Graph graph(vertices);  // Pass vector of shared_ptr to Graph
+        graph = Graph(vertices); // Pass vector of shared_ptr to Graph
 
         cout << "A graph of " << n << " vertices." << endl;
         cout << "Add " << m << " edges:" << endl;
@@ -151,48 +174,10 @@ void handleClient(int fd) {
             cin >> w;
             graph.addEdge(vertices[v], vertices[u], w);
         }
+        cout << "Graph created" << endl;
         dup2(saved_stdin, STDIN_FILENO); // restore stdin
+        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
         
-    } else if (choice.find("p") != string::npos) { // Prim's Algorithm
-
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        algo = MSTFactory::MST('p');
-        mst = algo->findMST(graph);
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-
-    } else if (choice.find("t") != string::npos) { // Tarjan's Algorithm
-
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        algo = MSTFactory::MST('t');
-        mst = algo->findMST(graph);
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-
-    } else if (choice.find("k") != string::npos) { // Kruskal's Algorithm
-
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        algo = MSTFactory::MST('k');
-        mst = algo->findMST(graph);
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-
-    } else if (choice.find("b") != string::npos) { // Boruvka's Algorithm
-
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        algo = MSTFactory::MST('b');
-        mst = algo->findMST(graph);
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-
-    } else if (choice.find("i") != string::npos) { // IntegerMST's Algorithm
-
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        algo = MSTFactory::MST('i');
-        mst = algo->findMST(graph);
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-
     } else if (choice.find("Newedge") != string::npos) { // Add weighted edge to the graph from client input
 
         int n = graph.numVertices();
@@ -279,6 +264,46 @@ void handleClient(int fd) {
         dup2(fd, STDOUT_FILENO); // redirect stdout to client
         mst->shortestPath(s, t, mst);
         dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+    } else if (choice.find("p") != string::npos) { // Prim's Algorithm
+
+        int saved_stdout = dup(STDOUT_FILENO); // save stdout
+        dup2(fd, STDOUT_FILENO); // redirect stdout to client
+        algo = MSTFactory::MST('p');
+        mst = algo->findMST(graph);
+        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+
+    } else if (choice.find("t") != string::npos) { // Tarjan's Algorithm
+
+        int saved_stdout = dup(STDOUT_FILENO); // save stdout
+        dup2(fd, STDOUT_FILENO); // redirect stdout to client
+        algo = MSTFactory::MST('t');
+        mst = algo->findMST(graph);
+        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+
+    } else if (choice.find("k") != string::npos) { // Kruskal's Algorithm
+
+        int saved_stdout = dup(STDOUT_FILENO); // save stdout
+        dup2(fd, STDOUT_FILENO); // redirect stdout to client
+        algo = MSTFactory::MST('k');
+        mst = algo->findMST(graph);
+        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+
+    } else if (choice.find("b") != string::npos) { // Boruvka's Algorithm
+
+        int saved_stdout = dup(STDOUT_FILENO); // save stdout
+        dup2(fd, STDOUT_FILENO); // redirect stdout to client
+        algo = MSTFactory::MST('b');
+        mst = algo->findMST(graph);
+        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+
+    } else if (choice.find("i") != string::npos) { // IntegerMST's Algorithm
+
+        int saved_stdout = dup(STDOUT_FILENO); // save stdout
+        dup2(fd, STDOUT_FILENO); // redirect stdout to client
+        algo = MSTFactory::MST('i');
+        mst = algo->findMST(graph);
+        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+
     }
     else { // The client input is invalid
 
@@ -339,18 +364,14 @@ vector<string> split(const string &s, char delimiter) {
     return tokens;
 }
 
-void* reactor; // Reactor instance
-Graph graph; // Graph instance
-vector<shared_ptr<Vertex>> vertices;  // Use shared_ptr to manage Vertex objects
-shared_ptr<MSTSolver> algo; // MST algorithm instance
-shared_ptr<Tree> mst; // MST tree instance
-
 int main() {
     int listener = get_listener_socket();
     if (listener == -1) {
         cerr << "Error getting listening socket" << endl;
         return 1;
     }
+
+    cout << "In order to connect, write: nc 127.0.0.1 9034 in other terminal" << endl;
 
     reactor = startReactor();
     addFdToReactor(reactor, listener, acceptConnection);
