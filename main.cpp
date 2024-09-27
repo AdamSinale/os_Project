@@ -144,7 +144,6 @@ void handleClient(int fd) {
             vertices.push_back(make_shared<Vertex>(i)); // Create new Vertex using shared_ptr
         }
 
-        //Graph graph(vertices);  // Pass vector of shared_ptr to Graph
         graph = Graph(vertices); // Pass vector of shared_ptr to Graph
 
         cout << "A graph of " << n << " vertices." << endl;
@@ -170,7 +169,7 @@ void handleClient(int fd) {
                 i--;
                 continue;
             }
-            cout << "Weight:" << endl;
+            cout << "Give a weight for the edge:" << endl;
             cin >> w;
             graph.addEdge(vertices[v], vertices[u], w);
         }
@@ -198,7 +197,7 @@ void handleClient(int fd) {
             cout << "Edge already exists" << endl;
             return;
         }
-        cout << "Weight:" << endl;
+        cout << "Give a weight for the edge:" << endl;
         int w;
         
         int saved_stdin = dup(STDIN_FILENO); // save stdin
@@ -371,7 +370,7 @@ int main() {
         return 1;
     }
 
-    cout << "In order to connect, write: nc 127.0.0.1 9034 in other terminal" << endl;
+    cout << "In order to connect, write: nc 127.0.0.1 9034 in another terminal" << endl;
 
     reactor = startReactor();
     addFdToReactor(reactor, listener, acceptConnection);
@@ -381,5 +380,3 @@ int main() {
 
     return 0;
 }
-
-// 6 7 1 2 2 1 3 1 2 3 3 1 4 5 1 5 3 1 6 1 5 6 1 k
