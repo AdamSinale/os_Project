@@ -14,6 +14,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include "reactor.hpp"
+#include "Threadpool.hpp"
 
 #define PORT "9034" // Port we're listening on
 
@@ -39,6 +40,8 @@ int checkValid(int n, int m);
 int get_listener_socket();
 void *get_in_addr(struct sockaddr *sa);
 
+
+ThreadPool threadPool(4); // Create a thread pool with 4 threads
 void* reactor; // Reactor instance
 Graph graph; // Graph instance
 vector<shared_ptr<Vertex>> vertices;  // Use shared_ptr to manage Vertex objects
@@ -155,7 +158,7 @@ void handleClient(int fd) {
             u--;
             v--;
             if (u < 0 || u >= n || v < 0 || v >= n) { // vertex should be in range
-                cout << "Input between 1-n" << endl;
+                cout << "The input should be between 1-" <<n << endl;
                 i--;
                 continue;
             }
@@ -263,46 +266,57 @@ void handleClient(int fd) {
         dup2(fd, STDOUT_FILENO); // redirect stdout to client
         mst->shortestPath(s, t, mst);
         dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-    } else if (choice.find("p") != string::npos) { // Prim's Algorithm
+    }
 
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        algo = MSTFactory::MST('p');
-        mst = algo->findMST(graph);
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-
-    } else if (choice.find("t") != string::npos) { // Tarjan's Algorithm
-
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        algo = MSTFactory::MST('t');
-        mst = algo->findMST(graph);
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-
-    } else if (choice.find("k") != string::npos) { // Kruskal's Algorithm
-
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        algo = MSTFactory::MST('k');
-        mst = algo->findMST(graph);
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-
-    } else if (choice.find("b") != string::npos) { // Boruvka's Algorithm
-
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        algo = MSTFactory::MST('b');
-        mst = algo->findMST(graph);
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-
-    } else if (choice.find("i") != string::npos) { // IntegerMST's Algorithm
-
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        algo = MSTFactory::MST('i');
-        mst = algo->findMST(graph);
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-
+    // Algorithm options.
+    else if (choice.find("p") != string::npos) { // Prim's Algorithm
+        threadPool.enqueueTask([fd]() {
+            int saved_stdout = dup(STDOUT_FILENO);
+            dup2(fd, STDOUT_FILENO);
+            algo = MSTFactory::MST('p');  // Create Prim's MST solver
+            mst = algo->findMST(graph);   // Find MST for the current graph
+            dup2(saved_stdout, STDOUT_FILENO); // Restore stdout
+        });
+    }
+    // Tarjan's Algorithm using thread pool
+    else if (choice.find("t") != string::npos) { // Tarjan's Algorithm
+        threadPool.enqueueTask([fd]() {
+            int saved_stdout = dup(STDOUT_FILENO);
+            dup2(fd, STDOUT_FILENO);
+            algo = MSTFactory::MST('t');  // Create Tarjan's MST solver
+            mst = algo->findMST(graph);   // Find MST for the current graph
+            dup2(saved_stdout, STDOUT_FILENO);
+        });
+    }
+    // Kruskal's Algorithm using thread pool
+    else if (choice.find("k") != string::npos) { // Kruskal's Algorithm
+        threadPool.enqueueTask([fd]() {
+            int saved_stdout = dup(STDOUT_FILENO);
+            dup2(fd, STDOUT_FILENO);
+            algo = MSTFactory::MST('k');  // Create Kruskal's MST solver
+            mst = algo->findMST(graph);   // Find MST for the current graph
+            dup2(saved_stdout, STDOUT_FILENO);
+        });
+    }
+    // Borůvka's Algorithm using thread pool
+    else if (choice.find("b") != string::npos) { // Borůvka's Algorithm
+        threadPool.enqueueTask([fd]() {
+            int saved_stdout = dup(STDOUT_FILENO);
+            dup2(fd, STDOUT_FILENO);
+            algo = MSTFactory::MST('b');  // Create Borůvka's MST solver
+            mst = algo->findMST(graph);   // Find MST for the current graph
+            dup2(saved_stdout, STDOUT_FILENO);
+        });
+    }
+    // Integer MST Algorithm using thread pool
+    else if (choice.find("i") != string::npos) { // Integer MST Algorithm
+        threadPool.enqueueTask([fd]() {
+            int saved_stdout = dup(STDOUT_FILENO);
+            dup2(fd, STDOUT_FILENO);
+            algo = MSTFactory::MST('i');  // Create Integer MST solver
+            mst = algo->findMST(graph);   // Find MST for the current graph
+            dup2(saved_stdout, STDOUT_FILENO);
+        });
     }
     else { // The client input is invalid
 
@@ -364,6 +378,8 @@ vector<string> split(const string &s, char delimiter) {
 }
 
 int main() {
+
+    // Create a listener socket
     int listener = get_listener_socket();
     if (listener == -1) {
         cerr << "Error getting listening socket" << endl;

@@ -4,7 +4,7 @@
 # Connect to 127.0.0.1 on port 9034
 {
     # creating the graph
-    echo "Newgraph 10,21"
+    echo "Newgraph 11,21"
 
     # creating the MST first
     echo "1 2"
@@ -57,7 +57,7 @@
     echo "9"
 
     echo "5 10"
-    echo "18"
+    echo "10"
 
     echo "6 10"
     echo "10"
