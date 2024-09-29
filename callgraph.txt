@@ -1,0 +1,1231 @@
+--------------------------------------------------------------------------------
+I1 cache:         65536 B, 64 B, 2-way associative
+D1 cache:         65536 B, 64 B, 2-way associative
+LL cache:         262144 B, 64 B, 8-way associative
+Command:          ./mst_solver
+Data file:        cachegrind.out.5870
+Events recorded:  Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Events shown:     Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Event sort order: Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Thresholds:       0.1 100 100 100 100 100 100 100 100
+Include dirs:     
+User annotated:   
+Auto-annotation:  on
+
+--------------------------------------------------------------------------------
+Ir                 I1mr           ILmr           Dr               D1mr            DLmr           Dw               D1mw           DLmw           
+--------------------------------------------------------------------------------
+2,764,666 (100.0%) 6,094 (100.0%) 4,323 (100.0%) 686,900 (100.0%) 13,157 (100.0%) 9,191 (100.0%) 280,693 (100.0%) 2,687 (100.0%) 2,044 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                 I1mr         ILmr         Dr               D1mr           DLmr           Dw              D1mw           DLmw          file:function
+--------------------------------------------------------------------------------
+1,013,762 (36.67%)  21 ( 0.34%)  16 ( 0.37%) 169,997 (24.75%) 2,013 (15.30%) 1,815 (19.75%) 54,745 (19.50%)    20 ( 0.74%)  16 ( 0.78%)  ./elf/./elf/dl-lookup.c:_dl_lookup_symbol_x
+  594,779 (21.51%)  72 ( 1.18%)  52 ( 1.20%) 198,672 (28.92%) 3,095 (23.52%) 1,122 (12.21%) 83,274 (29.67%)    77 ( 2.87%)  56 ( 2.74%)  ./elf/./elf/dl-lookup.c:do_lookup_x
+  267,468 ( 9.67%)  28 ( 0.46%)  28 ( 0.65%)  66,798 ( 9.72%) 2,901 (22.05%) 2,581 (28.08%) 22,364 ( 7.97%) 1,541 (57.35%) 975 (47.70%)  ./elf/../sysdeps/x86_64/dl-machine.h:_dl_relocate_object
+  123,637 ( 4.47%)  15 ( 0.25%)  11 ( 0.25%)  41,203 ( 6.00%)   540 ( 4.10%)   375 ( 4.08%) 13,794 ( 4.91%)    14 ( 0.52%)   7 ( 0.34%)  ./elf/./elf/dl-lookup.c:check_match
+  111,412 ( 4.03%)  17 ( 0.28%)  17 ( 0.39%)  35,126 ( 5.11%) 2,555 (19.42%) 1,846 (20.08%) 10,560 ( 3.76%)     0            0           ./elf/./elf/do-rel.h:_dl_relocate_object
+   84,274 ( 3.05%) 131 ( 2.15%) 101 ( 2.34%)  20,061 ( 2.92%)   320 ( 2.43%)   222 ( 2.42%)      0              0            0           ./string/../sysdeps/x86_64/strcmp.S:strcmp
+   40,023 ( 1.45%)   5 ( 0.08%)   5 ( 0.12%)   7,192 ( 1.05%)    81 ( 0.62%)    81 ( 0.88%)      6 ( 0.00%)     1 ( 0.04%)   1 ( 0.05%)  ./elf/./elf/dl-tunables.c:__GI___tunables_init
+   20,499 ( 0.74%)   0            0                0              0              0           4,562 ( 1.63%)     0            0           ./elf/../sysdeps/generic/dl-protected.h:do_lookup_x
+   13,566 ( 0.49%)  20 ( 0.33%)  20 ( 0.46%)   4,732 ( 0.69%)    88 ( 0.67%)    84 ( 0.91%)    917 ( 0.33%)    68 ( 2.53%)  67 ( 3.28%)  ./elf/./elf/dl-version.c:_dl_check_map_versions
+   12,128 ( 0.44%)   6 ( 0.10%)   6 ( 0.14%)   3,552 ( 0.52%)     0              0             256 ( 0.09%)     0            0           ???:std::locale::_Impl::_M_install_facet(std::locale::id const*, std::locale::facet const*)
+   11,330 ( 0.41%)   4 ( 0.07%)   2 ( 0.05%)   2,266 ( 0.33%)     0              0               0              0            0           ./elf/../sysdeps/generic/ldsodefs.h:do_lookup_x
+   10,776 ( 0.39%)  14 ( 0.23%)   6 ( 0.14%)   2,185 ( 0.32%)     0              0             623 ( 0.22%)     1 ( 0.04%)   1 ( 0.05%)  ./libio/./libio/fileops.c:_IO_file_xsputn@@GLIBC_2.2.5
+   10,446 ( 0.38%)   0            0            3,482 ( 0.51%)     0              0               0              0            0           ./elf/../sysdeps/generic/ldsodefs.h:_dl_relocate_object
+   10,240 ( 0.37%)   4 ( 0.07%)   4 ( 0.09%)   3,072 ( 0.45%)     4 ( 0.03%)     4 ( 0.04%)  1,536 ( 0.55%)     0            0           ./wcsmbs/./wcsmbs/btowc.c:btowc
+   10,006 ( 0.36%)  21 ( 0.34%)  11 ( 0.25%)   3,610 ( 0.53%)   294 ( 2.23%)   174 ( 1.89%)    977 ( 0.35%)     3 ( 0.11%)   3 ( 0.15%)  ./elf/./elf/dl-runtime.c:_dl_fixup
+    9,921 ( 0.36%) 487 ( 7.99%) 312 ( 7.22%)   4,397 ( 0.64%)   206 ( 1.57%)    57 ( 0.62%)    724 ( 0.26%)    25 ( 0.93%)  24 ( 1.17%)  ???:???
+    8,549 ( 0.31%)  99 ( 1.62%)  31 ( 0.72%)   1,440 ( 0.21%)    11 ( 0.08%)     4 ( 0.04%)  1,467 ( 0.52%)    60 ( 2.23%)  58 ( 2.84%)  ./malloc/./malloc/malloc.c:_int_malloc
+    4,895 ( 0.18%)  33 ( 0.54%)   8 ( 0.19%)   1,296 ( 0.19%)    21 ( 0.16%)     1 ( 0.01%)    462 ( 0.16%)     2 ( 0.07%)   2 ( 0.10%)  ./malloc/./malloc/malloc.c:malloc
+    4,880 ( 0.18%)   2 ( 0.03%)   2 ( 0.05%)   1,782 ( 0.26%)     0              0             891 ( 0.32%)     0            0           /usr/include/c++/11/bits/shared_ptr_base.h:std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count()
+    4,869 ( 0.18%)  10 ( 0.16%)  10 ( 0.23%)   1,314 ( 0.19%)     0              0             793 ( 0.28%)     0            0           ./libio/./libio/iogetdelim.c:getdelim
+    4,864 ( 0.18%)   1 ( 0.02%)   1 ( 0.02%)     934 ( 0.14%)     1 ( 0.01%)     1 ( 0.01%)      0              0            0           ./elf/./elf/dl-tunables.h:__GI___tunables_init
+    4,390 ( 0.16%)   5 ( 0.08%)   5 ( 0.12%)     926 ( 0.13%)     8 ( 0.06%)     8 ( 0.09%)    129 ( 0.05%)     0            0           ./elf/../sysdeps/x86/dl-cacheinfo.h:intel_check_word.constprop.0
+    4,350 ( 0.16%)   8 ( 0.13%)   6 ( 0.14%)   1,154 ( 0.17%)     0              0             641 ( 0.23%)     0            0           ./libio/./libio/fileops.c:_IO_file_overflow@@GLIBC_2.2.5
+    4,311 ( 0.16%)  17 ( 0.28%)   3 ( 0.07%)   1,309 ( 0.19%)     4 ( 0.03%)     2 ( 0.02%)    617 ( 0.22%)     0            0           ./libio/./libio/iofwrite.c:fwrite
+    4,216 ( 0.15%)  16 ( 0.26%)  16 ( 0.37%)     331 ( 0.05%)    48 ( 0.36%)    26 ( 0.28%)    143 ( 0.05%)     0            0           ./elf/./elf/dl-reloc.c:_dl_relocate_object
+    4,140 ( 0.15%)   5 ( 0.08%)   3 ( 0.07%)   1,440 ( 0.21%)     3 ( 0.02%)     2 ( 0.02%)    900 ( 0.32%)     0            0           ???:std::ostream::sentry::sentry(std::ostream&)
+    4,086 ( 0.15%)   2 ( 0.03%)   2 ( 0.05%)       0              0              0               0              0            0           ./elf/../bits/stdlib-bsearch.h:intel_check_word.constprop.0
+    3,900 ( 0.14%)   2 ( 0.03%)   1 ( 0.02%)     975 ( 0.14%)     0              0             975 ( 0.35%)     0            0           /usr/include/c++/11/bits/shared_ptr_base.h:std::__shared_ptr<Vertex, (__gnu_cxx::_Lock_policy)2>::~__shared_ptr()
+    3,824 ( 0.14%)   2 ( 0.03%)   1 ( 0.02%)     717 ( 0.10%)     0              0             956 ( 0.34%)     0            0           /usr/include/c++/11/bits/shared_ptr_base.h:std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release()
+    3,782 ( 0.14%)  41 ( 0.67%)  41 ( 0.95%)     825 ( 0.12%)    54 ( 0.41%)    54 ( 0.59%)    394 ( 0.14%)    25 ( 0.93%)  22 ( 1.08%)  ./elf/./elf/dl-load.c:_dl_map_object_from_fd
+    3,675 ( 0.13%)   0            0            1,575 ( 0.23%)     0              0             875 ( 0.31%)     0            0           /usr/include/c++/11/bits/shared_ptr_base.h:std::__shared_count<(__gnu_cxx::_Lock_policy)2>::__shared_count(std::__shared_count<(__gnu_cxx::_Lock_policy)2> const&)
+    3,557 ( 0.13%)  39 ( 0.64%)  14 ( 0.32%)   1,109 ( 0.16%)     7 ( 0.05%)     0             604 ( 0.22%)     0            0           ./malloc/./malloc/malloc.c:_int_free
+    3,552 ( 0.13%)  31 ( 0.51%)   6 ( 0.14%)     482 ( 0.07%)    38 ( 0.29%)    37 ( 0.40%)      0              0            0           ./string/../sysdeps/x86_64/multiarch/strlen-vec.S:__strlen_sse2
+    3,509 ( 0.13%)   1 ( 0.02%)   1 ( 0.02%)     957 ( 0.14%)     0              0             957 ( 0.34%)     0            0           /usr/include/c++/11/bits/shared_ptr.h:std::shared_ptr<Vertex>::~shared_ptr()
+    3,500 ( 0.13%)   2 ( 0.03%)   1 ( 0.02%)   1,225 ( 0.18%)     1 ( 0.01%)     0             875 ( 0.31%)     0            0           /usr/include/c++/11/bits/shared_ptr_base.h:std::__shared_ptr<Vertex, (__gnu_cxx::_Lock_policy)2>::__shared_ptr(std::__shared_ptr<Vertex, (__gnu_cxx::_Lock_policy)2> const&)
+    3,456 ( 0.13%)   3 ( 0.05%)   3 ( 0.07%)     896 ( 0.13%)     0              0             512 ( 0.18%)     0            0           ./wcsmbs/./wcsmbs/wctob.c:wctob
+    3,455 ( 0.12%)  41 ( 0.67%)  13 ( 0.30%)     373 ( 0.05%)    40 ( 0.30%)    40 ( 0.44%)      0              0            0           ./string/../sysdeps/x86_64/multiarch/../memchr.S:__memchr_sse2
+    3,416 ( 0.12%)  31 ( 0.51%)   5 ( 0.12%)   1,464 ( 0.21%)     3 ( 0.02%)     1 ( 0.01%)    732 ( 0.26%)     0            0           ???:std::basic_ostream<char, std::char_traits<char> >& std::__ostream_insert<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*, long)
+    3,378 ( 0.12%)   4 ( 0.07%)   4 ( 0.09%)     498 ( 0.07%)    33 ( 0.25%)    33 ( 0.36%)      0              0            0           ./elf/./elf/dl-cache.c:_dl_cache_libcmp
+    3,346 ( 0.12%)   1 ( 0.02%)   1 ( 0.02%)   1,673 ( 0.24%)     0              0             478 ( 0.17%)     0            0           /usr/include/c++/11/ext/atomicity.h:std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release()
+    3,016 ( 0.11%)   9 ( 0.15%)   4 ( 0.09%)   2,912 ( 0.42%)     0              0           2,808 ( 1.00%)    21 ( 0.78%)  20 ( 0.98%)  ./elf/../sysdeps/x86_64/dl-trampoline.h:_dl_runtime_resolve_fxsave
+    2,921 ( 0.11%)  32 ( 0.53%)   5 ( 0.12%)     865 ( 0.13%)     1 ( 0.01%)     1 ( 0.01%)    594 ( 0.21%)     1 ( 0.04%)   1 ( 0.05%)  ./libio/./libio/fileops.c:_IO_do_write@@GLIBC_2.2.5
+    2,848 ( 0.10%)   2 ( 0.03%)   2 ( 0.05%)     761 ( 0.11%)     0              0             443 ( 0.16%)     1 ( 0.04%)   1 ( 0.05%)  ./elf/./elf/dl-misc.c:_dl_name_match_p
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /usr/include/c++/11/bits/shared_ptr_base.h
+--------------------------------------------------------------------------------
+Ir             I1mr        ILmr       Dr             D1mr       DLmr       Dw           D1mw       DLmw       
+
+-- line 118 ----------------------------------------
+    .           .          .              .          .          .            .          .          .                 enum { _S_need_barriers = 1 };
+    .           .          .              .          .          .            .          .          .               };
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .             template<_Lock_policy _Lp = __default_lock_policy>
+    .           .          .              .          .          .            .          .          .               class _Sp_counted_base
+    .           .          .              .          .          .            .          .          .               : public _Mutex_base<_Lp>
+    .           .          .              .          .          .            .          .          .               {
+    .           .          .              .          .          .            .          .          .               public:
+   48 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)     0          0          0           24 ( 0.01%) 0          0                 _Sp_counted_base() noexcept
+  120 ( 0.00%)  1 ( 0.02%) 0             60 ( 0.01%) 0          0           36 ( 0.01%) 0          0                 : _M_use_count(1), _M_weak_count(1) { }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 virtual
+    .           .          .              .          .          .            .          .          .                 ~_Sp_counted_base() noexcept
+    .           .          .              .          .          .            .          .          .                 { }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 // Called when _M_use_count drops to zero, to release the resources
+    .           .          .              .          .          .            .          .          .                 // managed by *this.
+    .           .          .              .          .          .            .          .          .                 virtual void
+-- line 135 ----------------------------------------
+-- line 139 ----------------------------------------
+    .           .          .              .          .          .            .          .          .                 virtual void
+    .           .          .              .          .          .            .          .          .                 _M_destroy() noexcept
+    .           .          .              .          .          .            .          .          .                 { delete this; }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 virtual void*
+    .           .          .              .          .          .            .          .          .                 _M_get_deleter(const std::type_info&) noexcept = 0;
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 void
+  732 ( 0.03%)  2 ( 0.03%) 0              0          0          0          366 ( 0.13%) 0          0                 _M_add_ref_copy()
+1,281 ( 0.05%)  0          0            549 ( 0.08%) 0          0          366 ( 0.13%) 0          0                 { __gnu_cxx::__atomic_add_dispatch(&_M_use_count, 1); }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 void
+    .           .          .              .          .          .            .          .          .                 _M_add_ref_lock()
+    .           .          .              .          .          .            .          .          .                 {
+    .           .          .              .          .          .            .          .          .           	if (!_M_add_ref_lock_nothrow())
+    .           .          .              .          .          .            .          .          .           	  __throw_bad_weak_ptr();
+    .           .          .              .          .          .            .          .          .                 }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 bool
+    .           .          .              .          .          .            .          .          .                 _M_add_ref_lock_nothrow() noexcept;
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 void
+1,195 ( 0.04%)  1 ( 0.02%) 1 ( 0.02%)     0          0          0          478 ( 0.17%) 0          0                 _M_release() noexcept
+    .           .          .              .          .          .            .          .          .                 {
+    .           .          .              .          .          .            .          .          .                   // Be race-detector-friendly.  For more info see bits/c++config.
+    .           .          .              .          .          .            .          .          .                   _GLIBCXX_SYNCHRONIZATION_HAPPENS_BEFORE(&_M_use_count);
+1,912 ( 0.07%)  0          0            239 ( 0.03%) 0          0          478 ( 0.17%) 0          0           	if (__gnu_cxx::__exchange_and_add_dispatch(&_M_use_count, -1) == 1)
+    .           .          .              .          .          .            .          .          .           	  {
+    .           .          .              .          .          .            .          .          .                       _GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER(&_M_use_count);
+    .           .          .              .          .          .            .          .          .           	    _M_dispose();
+    .           .          .              .          .          .            .          .          .           	    // There must be a memory barrier between dispose() and destroy()
+    .           .          .              .          .          .            .          .          .           	    // to ensure that the effects of dispose() are observed in the
+    .           .          .              .          .          .            .          .          .           	    // thread that runs destroy().
+    .           .          .              .          .          .            .          .          .           	    // See http://gcc.gnu.org/ml/libstdc++/2005-11/msg00136.html
+    .           .          .              .          .          .            .          .          .           	    if (_Mutex_base<_Lp>::_S_need_barriers)
+-- line 173 ----------------------------------------
+-- line 179 ----------------------------------------
+    .           .          .              .          .          .            .          .          .                       _GLIBCXX_SYNCHRONIZATION_HAPPENS_BEFORE(&_M_weak_count);
+    .           .          .              .          .          .            .          .          .           	    if (__gnu_cxx::__exchange_and_add_dispatch(&_M_weak_count,
+    .           .          .              .          .          .            .          .          .           						       -1) == 1)
+    .           .          .              .          .          .            .          .          .                         {
+    .           .          .              .          .          .            .          .          .                           _GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER(&_M_weak_count);
+    .           .          .              .          .          .            .          .          .           	        _M_destroy();
+    .           .          .              .          .          .            .          .          .                         }
+    .           .          .              .          .          .            .          .          .           	  }
+  717 ( 0.03%)  1 ( 0.02%) 0            478 ( 0.07%) 0          0            0          0          0                 }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 void
+  152 ( 0.01%)  9 ( 0.15%) 1 ( 0.02%)     0          0          0           76 ( 0.03%) 0          0                 _M_weak_add_ref() noexcept
+  266 ( 0.01%)  0          0            114 ( 0.02%) 0          0           76 ( 0.03%) 0          0                 { __gnu_cxx::__atomic_add_dispatch(&_M_weak_count, 1); }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 void
+  140 ( 0.01%)  1 ( 0.02%) 1 ( 0.02%)     0          0          0           56 ( 0.02%) 0          0                 _M_weak_release() noexcept
+    .           .          .              .          .          .            .          .          .                 {
+    .           .          .              .          .          .            .          .          .                   // Be race-detector-friendly. For more info see bits/c++config.
+    .           .          .              .          .          .            .          .          .                   _GLIBCXX_SYNCHRONIZATION_HAPPENS_BEFORE(&_M_weak_count);
+  224 ( 0.01%)  0          0             28 ( 0.00%) 0          0           56 ( 0.02%) 0          0           	if (__gnu_cxx::__exchange_and_add_dispatch(&_M_weak_count, -1) == 1)
+    .           .          .              .          .          .            .          .          .           	  {
+    .           .          .              .          .          .            .          .          .                       _GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER(&_M_weak_count);
+    .           .          .              .          .          .            .          .          .           	    if (_Mutex_base<_Lp>::_S_need_barriers)
+    .           .          .              .          .          .            .          .          .           	      {
+    .           .          .              .          .          .            .          .          .           	        // See _M_release(),
+    .           .          .              .          .          .            .          .          .           	        // destroy() must observe results of dispose()
+    .           .          .              .          .          .            .          .          .           		__atomic_thread_fence (__ATOMIC_ACQ_REL);
+    .           .          .              .          .          .            .          .          .           	      }
+    .           .          .              .          .          .            .          .          .           	    _M_destroy();
+    .           .          .              .          .          .            .          .          .           	  }
+   84 ( 0.00%)  0          0             56 ( 0.01%) 0          0            0          0          0                 }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 long
+  488 ( 0.02%)  1 ( 0.02%) 1 ( 0.02%)     0          0          0          244 ( 0.09%) 1 ( 0.04%) 0                 _M_get_use_count() const noexcept
+    .           .          .              .          .          .            .          .          .                 {
+    .           .          .              .          .          .            .          .          .                   // No memory barrier is used here so there is no synchronization
+    .           .          .              .          .          .            .          .          .                   // with other threads.
+  488 ( 0.02%)  0          0            244 ( 0.04%) 0          0            0          0          0                   return __atomic_load_n(&_M_use_count, __ATOMIC_RELAXED);
+  244 ( 0.01%)  0          0            244 ( 0.04%) 0          0            0          0          0                 }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .               private:
+    .           .          .              .          .          .            .          .          .                 _Sp_counted_base(_Sp_counted_base const&) = delete;
+    .           .          .              .          .          .            .          .          .                 _Sp_counted_base& operator=(_Sp_counted_base const&) = delete;
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 _Atomic_word  _M_use_count;     // #shared
+    .           .          .              .          .          .            .          .          .                 _Atomic_word  _M_weak_count;    // #weak + (#shared != 0)
+    .           .          .              .          .          .            .          .          .               };
+-- line 225 ----------------------------------------
+-- line 248 ----------------------------------------
+    .           .          .              .          .          .            .          .          .           	}
+    .           .          .              .          .          .            .          .          .                 return true;
+    .           .          .              .          .          .            .          .          .               }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .             template<>
+    .           .          .              .          .          .            .          .          .               inline bool
+    .           .          .              .          .          .            .          .          .               _Sp_counted_base<_S_atomic>::
+    .           .          .              .          .          .            .          .          .               _M_add_ref_lock_nothrow() noexcept
+  488 ( 0.02%) 19 ( 0.31%) 2 ( 0.05%)    61 ( 0.01%) 0          0          183 ( 0.07%) 0          0               {
+    .           .          .              .          .          .            .          .          .                 // Perform lock-free add-if-not-zero operation.
+  244 ( 0.01%)  0          0             61 ( 0.01%) 0          0          122 ( 0.04%) 1 ( 0.04%) 1 ( 0.05%)        _Atomic_word __count = _M_get_use_count();
+    .           .          .              .          .          .            .          .          .                 do
+    .           .          .              .          .          .            .          .          .           	{
+  183 ( 0.01%)  0          0             61 ( 0.01%) 0          0            0          0          0           	  if (__count == 0)
+    .           .          .              .          .          .            .          .          .           	    return false;
+    .           .          .              .          .          .            .          .          .           	  // Replace the current counter value with the old value + 1, as
+    .           .          .              .          .          .            .          .          .           	  // long as it's not changed meanwhile.
+    .           .          .              .          .          .            .          .          .           	}
+  915 ( 0.03%)  1 ( 0.02%) 1 ( 0.02%)   244 ( 0.04%) 0          0            0          0          0                 while (!__atomic_compare_exchange_n(&_M_use_count, &__count, __count + 1,
+    .           .          .              .          .          .            .          .          .           					  true, __ATOMIC_ACQ_REL,
+    .           .          .              .          .          .            .          .          .           					  __ATOMIC_RELAXED));
+   61 ( 0.00%)  0          0              0          0          0            0          0          0                 return true;
+  305 ( 0.01%)  0          0            244 ( 0.04%) 0          0            0          0          0               }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .             template<>
+    .           .          .              .          .          .            .          .          .               inline void
+    .           .          .              .          .          .            .          .          .               _Sp_counted_base<_S_single>::_M_add_ref_copy()
+    .           .          .              .          .          .            .          .          .               { ++_M_use_count; }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .             template<>
+    .           .          .              .          .          .            .          .          .               inline void
+-- line 278 ----------------------------------------
+-- line 377 ----------------------------------------
+    .           .          .              .          .          .            .          .          .             template<int _Nm, typename _Tp,
+    .           .          .              .          .          .            .          .          .           	   bool __use_ebo = !__is_final(_Tp) && __is_empty(_Tp)>
+    .           .          .              .          .          .            .          .          .               struct _Sp_ebo_helper;
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .             /// Specialization using EBO.
+    .           .          .              .          .          .            .          .          .             template<int _Nm, typename _Tp>
+    .           .          .              .          .          .            .          .          .               struct _Sp_ebo_helper<_Nm, _Tp, true> : private _Tp
+    .           .          .              .          .          .            .          .          .               {
+  156 ( 0.01%)  2 ( 0.03%) 2 ( 0.05%)    44 ( 0.01%) 0          0           46 ( 0.02%) 0          0                 explicit _Sp_ebo_helper(const _Tp& __tp) : _Tp(__tp) { }
+   24 ( 0.00%)  2 ( 0.03%) 1 ( 0.02%)     6 ( 0.00%) 0          0            8 ( 0.00%) 0          0                 explicit _Sp_ebo_helper(_Tp&& __tp) : _Tp(std::move(__tp)) { }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 static _Tp&
+    .           .          .              .          .          .            .          .          .                 _S_get(_Sp_ebo_helper& __eboh) { return static_cast<_Tp&>(__eboh); }
+    .           .          .              .          .          .            .          .          .               };
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .             /// Specialization not using EBO.
+    .           .          .              .          .          .            .          .          .             template<int _Nm, typename _Tp>
+    .           .          .              .          .          .            .          .          .               struct _Sp_ebo_helper<_Nm, _Tp, false>
+-- line 394 ----------------------------------------
+-- line 409 ----------------------------------------
+    .           .          .              .          .          .            .          .          .               class _Sp_counted_deleter final : public _Sp_counted_base<_Lp>
+    .           .          .              .          .          .            .          .          .               {
+    .           .          .              .          .          .            .          .          .                 class _Impl : _Sp_ebo_helper<0, _Deleter>, _Sp_ebo_helper<1, _Alloc>
+    .           .          .              .          .          .            .          .          .                 {
+    .           .          .              .          .          .            .          .          .           	typedef _Sp_ebo_helper<0, _Deleter>	_Del_base;
+    .           .          .              .          .          .            .          .          .           	typedef _Sp_ebo_helper<1, _Alloc>	_Alloc_base;
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 public:
+   14 ( 0.00%)  0          0              0          0          0            8 ( 0.00%) 0          0           	_Impl(_Ptr __p, _Deleter __d, const _Alloc& __a) noexcept
+   32 ( 0.00%)  2 ( 0.03%) 1 ( 0.02%)    10 ( 0.00%) 0          0            8 ( 0.00%) 0          0           	: _Del_base(std::move(__d)), _Alloc_base(__a), _M_ptr(__p)
+    6 ( 0.00%)  0          0              4 ( 0.00%) 0          0            0          0          0           	{ }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .           	_Deleter& _M_del() noexcept { return _Del_base::_S_get(*this); }
+    .           .          .              .          .          .            .          .          .           	_Alloc& _M_alloc() noexcept { return _Alloc_base::_S_get(*this); }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .           	_Ptr _M_ptr;
+    .           .          .              .          .          .            .          .          .                 };
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .               public:
+    .           .          .              .          .          .            .          .          .                 using __allocator_type = __alloc_rebind<_Alloc, _Sp_counted_deleter>;
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 // __d(__p) must not throw.
+   20 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)     2 ( 0.00%) 0          0           10 ( 0.00%) 0          0                 _Sp_counted_deleter(_Ptr __p, _Deleter __d) noexcept
+   46 ( 0.00%)  2 ( 0.03%) 2 ( 0.05%)    18 ( 0.00%) 0          0            8 ( 0.00%) 0          0                 : _M_impl(__p, std::move(__d), _Alloc()) { }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 // __d(__p) must not throw.
+    .           .          .              .          .          .            .          .          .                 _Sp_counted_deleter(_Ptr __p, _Deleter __d, const _Alloc& __a) noexcept
+    .           .          .              .          .          .            .          .          .                 : _M_impl(__p, std::move(__d), __a) { }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 ~_Sp_counted_deleter() noexcept { }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 virtual void
+-- line 440 ----------------------------------------
+-- line 494 ----------------------------------------
+    .           .          .              .          .          .            .          .          .             template<typename _Tp, typename _Alloc, _Lock_policy _Lp>
+    .           .          .              .          .          .            .          .          .               class _Sp_counted_ptr_inplace final : public _Sp_counted_base<_Lp>
+    .           .          .              .          .          .            .          .          .               {
+    .           .          .              .          .          .            .          .          .                 class _Impl : _Sp_ebo_helper<0, _Alloc>
+    .           .          .              .          .          .            .          .          .                 {
+    .           .          .              .          .          .            .          .          .           	typedef _Sp_ebo_helper<0, _Alloc>	_A_base;
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 public:
+  140 ( 0.01%)  0          0             40 ( 0.01%) 0          0           40 ( 0.01%) 0          0           	explicit _Impl(_Alloc __a) noexcept : _A_base(__a) { }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .           	_Alloc& _M_alloc() noexcept { return _A_base::_S_get(*this); }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .           	__gnu_cxx::__aligned_buffer<_Tp> _M_storage;
+    .           .          .              .          .          .            .          .          .                 };
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .               public:
+    .           .          .              .          .          .            .          .          .                 using __allocator_type = __alloc_rebind<_Alloc, _Sp_counted_ptr_inplace>;
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 // Alloc parameter is not a reference so doesn't alias anything in __args
+    .           .          .              .          .          .            .          .          .                 template<typename... _Args>
+  110 ( 0.00%)  3 ( 0.05%) 3 ( 0.07%)    10 ( 0.00%) 0          0           60 ( 0.02%) 0          0           	_Sp_counted_ptr_inplace(_Alloc __a, _Args&&... __args)
+  200 ( 0.01%)  2 ( 0.03%) 2 ( 0.05%)    40 ( 0.01%) 0          0           50 ( 0.02%) 0          0           	: _M_impl(__a)
+    .           .          .              .          .          .            .          .          .           	{
+    .           .          .              .          .          .            .          .          .           	  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+    .           .          .              .          .          .            .          .          .           	  // 2070.  allocate_shared should use allocator_traits<A>::construct
+  130 ( 0.00%)  2 ( 0.03%) 2 ( 0.05%)    30 ( 0.00%) 0          0           30 ( 0.01%) 0          0           	  allocator_traits<_Alloc>::construct(__a, _M_ptr(),
+    .           .          .              .          .          .            .          .          .           	      std::forward<_Args>(__args)...); // might throw
+   70 ( 0.00%)  2 ( 0.03%) 2 ( 0.05%)    50 ( 0.01%) 0          0            0          0          0           	}
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 ~_Sp_counted_ptr_inplace() noexcept { }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 virtual void
+    .           .          .              .          .          .            .          .          .                 _M_dispose() noexcept
+    .           .          .              .          .          .            .          .          .                 {
+    .           .          .              .          .          .            .          .          .           	allocator_traits<_Alloc>::destroy(_M_impl._M_alloc(), _M_ptr());
+    .           .          .              .          .          .            .          .          .                 }
+-- line 529 ----------------------------------------
+-- line 557 ----------------------------------------
+    .           .          .              .          .          .            .          .          .           #else
+    .           .          .              .          .          .            .          .          .           	    _Sp_make_shared_tag::_S_eq(__ti)
+    .           .          .              .          .          .            .          .          .           #endif
+    .           .          .              .          .          .            .          .          .           	   )
+    .           .          .              .          .          .            .          .          .           	  return __ptr;
+    .           .          .              .          .          .            .          .          .           	return nullptr;
+    .           .          .              .          .          .            .          .          .                 }
+    .           .          .              .          .          .            .          .          .           
+  220 ( 0.01%)  1 ( 0.02%) 1 ( 0.02%)    60 ( 0.01%) 0          0           60 ( 0.02%) 0          0                 _Tp* _M_ptr() noexcept { return _M_impl._M_storage._M_ptr(); }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 _Impl _M_impl;
+    .           .          .              .          .          .            .          .          .               };
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .             // The default deleter for shared_ptr<T[]> and shared_ptr<T[N]>.
+    .           .          .              .          .          .            .          .          .             struct __sp_array_delete
+    .           .          .              .          .          .            .          .          .             {
+    .           .          .              .          .          .            .          .          .               template<typename _Yp>
+-- line 573 ----------------------------------------
+-- line 579 ----------------------------------------
+    .           .          .              .          .          .            .          .          .               {
+    .           .          .              .          .          .            .          .          .                 template<typename _Tp>
+    .           .          .              .          .          .            .          .          .           	struct __not_alloc_shared_tag { using type = void; };
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 template<typename _Tp>
+    .           .          .              .          .          .            .          .          .           	struct __not_alloc_shared_tag<_Sp_alloc_shared_tag<_Tp>> { };
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .               public:
+  576 ( 0.02%)  1 ( 0.02%) 1 ( 0.02%)    96 ( 0.01%) 0          0          288 ( 0.10%) 1 ( 0.04%) 1 ( 0.05%)        constexpr __shared_count() noexcept : _M_pi(0)
+  288 ( 0.01%)  3 ( 0.05%) 1 ( 0.02%)   192 ( 0.03%) 0          0            0          0          0                 { }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 template<typename _Ptr>
+    .           .          .              .          .          .            .          .          .                   explicit
+    .           .          .              .          .          .            .          .          .           	__shared_count(_Ptr __p) : _M_pi(0)
+    .           .          .              .          .          .            .          .          .           	{
+    .           .          .              .          .          .            .          .          .           	  __try
+    .           .          .              .          .          .            .          .          .           	    {
+    .           .          .              .          .          .            .          .          .           	      _M_pi = new _Sp_counted_ptr<_Ptr, _Lp>(__p);
+-- line 596 ----------------------------------------
+-- line 635 ----------------------------------------
+    .           .          .              .          .          .            .          .          .           	  __catch(...)
+    .           .          .              .          .          .            .          .          .           	    {
+    .           .          .              .          .          .            .          .          .           	      __d(__p); // Call _Deleter on __p.
+    .           .          .              .          .          .            .          .          .           	      __throw_exception_again;
+    .           .          .              .          .          .            .          .          .           	    }
+    .           .          .              .          .          .            .          .          .           	}
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 template<typename _Tp, typename _Alloc, typename... _Args>
+  150 ( 0.01%)  3 ( 0.05%) 3 ( 0.07%)    10 ( 0.00%) 0          0          100 ( 0.04%) 0          0           	__shared_count(_Tp*& __p, _Sp_alloc_shared_tag<_Alloc> __a,
+    .           .          .              .          .          .            .          .          .           		       _Args&&... __args)
+    .           .          .              .          .          .            .          .          .           	{
+    .           .          .              .          .          .            .          .          .           	  typedef _Sp_counted_ptr_inplace<_Tp, _Alloc, _Lp> _Sp_cp_type;
+   50 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)    10 ( 0.00%) 0          0           10 ( 0.00%) 0          0           	  typename _Sp_cp_type::__allocator_type __a2(__a._M_a);
+   50 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)     0          0          0           10 ( 0.00%) 0          0           	  auto __guard = std::__allocate_guarded(__a2);
+   40 ( 0.00%)  0          0              0          0          0           20 ( 0.01%) 0          0           	  _Sp_cp_type* __mem = __guard.get();
+  190 ( 0.01%)  3 ( 0.05%) 3 ( 0.07%)    20 ( 0.00%) 0          0           50 ( 0.02%) 0          0           	  auto __pi = ::new (__mem)
+   40 ( 0.00%)  0          0             10 ( 0.00%) 0          0           10 ( 0.00%) 0          0           	    _Sp_cp_type(__a._M_a, std::forward<_Args>(__args)...);
+   40 ( 0.00%)  0          0              0          0          0           10 ( 0.00%) 0          0           	  __guard = nullptr;
+   30 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)    20 ( 0.00%) 0          0           10 ( 0.00%) 0          0           	  _M_pi = __pi;
+   50 ( 0.00%)  0          0             20 ( 0.00%) 0          0           20 ( 0.01%) 0          0           	  __p = __pi->_M_ptr();
+  170 ( 0.01%)  4 ( 0.07%) 4 ( 0.09%)    80 ( 0.01%) 0          0           20 ( 0.01%) 0          0           	}
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .           #if _GLIBCXX_USE_DEPRECATED
+    .           .          .              .          .          .            .          .          .           #pragma GCC diagnostic push
+    .           .          .              .          .          .            .          .          .           #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    .           .          .              .          .          .            .          .          .                 // Special case for auto_ptr<_Tp> to provide the strong guarantee.
+    .           .          .              .          .          .            .          .          .                 template<typename _Tp>
+    .           .          .              .          .          .            .          .          .                   explicit
+    .           .          .              .          .          .            .          .          .           	__shared_count(std::auto_ptr<_Tp>&& __r);
+    .           .          .              .          .          .            .          .          .           #pragma GCC diagnostic pop
+    .           .          .              .          .          .            .          .          .           #endif
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 // Special case for unique_ptr<_Tp,_Del> to provide the strong guarantee.
+    .           .          .              .          .          .            .          .          .                 template<typename _Tp, typename _Del>
+    .           .          .              .          .          .            .          .          .                   explicit
+   24 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)     4 ( 0.00%) 0          0           12 ( 0.00%) 0          0           	__shared_count(std::unique_ptr<_Tp, _Del>&& __r) : _M_pi(0)
+    .           .          .              .          .          .            .          .          .           	{
+    .           .          .              .          .          .            .          .          .           	  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+    .           .          .              .          .          .            .          .          .           	  // 2415. Inconsistency between unique_ptr and shared_ptr
+   14 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)     2 ( 0.00%) 0          0            2 ( 0.00%) 0          0           	  if (__r.get() == nullptr)
+    .           .          .              .          .          .            .          .          .           	    return;
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .           	  using _Ptr = typename unique_ptr<_Tp, _Del>::pointer;
+    .           .          .              .          .          .            .          .          .           	  using _Del2 = typename conditional<is_reference<_Del>::value,
+    .           .          .              .          .          .            .          .          .           	      reference_wrapper<typename remove_reference<_Del>::type>,
+    .           .          .              .          .          .            .          .          .           	      _Del>::type;
+    .           .          .              .          .          .            .          .          .           	  using _Sp_cd_type
+    .           .          .              .          .          .            .          .          .           	    = _Sp_counted_deleter<_Ptr, _Del2, allocator<void>, _Lp>;
+    .           .          .              .          .          .            .          .          .           	  using _Alloc = allocator<_Sp_cd_type>;
+    .           .          .              .          .          .            .          .          .           	  using _Alloc_traits = allocator_traits<_Alloc>;
+    6 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)     0          0          0            2 ( 0.00%) 0          0           	  _Alloc __a;
+   10 ( 0.00%)  0          0              0          0          0            4 ( 0.00%) 0          0           	  _Sp_cd_type* __mem = _Alloc_traits::allocate(__a, 1);
+    .           .          .              .          .          .            .          .          .           	  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+    .           .          .              .          .          .            .          .          .           	  // 3548. shared_ptr construction from unique_ptr should move
+    .           .          .              .          .          .            .          .          .           	  // (not copy) the deleter
+   26 ( 0.00%)  2 ( 0.03%) 2 ( 0.05%)     4 ( 0.00%) 0          0            8 ( 0.00%) 0          0           	  _Alloc_traits::construct(__a, __mem, __r.release(),
+    6 ( 0.00%)  0          0              2 ( 0.00%) 0          0            2 ( 0.00%) 0          0           				   std::forward<_Del>(__r.get_deleter()));
+    6 ( 0.00%)  0          0              4 ( 0.00%) 0          0            2 ( 0.00%) 0          0           	  _M_pi = __mem;
+   20 ( 0.00%)  2 ( 0.03%) 2 ( 0.05%)    10 ( 0.00%) 0          0            2 ( 0.00%) 0          0           	}
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 // Throw bad_weak_ptr when __r._M_get_use_count() == 0.
+    .           .          .              .          .          .            .          .          .                 explicit __shared_count(const __weak_count<_Lp>& __r);
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 // Does not throw if __r._M_get_use_count() == 0, caller must check.
+    .           .          .              .          .          .            .          .          .                 explicit
+    .           .          .              .          .          .            .          .          .                 __shared_count(const __weak_count<_Lp>& __r, std::nothrow_t) noexcept;
+    .           .          .              .          .          .            .          .          .           
+1,645 ( 0.06%)  1 ( 0.02%) 1 ( 0.02%)     0          0          0          658 ( 0.23%) 0          0                 ~__shared_count() noexcept
+    .           .          .              .          .          .            .          .          .                 {
+1,316 ( 0.05%)  1 ( 0.02%) 1 ( 0.02%)   658 ( 0.10%) 0          0            0          0          0           	if (_M_pi != nullptr)
+  932 ( 0.03%)  0          0            466 ( 0.07%) 0          0          233 ( 0.08%) 0          0           	  _M_pi->_M_release();
+  987 ( 0.04%)  0          0            658 ( 0.10%) 0          0            0          0          0                 }
+    .           .          .              .          .          .            .          .          .           
+1,050 ( 0.04%)  0          0              0          0          0          525 ( 0.19%) 0          0                 __shared_count(const __shared_count& __r) noexcept
+  700 ( 0.03%)  0          0            525 ( 0.08%) 0          0          175 ( 0.06%) 0          0                 : _M_pi(__r._M_pi)
+    .           .          .              .          .          .            .          .          .                 {
+  700 ( 0.03%)  0          0            350 ( 0.05%) 0          0            0          0          0           	if (_M_pi != nullptr)
+  700 ( 0.03%)  0          0            350 ( 0.05%) 0          0          175 ( 0.06%) 0          0           	  _M_pi->_M_add_ref_copy();
+  525 ( 0.02%)  0          0            350 ( 0.05%) 0          0            0          0          0                 }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 __shared_count&
+   48 ( 0.00%)  2 ( 0.03%) 0              0          0          0           24 ( 0.01%) 0          0                 operator=(const __shared_count& __r) noexcept
+    .           .          .              .          .          .            .          .          .                 {
+   24 ( 0.00%)  3 ( 0.05%) 1 ( 0.02%)    16 ( 0.00%) 0          0            8 ( 0.00%) 0          0           	_Sp_counted_base<_Lp>* __tmp = __r._M_pi;
+   32 ( 0.00%)  0          0             24 ( 0.00%) 0          0            0          0          0           	if (__tmp != _M_pi)
+    .           .          .              .          .          .            .          .          .           	  {
+   16 ( 0.00%)  0          0              8 ( 0.00%) 0          0            0          0          0           	    if (__tmp != nullptr)
+   24 ( 0.00%)  0          0              8 ( 0.00%) 0          0            8 ( 0.00%) 0          0           	      __tmp->_M_add_ref_copy();
+   32 ( 0.00%)  0          0             16 ( 0.00%) 0          0            0          0          0           	    if (_M_pi != nullptr)
+   24 ( 0.00%)  0          0             12 ( 0.00%) 0          0            6 ( 0.00%) 0          0           	      _M_pi->_M_release();
+   24 ( 0.00%)  3 ( 0.05%) 1 ( 0.02%)    16 ( 0.00%) 0          0            8 ( 0.00%) 0          0           	    _M_pi = __tmp;
+    .           .          .              .          .          .            .          .          .           	  }
+    8 ( 0.00%)  0          0              8 ( 0.00%) 0          0            0          0          0           	return *this;
+   16 ( 0.00%)  0          0             16 ( 0.00%) 0          0            0          0          0                 }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 void
+  475 ( 0.02%)  1 ( 0.02%) 1 ( 0.02%)     0          0          0          285 ( 0.10%) 0          0                 _M_swap(__shared_count& __r) noexcept
+    .           .          .              .          .          .            .          .          .                 {
+  285 ( 0.01%)  0          0            190 ( 0.03%) 0          0           95 ( 0.03%) 0          0           	_Sp_counted_base<_Lp>* __tmp = __r._M_pi;
+  380 ( 0.01%)  7 ( 0.11%) 1 ( 0.02%)   285 ( 0.04%) 0          0           95 ( 0.03%) 0          0           	__r._M_pi = _M_pi;
+  285 ( 0.01%)  0          0            190 ( 0.03%) 0          0           95 ( 0.03%) 0          0           	_M_pi = __tmp;
+  285 ( 0.01%)  0          0            190 ( 0.03%) 0          0            0          0          0                 }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 long
+  305 ( 0.01%)  0          0              0          0          0          122 ( 0.04%) 0          0                 _M_get_use_count() const noexcept
+  671 ( 0.02%)  2 ( 0.03%) 1 ( 0.02%)   366 ( 0.05%) 0          0           61 ( 0.02%) 0          0                 { return _M_pi ? _M_pi->_M_get_use_count() : 0; }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 bool
+    .           .          .              .          .          .            .          .          .                 _M_unique() const noexcept
+    .           .          .              .          .          .            .          .          .                 { return this->_M_get_use_count() == 1; }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 void*
+    .           .          .              .          .          .            .          .          .                 _M_get_deleter(const std::type_info& __ti) const noexcept
+    .           .          .              .          .          .            .          .          .                 { return _M_pi ? _M_pi->_M_get_deleter(__ti) : nullptr; }
+-- line 748 ----------------------------------------
+-- line 769 ----------------------------------------
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .             template<_Lock_policy _Lp>
+    .           .          .              .          .          .            .          .          .               class __weak_count
+    .           .          .              .          .          .            .          .          .               {
+    .           .          .              .          .          .            .          .          .               public:
+    .           .          .              .          .          .            .          .          .                 constexpr __weak_count() noexcept : _M_pi(nullptr)
+    .           .          .              .          .          .            .          .          .                 { }
+    .           .          .              .          .          .            .          .          .           
+   72 ( 0.00%)  4 ( 0.07%) 2 ( 0.05%)     0          0          0           36 ( 0.01%) 0          0                 __weak_count(const __shared_count<_Lp>& __r) noexcept
+   48 ( 0.00%)  0          0             36 ( 0.01%) 0          0           12 ( 0.00%) 0          0                 : _M_pi(__r._M_pi)
+    .           .          .              .          .          .            .          .          .                 {
+   48 ( 0.00%)  0          0             24 ( 0.00%) 0          0            0          0          0           	if (_M_pi != nullptr)
+   48 ( 0.00%)  0          0             24 ( 0.00%) 0          0           12 ( 0.00%) 0          0           	  _M_pi->_M_weak_add_ref();
+   36 ( 0.00%)  0          0             24 ( 0.00%) 0          0            0          0          0                 }
+    .           .          .              .          .          .            .          .          .           
+  156 ( 0.01%)  0          0              0          0          0           78 ( 0.03%) 0          0                 __weak_count(const __weak_count& __r) noexcept
+  104 ( 0.00%)  0          0             78 ( 0.01%) 0          0           26 ( 0.01%) 0          0                 : _M_pi(__r._M_pi)
+    .           .          .              .          .          .            .          .          .                 {
+  104 ( 0.00%)  0          0             52 ( 0.01%) 0          0            0          0          0           	if (_M_pi != nullptr)
+  104 ( 0.00%)  1 ( 0.02%) 0             52 ( 0.01%) 0          0           26 ( 0.01%) 0          0           	  _M_pi->_M_weak_add_ref();
+   78 ( 0.00%)  0          0             52 ( 0.01%) 0          0            0          0          0                 }
+    .           .          .              .          .          .            .          .          .           
+  150 ( 0.01%)  1 ( 0.02%) 1 ( 0.02%)     0          0          0           90 ( 0.03%) 0          0                 __weak_count(__weak_count&& __r) noexcept
+  120 ( 0.00%)  0          0             90 ( 0.01%) 0          0           30 ( 0.01%) 0          0                 : _M_pi(__r._M_pi)
+  150 ( 0.01%)  0          0             90 ( 0.01%) 0          0           30 ( 0.01%) 0          0                 { __r._M_pi = nullptr; }
+    .           .          .              .          .          .            .          .          .           
+  290 ( 0.01%)  0          0              0          0          0          116 ( 0.04%) 0          0                 ~__weak_count() noexcept
+    .           .          .              .          .          .            .          .          .                 {
+  232 ( 0.01%)  0          0            116 ( 0.02%) 0          0            0          0          0           	if (_M_pi != nullptr)
+  112 ( 0.00%)  0          0             56 ( 0.01%) 0          0           28 ( 0.01%) 0          0           	  _M_pi->_M_weak_release();
+  174 ( 0.01%)  0          0            116 ( 0.02%) 0          0            0          0          0                 }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 __weak_count&
+    .           .          .              .          .          .            .          .          .                 operator=(const __shared_count<_Lp>& __r) noexcept
+    .           .          .              .          .          .            .          .          .                 {
+    .           .          .              .          .          .            .          .          .           	_Sp_counted_base<_Lp>* __tmp = __r._M_pi;
+    .           .          .              .          .          .            .          .          .           	if (__tmp != nullptr)
+    .           .          .              .          .          .            .          .          .           	  __tmp->_M_weak_add_ref();
+    .           .          .              .          .          .            .          .          .           	if (_M_pi != nullptr)
+-- line 807 ----------------------------------------
+-- line 871 ----------------------------------------
+    .           .          .              .          .          .            .          .          .               {
+    .           .          .              .          .          .            .          .          .                 if (_M_pi == nullptr || !_M_pi->_M_add_ref_lock_nothrow())
+    .           .          .              .          .          .            .          .          .           	__throw_bad_weak_ptr();
+    .           .          .              .          .          .            .          .          .               }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .             // Now that __weak_count is defined we can define this constructor:
+    .           .          .              .          .          .            .          .          .             template<_Lock_policy _Lp>
+    .           .          .              .          .          .            .          .          .               inline
+  366 ( 0.01%)  2 ( 0.03%) 1 ( 0.02%)     0          0          0          183 ( 0.07%) 0          0               __shared_count<_Lp>::
+    .           .          .              .          .          .            .          .          .               __shared_count(const __weak_count<_Lp>& __r, std::nothrow_t) noexcept
+  244 ( 0.01%)  0          0            183 ( 0.03%) 2 ( 0.02%) 0           61 ( 0.02%) 0          0               : _M_pi(__r._M_pi)
+    .           .          .              .          .          .            .          .          .               {
+  854 ( 0.03%)  3 ( 0.05%) 1 ( 0.02%)   244 ( 0.04%) 0          0           61 ( 0.02%) 0          0                 if (_M_pi && !_M_pi->_M_add_ref_lock_nothrow())
+    .           .          .              .          .          .            .          .          .           	_M_pi = nullptr;
+  183 ( 0.01%)  0          0            122 ( 0.02%) 0          0            0          0          0               }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .           #define __cpp_lib_shared_ptr_arrays 201611L
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .             // Helper traits for shared_ptr of array:
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .             // A pointer type Y* is said to be compatible with a pointer type T* when
+    .           .          .              .          .          .            .          .          .             // either Y* is convertible to T* or Y is U[N] and T is U cv [].
+    .           .          .              .          .          .            .          .          .             template<typename _Yp_ptr, typename _Tp_ptr>
+-- line 893 ----------------------------------------
+-- line 969 ----------------------------------------
+    .           .          .              .          .          .            .          .          .             template<typename _Tp, _Lock_policy _Lp,
+    .           .          .              .          .          .            .          .          .           	   bool = is_array<_Tp>::value, bool = is_void<_Tp>::value>
+    .           .          .              .          .          .            .          .          .               class __shared_ptr_access
+    .           .          .              .          .          .            .          .          .               {
+    .           .          .              .          .          .            .          .          .               public:
+    .           .          .              .          .          .            .          .          .                 using element_type = _Tp;
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 element_type&
+   40 ( 0.00%)  0          0              0          0          0           16 ( 0.01%) 0          0                 operator*() const noexcept
+    .           .          .              .          .          .            .          .          .                 {
+   16 ( 0.00%)  0          0              0          0          0            0          0          0           	__glibcxx_assert(_M_get() != nullptr);
+   24 ( 0.00%)  0          0              8 ( 0.00%) 0          0            8 ( 0.00%) 0          0           	return *_M_get();
+   16 ( 0.00%)  0          0             16 ( 0.00%) 0          0            0          0          0                 }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 element_type*
+  505 ( 0.02%)  0          0              0          0          0          202 ( 0.07%) 0          0                 operator->() const noexcept
+    .           .          .              .          .          .            .          .          .                 {
+    .           .          .              .          .          .            .          .          .           	_GLIBCXX_DEBUG_PEDASSERT(_M_get() != nullptr);
+  303 ( 0.01%)  0          0            101 ( 0.01%) 0          0          101 ( 0.04%) 0          0           	return _M_get();
+  202 ( 0.01%)  0          0            202 ( 0.03%) 0          0            0          0          0                 }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .               private:
+    .           .          .              .          .          .            .          .          .                 element_type*
+  545 ( 0.02%)  8 ( 0.13%) 1 ( 0.02%)     0          0          0          218 ( 0.08%) 0          0                 _M_get() const noexcept
+  545 ( 0.02%)  2 ( 0.03%) 2 ( 0.05%)   327 ( 0.05%) 0          0          109 ( 0.04%) 0          0                 { return static_cast<const __shared_ptr<_Tp, _Lp>*>(this)->get(); }
+    .           .          .              .          .          .            .          .          .               };
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .             // Define operator-> for shared_ptr<cv void>.
+    .           .          .              .          .          .            .          .          .             template<typename _Tp, _Lock_policy _Lp>
+    .           .          .              .          .          .            .          .          .               class __shared_ptr_access<_Tp, _Lp, false, true>
+    .           .          .              .          .          .            .          .          .               {
+    .           .          .              .          .          .            .          .          .               public:
+    .           .          .              .          .          .            .          .          .                 using element_type = _Tp;
+-- line 1001 ----------------------------------------
+-- line 1084 ----------------------------------------
+    .           .          .              .          .          .            .          .          .           	using _UniqAssignable = _UniqCompatible<_Yp, _Del, __shared_ptr&>;
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .               public:
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .           #if __cplusplus > 201402L
+    .           .          .              .          .          .            .          .          .                 using weak_type = __weak_ptr<_Tp, _Lp>;
+    .           .          .              .          .          .            .          .          .           #endif
+    .           .          .              .          .          .            .          .          .           
+   35 ( 0.00%)  0          0              0          0          0           14 ( 0.00%) 0          0                 constexpr __shared_ptr() noexcept
+   42 ( 0.00%)  0          0             14 ( 0.00%) 0          0           14 ( 0.00%) 0          0                 : _M_ptr(0), _M_refcount()
+   21 ( 0.00%)  0          0             14 ( 0.00%) 0          0            0          0          0                 { }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 template<typename _Yp, typename = _SafeConv<_Yp>>
+    .           .          .              .          .          .            .          .          .           	explicit
+    .           .          .              .          .          .            .          .          .           	__shared_ptr(_Yp* __p)
+    .           .          .              .          .          .            .          .          .           	: _M_ptr(__p), _M_refcount(__p, typename is_array<_Tp>::type())
+    .           .          .              .          .          .            .          .          .           	{
+    .           .          .              .          .          .            .          .          .           	  static_assert( !is_void<_Yp>::value, "incomplete type" );
+    .           .          .              .          .          .            .          .          .           	  static_assert( sizeof(_Yp) > 0, "incomplete type" );
+-- line 1102 ----------------------------------------
+-- line 1144 ----------------------------------------
+    .           .          .              .          .          .            .          .          .           	__shared_ptr(__shared_ptr<_Yp, _Lp>&& __r,
+    .           .          .              .          .          .            .          .          .           		     element_type* __p) noexcept
+    .           .          .              .          .          .            .          .          .           	: _M_ptr(__p), _M_refcount()
+    .           .          .              .          .          .            .          .          .           	{
+    .           .          .              .          .          .            .          .          .           	  _M_refcount._M_swap(__r._M_refcount);
+    .           .          .              .          .          .            .          .          .           	  __r._M_ptr = nullptr;
+    .           .          .              .          .          .            .          .          .           	}
+    .           .          .              .          .          .            .          .          .           
+3,500 ( 0.13%)  2 ( 0.03%) 1 ( 0.02%) 1,225 ( 0.18%) 1 ( 0.01%) 0          875 ( 0.31%) 0          0                 __shared_ptr(const __shared_ptr&) noexcept = default;
+  120 ( 0.00%)  0          0             48 ( 0.01%) 0          0           30 ( 0.01%) 0          0                 __shared_ptr& operator=(const __shared_ptr&) noexcept = default;
+3,924 ( 0.14%)  2 ( 0.03%) 1 ( 0.02%)   981 ( 0.14%) 0          0          981 ( 0.35%) 0          0                 ~__shared_ptr() = default;
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 template<typename _Yp, typename = _Compatible<_Yp>>
+    .           .          .              .          .          .            .          .          .           	__shared_ptr(const __shared_ptr<_Yp, _Lp>& __r) noexcept
+    .           .          .              .          .          .            .          .          .           	: _M_ptr(__r._M_ptr), _M_refcount(__r._M_refcount)
+    .           .          .              .          .          .            .          .          .           	{ }
+    .           .          .              .          .          .            .          .          .           
+  522 ( 0.02%) 12 ( 0.20%) 1 ( 0.02%)     0          0          0          261 ( 0.09%) 0          0                 __shared_ptr(__shared_ptr&& __r) noexcept
+  696 ( 0.03%)  0          0            348 ( 0.05%) 0          0          174 ( 0.06%) 4 ( 0.15%) 4 ( 0.20%)        : _M_ptr(__r._M_ptr), _M_refcount()
+    .           .          .              .          .          .            .          .          .                 {
+  609 ( 0.02%)  0          0            174 ( 0.03%) 0          0           87 ( 0.03%) 0          0           	_M_refcount._M_swap(__r._M_refcount);
+  174 ( 0.01%)  3 ( 0.05%) 1 ( 0.02%)    87 ( 0.01%) 0          0           87 ( 0.03%) 0          0           	__r._M_ptr = nullptr;
+  261 ( 0.01%)  0          0            174 ( 0.03%) 0          0            0          0          0                 }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 template<typename _Yp, typename = _Compatible<_Yp>>
+    .           .          .              .          .          .            .          .          .           	__shared_ptr(__shared_ptr<_Yp, _Lp>&& __r) noexcept
+    .           .          .              .          .          .            .          .          .           	: _M_ptr(__r._M_ptr), _M_refcount()
+    .           .          .              .          .          .            .          .          .           	{
+    .           .          .              .          .          .            .          .          .           	  _M_refcount._M_swap(__r._M_refcount);
+    .           .          .              .          .          .            .          .          .           	  __r._M_ptr = nullptr;
+    .           .          .              .          .          .            .          .          .           	}
+-- line 1174 ----------------------------------------
+-- line 1180 ----------------------------------------
+    .           .          .              .          .          .            .          .          .           	  // It is now safe to copy __r._M_ptr, as
+    .           .          .              .          .          .            .          .          .           	  // _M_refcount(__r._M_refcount) did not throw.
+    .           .          .              .          .          .            .          .          .           	  _M_ptr = __r._M_ptr;
+    .           .          .              .          .          .            .          .          .           	}
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 // If an exception is thrown this constructor has no effect.
+    .           .          .              .          .          .            .          .          .                 template<typename _Yp, typename _Del,
+    .           .          .              .          .          .            .          .          .           	       typename = _UniqCompatible<_Yp, _Del>>
+   20 ( 0.00%)  3 ( 0.05%) 2 ( 0.05%)     2 ( 0.00%) 0          0           10 ( 0.00%) 0          0           	__shared_ptr(unique_ptr<_Yp, _Del>&& __r)
+   18 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)     6 ( 0.00%) 0          0            6 ( 0.00%) 0          0           	: _M_ptr(__r.get()), _M_refcount()
+    .           .          .              .          .          .            .          .          .           	{
+   12 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)     2 ( 0.00%) 0          0            6 ( 0.00%) 0          0           	  auto __raw = __to_address(__r.get());
+   34 ( 0.00%)  2 ( 0.03%) 2 ( 0.05%)     4 ( 0.00%) 0          0            8 ( 0.00%) 0          0           	  _M_refcount = __shared_count<_Lp>(std::move(__r));
+   10 ( 0.00%)  0          0              4 ( 0.00%) 0          0            2 ( 0.00%) 0          0           	  _M_enable_shared_from_this_with(__raw);
+   14 ( 0.00%)  2 ( 0.03%) 2 ( 0.05%)    10 ( 0.00%) 0          0            0          0          0           	}
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .           #if __cplusplus <= 201402L && _GLIBCXX_USE_DEPRECATED
+    .           .          .              .          .          .            .          .          .               protected:
+    .           .          .              .          .          .            .          .          .                 // If an exception is thrown this constructor has no effect.
+    .           .          .              .          .          .            .          .          .                 template<typename _Tp1, typename _Del,
+    .           .          .              .          .          .            .          .          .           	       typename enable_if<__and_<
+    .           .          .              .          .          .            .          .          .           		 __not_<is_array<_Tp>>, is_array<_Tp1>,
+    .           .          .              .          .          .            .          .          .           	         is_convertible<typename unique_ptr<_Tp1, _Del>::pointer, _Tp*>
+-- line 1202 ----------------------------------------
+-- line 1240 ----------------------------------------
+    .           .          .              .          .          .            .          .          .           	{
+    .           .          .              .          .          .            .          .          .           	  __shared_ptr(std::move(__r)).swap(*this);
+    .           .          .              .          .          .            .          .          .           	  return *this;
+    .           .          .              .          .          .            .          .          .           	}
+    .           .          .              .          .          .            .          .          .           #pragma GCC diagnostic pop
+    .           .          .              .          .          .            .          .          .           #endif
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 __shared_ptr&
+   54 ( 0.00%)  0          0              6 ( 0.00%) 0          0           24 ( 0.01%) 0          0                 operator=(__shared_ptr&& __r) noexcept
+    .           .          .              .          .          .            .          .          .                 {
+   96 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)    12 ( 0.00%) 0          0           24 ( 0.01%) 0          0           	__shared_ptr(std::move(__r)).swap(*this);
+    6 ( 0.00%)  0          0              6 ( 0.00%) 0          0            0          0          0           	return *this;
+   30 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)    24 ( 0.00%) 0          0            0          0          0                 }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 template<class _Yp>
+    .           .          .              .          .          .            .          .          .           	_Assignable<_Yp>
+    .           .          .              .          .          .            .          .          .           	operator=(__shared_ptr<_Yp, _Lp>&& __r) noexcept
+    .           .          .              .          .          .            .          .          .           	{
+    .           .          .              .          .          .            .          .          .           	  __shared_ptr(std::move(__r)).swap(*this);
+    .           .          .              .          .          .            .          .          .           	  return *this;
+    .           .          .              .          .          .            .          .          .           	}
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 template<typename _Yp, typename _Del>
+    .           .          .              .          .          .            .          .          .           	_UniqAssignable<_Yp, _Del>
+   18 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)     2 ( 0.00%) 0          0            8 ( 0.00%) 0          0           	operator=(unique_ptr<_Yp, _Del>&& __r)
+    .           .          .              .          .          .            .          .          .           	{
+   32 ( 0.00%)  2 ( 0.03%) 2 ( 0.05%)     4 ( 0.00%) 0          0            8 ( 0.00%) 0          0           	  __shared_ptr(std::move(__r)).swap(*this);
+    2 ( 0.00%)  0          0              2 ( 0.00%) 0          0            0          0          0           	  return *this;
+   10 ( 0.00%)  0          0              8 ( 0.00%) 0          0            0          0          0           	}
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 void
+    .           .          .              .          .          .            .          .          .                 reset() noexcept
+    .           .          .              .          .          .            .          .          .                 { __shared_ptr().swap(*this); }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 template<typename _Yp>
+    .           .          .              .          .          .            .          .          .           	_SafeConv<_Yp>
+    .           .          .              .          .          .            .          .          .           	reset(_Yp* __p) // _Yp must be complete.
+-- line 1276 ----------------------------------------
+-- line 1287 ----------------------------------------
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 template<typename _Yp, typename _Deleter, typename _Alloc>
+    .           .          .              .          .          .            .          .          .           	_SafeConv<_Yp>
+    .           .          .              .          .          .            .          .          .           	reset(_Yp* __p, _Deleter __d, _Alloc __a)
+    .           .          .              .          .          .            .          .          .                   { __shared_ptr(__p, std::move(__d), std::move(__a)).swap(*this); }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 /// Return the stored pointer.
+    .           .          .              .          .          .            .          .          .                 element_type*
+  724 ( 0.03%)  3 ( 0.05%) 1 ( 0.02%)     0          0          0          362 ( 0.13%) 0          0                 get() const noexcept
+  724 ( 0.03%)  1 ( 0.02%) 1 ( 0.02%)   724 ( 0.11%) 0          0            0          0          0                 { return _M_ptr; }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 /// Return true if the stored pointer is not null.
+   20 ( 0.00%)  1 ( 0.02%) 0              0          0          0           10 ( 0.00%) 0          0                 explicit operator bool() const noexcept
+   30 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)    20 ( 0.00%) 1 ( 0.01%) 0            0          0          0                 { return _M_ptr != nullptr; }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 /// Return true if use_count() == 1.
+    .           .          .              .          .          .            .          .          .                 bool
+    .           .          .              .          .          .            .          .          .                 unique() const noexcept
+    .           .          .              .          .          .            .          .          .                 { return _M_refcount._M_unique(); }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 /// If *this owns a pointer, return the number of owners, otherwise zero.
+    .           .          .              .          .          .            .          .          .                 long
+    .           .          .              .          .          .            .          .          .                 use_count() const noexcept
+    .           .          .              .          .          .            .          .          .                 { return _M_refcount._M_get_use_count(); }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 /// Exchange both the owned pointer and the stored pointer.
+    .           .          .              .          .          .            .          .          .                 void
+   48 ( 0.00%)  2 ( 0.03%) 2 ( 0.05%)     0          0          0           24 ( 0.01%) 0          0                 swap(__shared_ptr<_Tp, _Lp>& __other) noexcept
+    .           .          .              .          .          .            .          .          .                 {
+   40 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)    16 ( 0.00%) 0          0            8 ( 0.00%) 0          0           	std::swap(_M_ptr, __other._M_ptr);
+   56 ( 0.00%)  0          0             16 ( 0.00%) 0          0            8 ( 0.00%) 0          0           	_M_refcount._M_swap(__other._M_refcount);
+   24 ( 0.00%)  0          0             16 ( 0.00%) 0          0            0          0          0                 }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 /** @brief Define an ordering based on ownership.
+    .           .          .              .          .          .            .          .          .                  *
+    .           .          .              .          .          .            .          .          .                  * This function defines a strict weak ordering between two shared_ptr
+    .           .          .              .          .          .            .          .          .                  * or weak_ptr objects, such that one object is less than the other
+    .           .          .              .          .          .            .          .          .                  * unless they share ownership of the same pointer, or are both empty.
+    .           .          .              .          .          .            .          .          .                  * @{
+    .           .          .              .          .          .            .          .          .                 */
+-- line 1326 ----------------------------------------
+-- line 1333 ----------------------------------------
+    .           .          .              .          .          .            .          .          .           	bool
+    .           .          .              .          .          .            .          .          .           	owner_before(__weak_ptr<_Tp1, _Lp> const& __rhs) const noexcept
+    .           .          .              .          .          .            .          .          .           	{ return _M_refcount._M_less(__rhs._M_refcount); }
+    .           .          .              .          .          .            .          .          .                 /// @}
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .               protected:
+    .           .          .              .          .          .            .          .          .                 // This constructor is non-standard, it is used by allocate_shared.
+    .           .          .              .          .          .            .          .          .                 template<typename _Alloc, typename... _Args>
+   80 ( 0.00%)  2 ( 0.03%) 2 ( 0.05%)     0          0          0           50 ( 0.02%) 0          0           	__shared_ptr(_Sp_alloc_shared_tag<_Alloc> __tag, _Args&&... __args)
+  130 ( 0.00%)  2 ( 0.03%) 2 ( 0.05%)    50 ( 0.01%) 0          0           30 ( 0.01%) 0          0           	: _M_ptr(), _M_refcount(_M_ptr, __tag, std::forward<_Args>(__args)...)
+  100 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)    60 ( 0.01%) 0          0           10 ( 0.00%) 0          0           	{ _M_enable_shared_from_this_with(_M_ptr); }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 template<typename _Tp1, _Lock_policy _Lp1, typename _Alloc,
+    .           .          .              .          .          .            .          .          .           	       typename... _Args>
+    .           .          .              .          .          .            .          .          .           	friend __shared_ptr<_Tp1, _Lp1>
+    .           .          .              .          .          .            .          .          .           	__allocate_shared(const _Alloc& __a, _Args&&... __args);
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 // This constructor is used by __weak_ptr::lock() and
+    .           .          .              .          .          .            .          .          .                 // shared_ptr::shared_ptr(const weak_ptr&, std::nothrow_t).
+  366 ( 0.01%)  1 ( 0.02%) 1 ( 0.02%)     0          0          0          183 ( 0.07%) 0          0                 __shared_ptr(const __weak_ptr<_Tp, _Lp>& __r, std::nothrow_t) noexcept
+  427 ( 0.02%)  0          0            122 ( 0.02%) 0          0           61 ( 0.02%) 0          0                 : _M_refcount(__r._M_refcount, std::nothrow)
+    .           .          .              .          .          .            .          .          .                 {
+  671 ( 0.02%)  9 ( 0.15%) 1 ( 0.02%)   244 ( 0.04%) 0          0          122 ( 0.04%) 0          0           	_M_ptr = _M_refcount._M_get_use_count() ? __r._M_ptr : nullptr;
+  183 ( 0.01%)  0          0            122 ( 0.02%) 0          0            0          0          0                 }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 friend class __weak_ptr<_Tp, _Lp>;
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .               private:
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 template<typename _Yp>
+    .           .          .              .          .          .            .          .          .           	using __esft_base_t = decltype(__enable_shared_from_this_base(
+    .           .          .              .          .          .            .          .          .           	      std::declval<const __shared_count<_Lp>&>(),
+-- line 1364 ----------------------------------------
+-- line 1378 ----------------------------------------
+    .           .          .              .          .          .            .          .          .           	_M_enable_shared_from_this_with(_Yp* __p) noexcept
+    .           .          .              .          .          .            .          .          .           	{
+    .           .          .              .          .          .            .          .          .           	  if (auto __base = __enable_shared_from_this_base(_M_refcount, __p))
+    .           .          .              .          .          .            .          .          .           	    __base->_M_weak_assign(const_cast<_Yp2*>(__p), _M_refcount);
+    .           .          .              .          .          .            .          .          .           	}
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 template<typename _Yp, typename _Yp2 = typename remove_cv<_Yp>::type>
+    .           .          .              .          .          .            .          .          .           	typename enable_if<!__has_esft_base<_Yp2>::value>::type
+   60 ( 0.00%)  3 ( 0.05%) 2 ( 0.05%)     0          0          0           36 ( 0.01%) 0          0           	_M_enable_shared_from_this_with(_Yp*) noexcept
+   36 ( 0.00%)  0          0             24 ( 0.00%) 0          0            0          0          0           	{ }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 void*
+    .           .          .              .          .          .            .          .          .                 _M_get_deleter(const std::type_info& __ti) const noexcept
+    .           .          .              .          .          .            .          .          .                 { return _M_refcount._M_get_deleter(__ti); }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 template<typename _Tp1, _Lock_policy _Lp1> friend class __shared_ptr;
+    .           .          .              .          .          .            .          .          .                 template<typename _Tp1, _Lock_policy _Lp1> friend class __weak_ptr;
+    .           .          .              .          .          .            .          .          .           
+-- line 1395 ----------------------------------------
+-- line 1600 ----------------------------------------
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .               public:
+    .           .          .              .          .          .            .          .          .                 using element_type = typename remove_extent<_Tp>::type;
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 constexpr __weak_ptr() noexcept
+    .           .          .              .          .          .            .          .          .                 : _M_ptr(nullptr), _M_refcount()
+    .           .          .              .          .          .            .          .          .                 { }
+    .           .          .              .          .          .            .          .          .           
+  520 ( 0.02%)  0          0            182 ( 0.03%) 0          0          130 ( 0.05%) 0          0                 __weak_ptr(const __weak_ptr&) noexcept = default;
+    .           .          .              .          .          .            .          .          .           
+  696 ( 0.03%)  0          0            174 ( 0.03%) 0          0          174 ( 0.06%) 0          0                 ~__weak_ptr() = default;
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 // The "obvious" converting constructor implementation:
+    .           .          .              .          .          .            .          .          .                 //
+    .           .          .              .          .          .            .          .          .                 //  template<typename _Tp1>
+    .           .          .              .          .          .            .          .          .                 //    __weak_ptr(const __weak_ptr<_Tp1, _Lp>& __r)
+    .           .          .              .          .          .            .          .          .                 //    : _M_ptr(__r._M_ptr), _M_refcount(__r._M_refcount) // never throws
+    .           .          .              .          .          .            .          .          .                 //    { }
+    .           .          .              .          .          .            .          .          .                 //
+-- line 1618 ----------------------------------------
+-- line 1624 ----------------------------------------
+    .           .          .              .          .          .            .          .          .                 // It is not possible to avoid spurious access violations since
+    .           .          .              .          .          .            .          .          .                 // in multithreaded programs __r._M_ptr may be invalidated at any point.
+    .           .          .              .          .          .            .          .          .                 template<typename _Yp, typename = _Compatible<_Yp>>
+    .           .          .              .          .          .            .          .          .           	__weak_ptr(const __weak_ptr<_Yp, _Lp>& __r) noexcept
+    .           .          .              .          .          .            .          .          .           	: _M_refcount(__r._M_refcount)
+    .           .          .              .          .          .            .          .          .                   { _M_ptr = __r.lock().get(); }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 template<typename _Yp, typename = _Compatible<_Yp>>
+   72 ( 0.00%)  2 ( 0.03%) 1 ( 0.02%)     0          0          0           36 ( 0.01%) 0          0           	__weak_ptr(const __shared_ptr<_Yp, _Lp>& __r) noexcept
+  132 ( 0.00%)  2 ( 0.03%) 1 ( 0.02%)    60 ( 0.01%) 0          0           24 ( 0.01%) 0          0           	: _M_ptr(__r._M_ptr), _M_refcount(__r._M_refcount)
+   36 ( 0.00%)  0          0             24 ( 0.00%) 0          0            0          0          0           	{ }
+    .           .          .              .          .          .            .          .          .           
+  210 ( 0.01%)  3 ( 0.05%) 1 ( 0.02%)     0          0          0          120 ( 0.04%) 0          0                 __weak_ptr(__weak_ptr&& __r) noexcept
+  390 ( 0.01%)  0          0            150 ( 0.02%) 0          0           90 ( 0.03%) 0          0                 : _M_ptr(__r._M_ptr), _M_refcount(std::move(__r._M_refcount))
+  180 ( 0.01%)  3 ( 0.05%) 1 ( 0.02%)   120 ( 0.02%) 0          0           30 ( 0.01%) 0          0                 { __r._M_ptr = nullptr; }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 template<typename _Yp, typename = _Compatible<_Yp>>
+    .           .          .              .          .          .            .          .          .           	__weak_ptr(__weak_ptr<_Yp, _Lp>&& __r) noexcept
+    .           .          .              .          .          .            .          .          .           	: _M_ptr(__r.lock().get()), _M_refcount(std::move(__r._M_refcount))
+    .           .          .              .          .          .            .          .          .                   { __r._M_ptr = nullptr; }
+    .           .          .              .          .          .            .          .          .           
+    .           .          .              .          .          .            .          .          .                 __weak_ptr&
+    .           .          .              .          .          .            .          .          .                 operator=(const __weak_ptr& __r) noexcept = default;
+-- line 1646 ----------------------------------------
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /usr/include/c++/11/bits/shared_ptr.h
+--------------------------------------------------------------------------------
+Ir             I1mr        ILmr       Dr           D1mr       DLmr       Dw           D1mw       DLmw       
+
+-- line 114 ----------------------------------------
+    .           .          .            .          .          .            .          .          .              * can be retrieved by calling the `get()` member function.
+    .           .          .            .          .          .            .          .          .              *
+    .           .          .            .          .          .            .          .          .              * The equality and relational operators for `shared_ptr` only compare
+    .           .          .            .          .          .            .          .          .              * the stored pointer returned by `get()`, not the owned pointer.
+    .           .          .            .          .          .            .          .          .              * To test whether two `shared_ptr` objects share ownership of the same
+    .           .          .            .          .          .            .          .          .              * pointer see `std::shared_ptr::owner_before` and `std::owner_less`.
+    .           .          .            .          .          .            .          .          .             */
+    .           .          .            .          .          .            .          .          .             template<typename _Tp>
+3,509 ( 0.13%)  1 ( 0.02%) 1 ( 0.02%) 957 ( 0.14%) 0          0          957 ( 0.34%) 0          0               class shared_ptr : public __shared_ptr<_Tp>
+    .           .          .            .          .          .            .          .          .               {
+    .           .          .            .          .          .            .          .          .                 template<typename... _Args>
+    .           .          .            .          .          .            .          .          .           	using _Constructible = typename enable_if<
+    .           .          .            .          .          .            .          .          .           	  is_constructible<__shared_ptr<_Tp>, _Args...>::value
+    .           .          .            .          .          .            .          .          .           	>::type;
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 template<typename _Arg>
+    .           .          .            .          .          .            .          .          .           	using _Assignable = typename enable_if<
+-- line 130 ----------------------------------------
+-- line 140 ----------------------------------------
+    .           .          .            .          .          .            .          .          .           # define __cpp_lib_shared_ptr_weak_type 201606
+    .           .          .            .          .          .            .          .          .                 /// The corresponding weak_ptr type for this shared_ptr
+    .           .          .            .          .          .            .          .          .                 using weak_type = weak_ptr<_Tp>;
+    .           .          .            .          .          .            .          .          .           #endif
+    .           .          .            .          .          .            .          .          .                 /**
+    .           .          .            .          .          .            .          .          .                  *  @brief  Construct an empty %shared_ptr.
+    .           .          .            .          .          .            .          .          .                  *  @post   use_count()==0 && get()==0
+    .           .          .            .          .          .            .          .          .                  */
+   77 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)  21 ( 0.00%) 0          0           21 ( 0.01%) 0          0                 constexpr shared_ptr() noexcept : __shared_ptr<_Tp>() { }
+    .           .          .            .          .          .            .          .          .           
+2,450 ( 0.09%)  3 ( 0.05%) 0          700 ( 0.10%) 0          0          700 ( 0.25%) 0          0                 shared_ptr(const shared_ptr&) noexcept = default; ///< Copy constructor
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 /**
+    .           .          .            .          .          .            .          .          .                  *  @brief  Construct a %shared_ptr that owns the pointer @a __p.
+    .           .          .            .          .          .            .          .          .                  *  @param  __p  A pointer that is convertible to element_type*.
+    .           .          .            .          .          .            .          .          .                  *  @post   use_count() == 1 && get() == __p
+    .           .          .            .          .          .            .          .          .                  *  @throw  std::bad_alloc, in which case @c delete @a __p is called.
+    .           .          .            .          .          .            .          .          .                  */
+    .           .          .            .          .          .            .          .          .                 template<typename _Yp, typename = _Constructible<_Yp*>>
+-- line 158 ----------------------------------------
+-- line 296 ----------------------------------------
+    .           .          .            .          .          .            .          .          .           	shared_ptr(const shared_ptr<_Yp>& __r) noexcept
+    .           .          .            .          .          .            .          .          .                   : __shared_ptr<_Tp>(__r) { }
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 /**
+    .           .          .            .          .          .            .          .          .                  *  @brief  Move-constructs a %shared_ptr instance from @a __r.
+    .           .          .            .          .          .            .          .          .                  *  @param  __r  A %shared_ptr rvalue.
+    .           .          .            .          .          .            .          .          .                  *  @post   *this contains the old value of @a __r, @a __r is empty.
+    .           .          .            .          .          .            .          .          .                  */
+  567 ( 0.02%)  0          0            0          0          0          324 ( 0.12%) 1 ( 0.04%) 1 ( 0.05%)        shared_ptr(shared_ptr&& __r) noexcept
+  891 ( 0.03%) 10 ( 0.16%) 1 ( 0.02%) 405 ( 0.06%) 0          0          162 ( 0.06%) 0          0                 : __shared_ptr<_Tp>(std::move(__r)) { }
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 /**
+    .           .          .            .          .          .            .          .          .                  *  @brief  Move-constructs a %shared_ptr instance from @a __r.
+    .           .          .            .          .          .            .          .          .                  *  @param  __r  A %shared_ptr rvalue.
+    .           .          .            .          .          .            .          .          .                  *  @post   *this contains the old value of @a __r, @a __r is empty.
+    .           .          .            .          .          .            .          .          .                  */
+    .           .          .            .          .          .            .          .          .                 template<typename _Yp, typename = _Constructible<shared_ptr<_Yp>>>
+    .           .          .            .          .          .            .          .          .           	shared_ptr(shared_ptr<_Yp>&& __r) noexcept
+-- line 313 ----------------------------------------
+-- line 349 ----------------------------------------
+    .           .          .            .          .          .            .          .          .           	shared_ptr(unique_ptr<_Yp, _Del>&& __r)
+    .           .          .            .          .          .            .          .          .           	: __shared_ptr<_Tp>(std::move(__r), __sp_array_delete()) { }
+    .           .          .            .          .          .            .          .          .           #endif
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 /**
+    .           .          .            .          .          .            .          .          .                  *  @brief  Construct an empty %shared_ptr.
+    .           .          .            .          .          .            .          .          .                  *  @post   use_count() == 0 && get() == nullptr
+    .           .          .            .          .          .            .          .          .                  */
+   84 ( 0.00%)  0          0           21 ( 0.00%) 0          0           28 ( 0.01%) 0          0                 constexpr shared_ptr(nullptr_t) noexcept : shared_ptr() { }
+    .           .          .            .          .          .            .          .          .           
+   84 ( 0.00%)  2 ( 0.03%) 1 ( 0.02%)  30 ( 0.00%) 0          0           24 ( 0.01%) 0          0                 shared_ptr& operator=(const shared_ptr&) noexcept = default;
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 template<typename _Yp>
+    .           .          .            .          .          .            .          .          .           	_Assignable<const shared_ptr<_Yp>&>
+    .           .          .            .          .          .            .          .          .           	operator=(const shared_ptr<_Yp>& __r) noexcept
+    .           .          .            .          .          .            .          .          .           	{
+    .           .          .            .          .          .            .          .          .           	  this->__shared_ptr<_Tp>::operator=(__r);
+    .           .          .            .          .          .            .          .          .           	  return *this;
+    .           .          .            .          .          .            .          .          .           	}
+-- line 367 ----------------------------------------
+-- line 375 ----------------------------------------
+    .           .          .            .          .          .            .          .          .           	{
+    .           .          .            .          .          .            .          .          .           	  this->__shared_ptr<_Tp>::operator=(std::move(__r));
+    .           .          .            .          .          .            .          .          .           	  return *this;
+    .           .          .            .          .          .            .          .          .           	}
+    .           .          .            .          .          .            .          .          .           #pragma GCC diagnostic pop
+    .           .          .            .          .          .            .          .          .           #endif
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 shared_ptr&
+   42 ( 0.00%)  0          0            0          0          0           24 ( 0.01%) 0          0                 operator=(shared_ptr&& __r) noexcept
+    .           .          .            .          .          .            .          .          .                 {
+   42 ( 0.00%)  0          0           12 ( 0.00%) 0          0           12 ( 0.00%) 0          0           	this->__shared_ptr<_Tp>::operator=(std::move(__r));
+    6 ( 0.00%)  0          0            6 ( 0.00%) 0          0            0          0          0           	return *this;
+   18 ( 0.00%)  0          0           18 ( 0.00%) 0          0            0          0          0                 }
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 template<class _Yp>
+    .           .          .            .          .          .            .          .          .           	_Assignable<shared_ptr<_Yp>>
+    .           .          .            .          .          .            .          .          .           	operator=(shared_ptr<_Yp>&& __r) noexcept
+    .           .          .            .          .          .            .          .          .           	{
+    .           .          .            .          .          .            .          .          .           	  this->__shared_ptr<_Tp>::operator=(std::move(__r));
+    .           .          .            .          .          .            .          .          .           	  return *this;
+    .           .          .            .          .          .            .          .          .           	}
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 template<typename _Yp, typename _Del>
+    .           .          .            .          .          .            .          .          .           	_Assignable<unique_ptr<_Yp, _Del>>
+   14 ( 0.00%)  2 ( 0.03%) 2 ( 0.05%)   0          0          0            8 ( 0.00%) 0          0           	operator=(unique_ptr<_Yp, _Del>&& __r)
+    .           .          .            .          .          .            .          .          .           	{
+   14 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)   4 ( 0.00%) 0          0            4 ( 0.00%) 0          0           	  this->__shared_ptr<_Tp>::operator=(std::move(__r));
+    2 ( 0.00%)  0          0            2 ( 0.00%) 0          0            0          0          0           	  return *this;
+    6 ( 0.00%)  0          0            6 ( 0.00%) 0          0            0          0          0           	}
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .               private:
+    .           .          .            .          .          .            .          .          .                 // This constructor is non-standard, it is used by allocate_shared.
+    .           .          .            .          .          .            .          .          .                 template<typename _Alloc, typename... _Args>
+   80 ( 0.00%)  2 ( 0.03%) 2 ( 0.05%)   0          0          0           50 ( 0.02%) 0          0           	shared_ptr(_Sp_alloc_shared_tag<_Alloc> __tag, _Args&&... __args)
+   90 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)  30 ( 0.00%) 0          0           20 ( 0.01%) 0          0           	: __shared_ptr<_Tp>(__tag, std::forward<_Args>(__args)...)
+   40 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)  30 ( 0.00%) 0          0            0          0          0           	{ }
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 template<typename _Yp, typename _Alloc, typename... _Args>
+    .           .          .            .          .          .            .          .          .           	friend shared_ptr<_Yp>
+    .           .          .            .          .          .            .          .          .           	allocate_shared(const _Alloc& __a, _Args&&... __args);
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 // This constructor is non-standard, it is used by weak_ptr::lock().
+  366 ( 0.01%)  0          0            0          0          0          183 ( 0.07%) 0          0                 shared_ptr(const weak_ptr<_Tp>& __r, std::nothrow_t) noexcept
+  488 ( 0.02%)  0          0          244 ( 0.04%) 0          0           61 ( 0.02%) 0          0                 : __shared_ptr<_Tp>(__r, std::nothrow) { }
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 friend class weak_ptr<_Tp>;
+    .           .          .            .          .          .            .          .          .               };
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .           #if __cpp_deduction_guides >= 201606
+    .           .          .            .          .          .            .          .          .             template<typename _Tp>
+    .           .          .            .          .          .            .          .          .               shared_ptr(weak_ptr<_Tp>) ->  shared_ptr<_Tp>;
+    .           .          .            .          .          .            .          .          .             template<typename _Tp, typename _Del>
+-- line 426 ----------------------------------------
+-- line 429 ----------------------------------------
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .             // 20.7.2.2.7 shared_ptr comparisons
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .             /// @relates shared_ptr @{
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .             /// Equality operator for shared_ptr objects, compares the stored pointers
+    .           .          .            .          .          .            .          .          .             template<typename _Tp, typename _Up>
+    .           .          .            .          .          .            .          .          .               _GLIBCXX_NODISCARD inline bool
+  112 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)   0          0          0           64 ( 0.02%) 0          0               operator==(const shared_ptr<_Tp>& __a, const shared_ptr<_Up>& __b) noexcept
+  192 ( 0.01%)  1 ( 0.02%) 1 ( 0.02%)  80 ( 0.01%) 0          0           32 ( 0.01%) 0          0               { return __a.get() == __b.get(); }
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .             /// shared_ptr comparison with nullptr
+    .           .          .            .          .          .            .          .          .             template<typename _Tp>
+    .           .          .            .          .          .            .          .          .               _GLIBCXX_NODISCARD inline bool
+   12 ( 0.00%)  2 ( 0.03%) 0            0          0          0            6 ( 0.00%) 0          0               operator==(const shared_ptr<_Tp>& __a, nullptr_t) noexcept
+   12 ( 0.00%)  0          0            6 ( 0.00%) 0          0            2 ( 0.00%) 0          0               { return !__a; }
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .           #ifdef __cpp_lib_three_way_comparison
+    .           .          .            .          .          .            .          .          .             template<typename _Tp, typename _Up>
+    .           .          .            .          .          .            .          .          .               inline strong_ordering
+    .           .          .            .          .          .            .          .          .               operator<=>(const shared_ptr<_Tp>& __a,
+    .           .          .            .          .          .            .          .          .           		const shared_ptr<_Up>& __b) noexcept
+    .           .          .            .          .          .            .          .          .               { return compare_three_way()(__a.get(), __b.get()); }
+    .           .          .            .          .          .            .          .          .           
+-- line 452 ----------------------------------------
+-- line 462 ----------------------------------------
+    .           .          .            .          .          .            .          .          .             template<typename _Tp>
+    .           .          .            .          .          .            .          .          .               _GLIBCXX_NODISCARD inline bool
+    .           .          .            .          .          .            .          .          .               operator==(nullptr_t, const shared_ptr<_Tp>& __a) noexcept
+    .           .          .            .          .          .            .          .          .               { return !__a; }
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .             /// Inequality operator for shared_ptr objects, compares the stored pointers
+    .           .          .            .          .          .            .          .          .             template<typename _Tp, typename _Up>
+    .           .          .            .          .          .            .          .          .               _GLIBCXX_NODISCARD inline bool
+  140 ( 0.01%)  0          0            0          0          0           80 ( 0.03%) 0          0               operator!=(const shared_ptr<_Tp>& __a, const shared_ptr<_Up>& __b) noexcept
+  240 ( 0.01%)  0          0          100 ( 0.01%) 0          0           40 ( 0.01%) 0          0               { return __a.get() != __b.get(); }
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .             /// shared_ptr comparison with nullptr
+    .           .          .            .          .          .            .          .          .             template<typename _Tp>
+    .           .          .            .          .          .            .          .          .               _GLIBCXX_NODISCARD inline bool
+    .           .          .            .          .          .            .          .          .               operator!=(const shared_ptr<_Tp>& __a, nullptr_t) noexcept
+    .           .          .            .          .          .            .          .          .               { return (bool)__a; }
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .             /// shared_ptr comparison with nullptr
+-- line 479 ----------------------------------------
+-- line 678 ----------------------------------------
+    .           .          .            .          .          .            .          .          .              *
+    .           .          .            .          .          .            .          .          .              * Also unlike a raw pointer, a weak_ptr does not become "dangling" after
+    .           .          .            .          .          .            .          .          .              * the object it points to has been destroyed. Instead, a weak_ptr
+    .           .          .            .          .          .            .          .          .              * becomes _expired_ and can no longer be converted to a shared_ptr that
+    .           .          .            .          .          .            .          .          .              * owns the freed pointer, so you cannot accidentally access the pointed-to
+    .           .          .            .          .          .            .          .          .              * object after it has been destroyed.
+    .           .          .            .          .          .            .          .          .              */
+    .           .          .            .          .          .            .          .          .             template<typename _Tp>
+  638 ( 0.02%)  2 ( 0.03%) 1 ( 0.02%) 174 ( 0.03%) 0          0          174 ( 0.06%) 0          0               class weak_ptr : public __weak_ptr<_Tp>
+    .           .          .            .          .          .            .          .          .               {
+    .           .          .            .          .          .            .          .          .                 template<typename _Arg>
+    .           .          .            .          .          .            .          .          .           	using _Constructible = typename enable_if<
+    .           .          .            .          .          .            .          .          .           	  is_constructible<__weak_ptr<_Tp>, _Arg>::value
+    .           .          .            .          .          .            .          .          .           	>::type;
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 template<typename _Arg>
+    .           .          .            .          .          .            .          .          .           	using _Assignable = typename enable_if<
+-- line 694 ----------------------------------------
+-- line 695 ----------------------------------------
+    .           .          .            .          .          .            .          .          .           	  is_assignable<__weak_ptr<_Tp>&, _Arg>::value, weak_ptr&
+    .           .          .            .          .          .            .          .          .           	>::type;
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .               public:
+    .           .          .            .          .          .            .          .          .                 constexpr weak_ptr() noexcept = default;
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 template<typename _Yp,
+    .           .          .            .          .          .            .          .          .           	       typename = _Constructible<const shared_ptr<_Yp>&>>
+   72 ( 0.00%)  2 ( 0.03%) 0            0          0          0           36 ( 0.01%) 0          0           	weak_ptr(const shared_ptr<_Yp>& __r) noexcept
+   96 ( 0.00%)  0          0           48 ( 0.01%) 0          0           12 ( 0.00%) 0          0           	: __weak_ptr<_Tp>(__r) { }
+    .           .          .            .          .          .            .          .          .           
+  364 ( 0.01%)  0          0          104 ( 0.02%) 0          0          104 ( 0.04%) 0          0                 weak_ptr(const weak_ptr&) noexcept = default;
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 template<typename _Yp, typename = _Constructible<const weak_ptr<_Yp>&>>
+    .           .          .            .          .          .            .          .          .           	weak_ptr(const weak_ptr<_Yp>& __r) noexcept
+    .           .          .            .          .          .            .          .          .           	: __weak_ptr<_Tp>(__r) { }
+    .           .          .            .          .          .            .          .          .           
+  420 ( 0.02%)  0          0          120 ( 0.02%) 0          0          120 ( 0.04%) 0          0                 weak_ptr(weak_ptr&&) noexcept = default;
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 template<typename _Yp, typename = _Constructible<weak_ptr<_Yp>>>
+    .           .          .            .          .          .            .          .          .           	weak_ptr(weak_ptr<_Yp>&& __r) noexcept
+    .           .          .            .          .          .            .          .          .           	: __weak_ptr<_Tp>(std::move(__r)) { }
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 weak_ptr&
+    .           .          .            .          .          .            .          .          .                 operator=(const weak_ptr& __r) noexcept = default;
+    .           .          .            .          .          .            .          .          .           
+-- line 720 ----------------------------------------
+-- line 741 ----------------------------------------
+    .           .          .            .          .          .            .          .          .           	_Assignable<weak_ptr<_Yp>>
+    .           .          .            .          .          .            .          .          .           	operator=(weak_ptr<_Yp>&& __r) noexcept
+    .           .          .            .          .          .            .          .          .           	{
+    .           .          .            .          .          .            .          .          .           	  this->__weak_ptr<_Tp>::operator=(std::move(__r));
+    .           .          .            .          .          .            .          .          .           	  return *this;
+    .           .          .            .          .          .            .          .          .           	}
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 shared_ptr<_Tp>
+  366 ( 0.01%)  3 ( 0.05%) 1 ( 0.02%)   0          0          0          183 ( 0.07%) 0          0                 lock() const noexcept
+  488 ( 0.02%)  0          0          305 ( 0.04%) 0          0           61 ( 0.02%) 0          0                 { return shared_ptr<_Tp>(*this, std::nothrow); }
+    .           .          .            .          .          .            .          .          .               };
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .           #if __cpp_deduction_guides >= 201606
+    .           .          .            .          .          .            .          .          .             template<typename _Tp>
+    .           .          .            .          .          .            .          .          .               weak_ptr(shared_ptr<_Tp>) ->  weak_ptr<_Tp>;
+    .           .          .            .          .          .            .          .          .           #endif
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .             // 20.7.2.3.6 weak_ptr specialized algorithms.
+-- line 758 ----------------------------------------
+-- line 850 ----------------------------------------
+    .           .          .            .          .          .            .          .          .              *  @throw  An exception thrown from @a _Alloc::allocate or from the
+    .           .          .            .          .          .            .          .          .              *          constructor of @a _Tp.
+    .           .          .            .          .          .            .          .          .              *
+    .           .          .            .          .          .            .          .          .              *  A copy of @a __a will be used to allocate memory for the shared_ptr
+    .           .          .            .          .          .            .          .          .              *  and the new object.
+    .           .          .            .          .          .            .          .          .              */
+    .           .          .            .          .          .            .          .          .             template<typename _Tp, typename _Alloc, typename... _Args>
+    .           .          .            .          .          .            .          .          .               inline shared_ptr<_Tp>
+   70 ( 0.00%)  2 ( 0.03%) 2 ( 0.05%)   0          0          0           40 ( 0.01%) 0          0               allocate_shared(const _Alloc& __a, _Args&&... __args)
+    .           .          .            .          .          .            .          .          .               {
+    .           .          .            .          .          .            .          .          .                 static_assert(!is_array<_Tp>::value, "make_shared<T[]> not supported");
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .                 return shared_ptr<_Tp>(_Sp_alloc_shared_tag<_Alloc>{__a},
+   90 ( 0.00%)  0          0           30 ( 0.00%) 0          0           20 ( 0.01%) 0          0           			     std::forward<_Args>(__args)...);
+   30 ( 0.00%)  0          0           30 ( 0.00%) 0          0            0          0          0               }
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .             /**
+    .           .          .            .          .          .            .          .          .              *  @brief  Create an object that is owned by a shared_ptr.
+    .           .          .            .          .          .            .          .          .              *  @param  __args  Arguments for the @a _Tp object's constructor.
+    .           .          .            .          .          .            .          .          .              *  @return A shared_ptr that owns the newly created object.
+    .           .          .            .          .          .            .          .          .              *  @throw  std::bad_alloc, or an exception thrown from the
+    .           .          .            .          .          .            .          .          .              *          constructor of @a _Tp.
+    .           .          .            .          .          .            .          .          .              */
+    .           .          .            .          .          .            .          .          .             template<typename _Tp, typename... _Args>
+    .           .          .            .          .          .            .          .          .               inline shared_ptr<_Tp>
+  100 ( 0.00%)  2 ( 0.03%) 2 ( 0.05%)  10 ( 0.00%) 0          0           50 ( 0.02%) 0          0               make_shared(_Args&&... __args)
+    .           .          .            .          .          .            .          .          .               {
+    .           .          .            .          .          .            .          .          .                 typedef typename std::remove_cv<_Tp>::type _Tp_nc;
+   60 ( 0.00%)  3 ( 0.05%) 1 ( 0.02%)   0          0          0           20 ( 0.01%) 0          0                 return std::allocate_shared<_Tp>(std::allocator<_Tp_nc>(),
+  120 ( 0.00%)  1 ( 0.02%) 1 ( 0.02%)  20 ( 0.00%) 0          0           20 ( 0.01%) 0          0           				       std::forward<_Args>(__args)...);
+   70 ( 0.00%)  2 ( 0.03%) 2 ( 0.05%)  60 ( 0.01%) 0          0            0          0          0               }
+    .           .          .            .          .          .            .          .          .           
+    .           .          .            .          .          .            .          .          .             /// std::hash specialization for shared_ptr.
+    .           .          .            .          .          .            .          .          .             template<typename _Tp>
+    .           .          .            .          .          .            .          .          .               struct hash<shared_ptr<_Tp>>
+    .           .          .            .          .          .            .          .          .               : public __hash_base<size_t, shared_ptr<_Tp>>
+    .           .          .            .          .          .            .          .          .               {
+    .           .          .            .          .          .            .          .          .                 size_t
+    .           .          .            .          .          .            .          .          .                 operator()(const shared_ptr<_Tp>& __s) const noexcept
+-- line 888 ----------------------------------------
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /usr/include/c++/11/ext/atomicity.h
+--------------------------------------------------------------------------------
+Ir             I1mr       ILmr       Dr             D1mr       DLmr       Dw           D1mw       DLmw       
+
+-- line 44 ----------------------------------------
+    .          .          .              .          .          .            .          .          .           
+    .          .          .              .          .          .            .          .          .             __attribute__((__always_inline__))
+    .          .          .              .          .          .            .          .          .             inline bool
+    .          .          .              .          .          .            .          .          .             __is_single_threaded() _GLIBCXX_NOTHROW
+    .          .          .              .          .          .            .          .          .             {
+    .          .          .              .          .          .            .          .          .           #ifndef __GTHREADS
+    .          .          .              .          .          .            .          .          .               return true;
+    .          .          .              .          .          .            .          .          .           #elif __has_include(<sys/single_threaded.h>)
+1,464 ( 0.05%) 3 ( 0.05%) 1 ( 0.02%)   488 ( 0.07%) 0          0            0          0          0               return ::__libc_single_threaded;
+    .          .          .              .          .          .            .          .          .           #else
+    .          .          .              .          .          .            .          .          .               return !__gthread_active_p();
+    .          .          .              .          .          .            .          .          .           #endif
+    .          .          .              .          .          .            .          .          .             }
+    .          .          .              .          .          .            .          .          .           
+    .          .          .              .          .          .            .          .          .             // Functions for portable atomic access.
+    .          .          .              .          .          .            .          .          .             // To abstract locking primitives across all thread policies, use:
+    .          .          .              .          .          .            .          .          .             // __exchange_and_add_dispatch
+    .          .          .              .          .          .            .          .          .             // __atomic_add_dispatch
+    .          .          .              .          .          .            .          .          .           #ifdef _GLIBCXX_ATOMIC_BUILTINS
+    .          .          .              .          .          .            .          .          .             inline _Atomic_word
+    .          .          .              .          .          .            .          .          .             __attribute__((__always_inline__))
+    .          .          .              .          .          .            .          .          .             __exchange_and_add(volatile _Atomic_word* __mem, int __val)
+1,068 ( 0.04%) 1 ( 0.02%) 1 ( 0.02%) 1,068 ( 0.16%) 0          0            0          0          0             { return __atomic_fetch_add(__mem, __val, __ATOMIC_ACQ_REL); }
+    .          .          .              .          .          .            .          .          .           
+    .          .          .              .          .          .            .          .          .             inline void
+    .          .          .              .          .          .            .          .          .             __attribute__((__always_inline__))
+    .          .          .              .          .          .            .          .          .             __atomic_add(volatile _Atomic_word* __mem, int __val)
+  884 ( 0.03%) 3 ( 0.05%) 1 ( 0.02%)   884 ( 0.13%) 2 ( 0.02%) 0            0          0          0             { __atomic_fetch_add(__mem, __val, __ATOMIC_ACQ_REL); }
+    .          .          .              .          .          .            .          .          .           #else
+    .          .          .              .          .          .            .          .          .             _Atomic_word
+    .          .          .              .          .          .            .          .          .             __exchange_and_add(volatile _Atomic_word*, int) _GLIBCXX_NOTHROW;
+    .          .          .              .          .          .            .          .          .           
+    .          .          .              .          .          .            .          .          .             void
+    .          .          .              .          .          .            .          .          .             __atomic_add(volatile _Atomic_word*, int) _GLIBCXX_NOTHROW;
+    .          .          .              .          .          .            .          .          .           #endif
+    .          .          .              .          .          .            .          .          .           
+-- line 79 ----------------------------------------
+-- line 84 ----------------------------------------
+    .          .          .              .          .          .            .          .          .               _Atomic_word __result = *__mem;
+    .          .          .              .          .          .            .          .          .               *__mem += __val;
+    .          .          .              .          .          .            .          .          .               return __result;
+    .          .          .              .          .          .            .          .          .             }
+    .          .          .              .          .          .            .          .          .           
+    .          .          .              .          .          .            .          .          .             inline void
+    .          .          .              .          .          .            .          .          .             __attribute__((__always_inline__))
+    .          .          .              .          .          .            .          .          .             __atomic_add_single(_Atomic_word* __mem, int __val)
+  884 ( 0.03%) 1 ( 0.02%) 1 ( 0.02%)   442 ( 0.06%) 0          0          442 ( 0.16%) 0          0             { *__mem += __val; }
+    .          .          .              .          .          .            .          .          .           
+    .          .          .              .          .          .            .          .          .             inline _Atomic_word
+    .          .          .              .          .          .            .          .          .             __attribute__ ((__always_inline__))
+    .          .          .              .          .          .            .          .          .             __exchange_and_add_dispatch(_Atomic_word* __mem, int __val)
+    .          .          .              .          .          .            .          .          .             {
+  534 ( 0.02%) 0          0              0          0          0            0          0          0               if (__is_single_threaded())
+1,068 ( 0.04%) 2 ( 0.03%) 2 ( 0.05%)   534 ( 0.08%) 0          0          534 ( 0.19%) 0          0                 return __exchange_and_add_single(__mem, __val);
+    .          .          .              .          .          .            .          .          .               else
+  267 ( 0.01%) 0          0              0          0          0            0          0          0                 return __exchange_and_add(__mem, __val);
+    .          .          .              .          .          .            .          .          .             }
+    .          .          .              .          .          .            .          .          .           
+    .          .          .              .          .          .            .          .          .             inline void
+    .          .          .              .          .          .            .          .          .             __attribute__ ((__always_inline__))
+    .          .          .              .          .          .            .          .          .             __atomic_add_dispatch(_Atomic_word* __mem, int __val)
+    .          .          .              .          .          .            .          .          .             {
+  442 ( 0.02%) 0          0              0          0          0            0          0          0               if (__is_single_threaded())
+    .          .          .              .          .          .            .          .          .                 __atomic_add_single(__mem, __val);
+    .          .          .              .          .          .            .          .          .               else
+    .          .          .              .          .          .            .          .          .                 __atomic_add(__mem, __val);
+  221 ( 0.01%) 0          0              0          0          0            0          0          0             }
+    .          .          .              .          .          .            .          .          .           
+    .          .          .              .          .          .            .          .          .           _GLIBCXX_END_NAMESPACE_VERSION
+    .          .          .              .          .          .            .          .          .           } // namespace
+    .          .          .              .          .          .            .          .          .           
+    .          .          .              .          .          .            .          .          .           // Even if the CPU doesn't need a memory barrier, we need to ensure
+    .          .          .              .          .          .            .          .          .           // that the compiler doesn't reorder memory accesses across the
+    .          .          .              .          .          .            .          .          .           // barriers.
+    .          .          .              .          .          .            .          .          .           #ifndef _GLIBCXX_READ_MEM_BARRIER
+-- line 120 ----------------------------------------
+
+--------------------------------------------------------------------------------
+The following files chosen for auto-annotation could not be found:
+--------------------------------------------------------------------------------
+  ./elf/../bits/stdlib-bsearch.h
+  ./elf/../sysdeps/generic/dl-protected.h
+  ./elf/../sysdeps/generic/ldsodefs.h
+  ./elf/../sysdeps/x86/dl-cacheinfo.h
+  ./elf/../sysdeps/x86_64/dl-machine.h
+  ./elf/../sysdeps/x86_64/dl-trampoline.h
+  ./elf/./elf/dl-cache.c
+  ./elf/./elf/dl-load.c
+  ./elf/./elf/dl-lookup.c
+  ./elf/./elf/dl-misc.c
+  ./elf/./elf/dl-reloc.c
+  ./elf/./elf/dl-runtime.c
+  ./elf/./elf/dl-tunables.c
+  ./elf/./elf/dl-tunables.h
+  ./elf/./elf/dl-version.c
+  ./elf/./elf/do-rel.h
+  ./libio/./libio/fileops.c
+  ./libio/./libio/iofwrite.c
+  ./libio/./libio/iogetdelim.c
+  ./malloc/./malloc/malloc.c
+  ./string/../sysdeps/x86_64/multiarch/../memchr.S
+  ./string/../sysdeps/x86_64/multiarch/strlen-vec.S
+  ./string/../sysdeps/x86_64/strcmp.S
+  ./wcsmbs/./wcsmbs/btowc.c
+  ./wcsmbs/./wcsmbs/wctob.c
+
+--------------------------------------------------------------------------------
+Ir              I1mr         ILmr         Dr              D1mr       DLmr       Dw              D1mw       DLmw       
+--------------------------------------------------------------------------------
+66,208 ( 2.39%) 246 ( 4.04%) 127 ( 2.94%) 22,466 ( 3.27%) 6 ( 0.05%) 0          16,232 ( 5.78%) 8 ( 0.30%) 7 ( 0.34%)  events annotated
+

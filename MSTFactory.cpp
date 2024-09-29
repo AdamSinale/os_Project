@@ -138,7 +138,7 @@ std::unique_ptr<Tree> BoruvkaSolver::findMST(Graph& g) {
         }
 
         // Add the cheapest edges to the MST and merge components
-        for (int i = 0; i < n; ++i) {
+        for (size_t i = 0; i < n; ++i) {
             if (std::get<0>(cheapest[i]) != -1) {
                 int u = std::get<0>(cheapest[i]);
                 int v = std::get<1>(cheapest[i]);
@@ -148,7 +148,7 @@ std::unique_ptr<Tree> BoruvkaSolver::findMST(Graph& g) {
                     tree->addEdge(vertices[u], vertices[v], weight);
                     int oldComponent = component[v];
                     int newComponent = component[u];
-                    for (int j = 0; j < n; ++j) {
+                    for (size_t j = 0; j < n; ++j) {
                         if (component[j] == oldComponent) {
                             component[j] = newComponent;
                         }
