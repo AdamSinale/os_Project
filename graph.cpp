@@ -5,6 +5,11 @@ void Graph::addEdge(shared_ptr<Vertex> v, shared_ptr<Vertex> u, int w) {
     v->addNeighbor(u, w);
     u->addNeighbor(v, w);
 }
+void Graph::removeEdge(shared_ptr<Vertex> v, shared_ptr<Vertex> u) {
+    if(v->id == u->id){ return; }
+    v->removeNeighbor(u);
+    u->removeNeighbor(v);
+}
 
 vector<tuple<shared_ptr<Vertex>, shared_ptr<Vertex>, int>> Graph::getEdges() {
     vector<tuple<shared_ptr<Vertex>, shared_ptr<Vertex>, int>> edges;

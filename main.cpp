@@ -47,7 +47,14 @@ Graph graph; // Graph instance
 vector<shared_ptr<Vertex>> vertices;  // Use shared_ptr to manage Vertex objects
 shared_ptr<MSTSolver> algo; // MST algorithm instance
 shared_ptr<Tree> mst; // MST tree instance
+int newfd;
 
+void serverSend(string message){
+    int saved_stdout = dup(STDOUT_FILENO); // save stdout
+    dup2(newfd, STDOUT_FILENO);            // redirect stdout to client
+    cout << message << endl;               // send message
+    dup2(saved_stdout, STDOUT_FILENO);     // restore stdout
+}
 int checkValid(int n, int m) {
     if (n <= 0 || m < 0) { return invalid; }  // Should be 1+ vertices and 0+ edges
     if (m > n * (n - 1)) { return invalid; }  // m should be less than n*(n-1)
@@ -57,7 +64,7 @@ int checkValid(int n, int m) {
 void acceptConnection(int listener) {
     struct sockaddr_storage remoteaddr; // Client address
     socklen_t addrlen = sizeof remoteaddr;
-    int newfd = accept(listener, (struct sockaddr *)&remoteaddr, &addrlen);
+    newfd = accept(listener, (struct sockaddr *)&remoteaddr, &addrlen);
     if (newfd == -1) {
         perror("accept");
         return;
@@ -69,11 +76,11 @@ void acceptConnection(int listener) {
     dup2(newfd, STDOUT_FILENO); // redirect stdout to client
     cout << "Welcome to the server!" << endl;
     cout << "Here is the commanads:" << endl;
-    cout << "Newgraph n,m: Create a new undirected weighted graph with n vertices and m edges." << endl;
-    cout << "Newedge u,v: Create a new edge between vertex u and v" << endl;
-    cout << "Removeedge u,v: Remove an edge between vertex u and v" << endl;
+    cout << "Newgraph n,m: Creates a new undirected weighted graph with n vertices and m edges." << endl;
+    cout << "Newedge u,v,w: Creates a new edge between vertex u and v of weight w" << endl;
+    cout << "Removeedge u,v: Removes an edge between vertex u and v" << endl;
     cout << "--------------------------------------" << endl;
-    cout << "-=+ Choosing a MST algorithm +=-" << endl;
+    cout << "-=+ Choose a MST algorithm +=-" << endl;
     cout << "p: Prim's Algorithm" << endl;
     cout << "t: Tarjan's Algorithm" << endl;
     cout << "k: Kruskal's Algorithm" << endl;
@@ -81,24 +88,22 @@ void acceptConnection(int listener) {
     cout << "i: IntegerMST's Algorithm" << endl;
     cout << "--------------------------------------" << endl;
     cout << "-=+ Some data about the MST +=-" << endl;
-    cout << "printGraph: Print the graph" << endl;
-    cout << "printWeight: Print the weight of the graph" << endl;
-    cout << "maxDistance: Print the maximum distance between any two vertices" << endl;
-    cout << "avgDistance: Print the average distance between any two vertices" << endl;
-    cout << "shortestPath s,t: Print the shortest path between vertex s and vertex t" << endl;
+    cout << "printGraph: Prints the graph" << endl;
+    cout << "printMST: Prints the MST" << endl;
+    cout << "printWeight: Prints the weight of the MST" << endl;
+    cout << "maxDistance: Prints the maximum distance between any two vertices" << endl;
+    cout << "avgDistance: Prints the average distance between any two vertices" << endl;
+    cout << "shortestPath s,t: Prints the shortest path between vertex s and vertex t with an edge in the MST" << endl;
     cout << "--------------------------------------" << endl;
-    cout << "Don't forget- first you create a Graph, then you are choosing a MST algorithm and then you can collect some data on the MST." << endl;
-
+    cout << "Don't forget- first you create a Graph, then you choose a MST algorithm and then you can collect some data on the MST." << endl;
     dup2(saved_stdout, STDOUT_FILENO); // restore stdout
 
     char remoteIP[INET6_ADDRSTRLEN];
     cout << "pollserver: new connection from "
-         << inet_ntop(remoteaddr.ss_family,
-                      get_in_addr((struct sockaddr *)&remoteaddr),
-                      remoteIP, INET6_ADDRSTRLEN)
+         << inet_ntop(remoteaddr.ss_family, get_in_addr((struct sockaddr *)&remoteaddr), remoteIP, INET6_ADDRSTRLEN)
          << " on socket " << newfd << endl;
 }
-
+// Newgraph 6,7 1 5 1 1 6 3 1 4 5 1 3 2 1 2 1 2 3 3 5 6 2
 void *get_in_addr(struct sockaddr *sa) {
     if (sa->sa_family == AF_INET) {
         return &(((struct sockaddr_in*)sa)->sin_addr);
@@ -181,57 +186,42 @@ void handleClient(int fd) {
         dup2(saved_stdout, STDOUT_FILENO); // restore stdout
         
     } else if (choice.find("Newedge") != string::npos) { // Add weighted edge to the graph from client input
-
         int n = graph.numVertices();
         vector<string> last = split(choice, ',');
+        int w = stoi(last[2]);
         int u = stoi(last[1]) -1;
         vector<string> first = split(last[0], ' ');
         int v = stoi(first[1]) -1;
 
-        if (u < 0 || u >= n || v < 0 || v >= n) { // vertex should be in range
-            cout << "Input between 1-n" << endl;
-            return;
-        }
-        if(u == v) { // self loop
-            cout << "No inside edge" << endl;
-            return;
-        }
-        if (vertices[v]->hasNeighbor(vertices[u])) { // multiple edges
-            cout << "Edge already exists" << endl;
-            return;
-        }
-        cout << "Give a weight for the edge:" << endl;
-        int w;
-        
-        int saved_stdin = dup(STDIN_FILENO); // save stdin
-        dup2(fd, STDIN_FILENO); // redirect stdin to client
-        cin >> w;
-        dup2(saved_stdin, STDIN_FILENO); // restore stdin
-
+        if(u<0 || u>=n || v<0 || v>=n){ serverSend("Input between 1-n"); return; }              // vertex should be in range
+        if(u == v){ serverSend("No inside edge"); return; }                                     // self loop
+        if(vertices[v]->hasNeighbor(vertices[u])){ serverSend("Edge already exists"); return; } // multiple edges
+        serverSend("Edge added");
         graph.addEdge(vertices[v], vertices[u], w);
 
     } else if (choice.find("Removeedge") != string::npos) { // Remove edge from the graph from client input
-
         int n = graph.numVertices();
         vector<string> last = split(choice, ',');
         int u = stoi(last[1]) - 1;
         vector<string> first = split(last[0], ' ');
         int v = stoi(first[1]) - 1;
-        if(u < 0 || u >= n || v < 0 || v >= n) { // vertex should be in range
-            cout << "Input between 1-n" << endl;
-            return;
-        }
-        graph.getVertex(v)->removeNeighbor(graph.getVertex(u)); // Remove edge
+        if(!graph.hasEdge(v,u)){ serverSend("no edge to remove"); return; }
+        if(u<0 || u>=n || v<0 || v>=n){ serverSend("Input between 1-n"); return; }  // vertex should be in range
+        serverSend("Edge removed");
+        graph.removeEdge(graph.getVertex(v),graph.getVertex(u)); // Remove edge
 
     }else if (choice.find("printGraph") != string::npos) {
-
         int saved_stdout = dup(STDOUT_FILENO); // save stdout
         dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        mst->printGraph();
+        graph.printGraph();
         dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-
     }
     else if (choice.find("printWeight") != string::npos) {
+        if(mst == nullptr){
+            serverSend("You didn't give an algorithm - prim as default:");
+            algo = MSTFactory::MST('p');  // Create Prim's MST solver
+            mst = algo->findMST(graph);   // Find MST for the current graph
+        }
         
         int saved_stdout = dup(STDOUT_FILENO); // save stdout
         dup2(fd, STDOUT_FILENO); // redirect stdout to client
@@ -240,6 +230,11 @@ void handleClient(int fd) {
 
     }
     else if (choice.find("maxDistance") != string::npos) {
+        if(mst == nullptr){
+            serverSend("You didn't give an algorithm - prim as default:");
+            algo = MSTFactory::MST('p');  // Create Prim's MST solver
+            mst = algo->findMST(graph);   // Find MST for the current graph
+        }
 
         int saved_stdout = dup(STDOUT_FILENO); // save stdout
         dup2(fd, STDOUT_FILENO); // redirect stdout to client
@@ -248,6 +243,11 @@ void handleClient(int fd) {
 
     }
     else if (choice.find("avgDistance") != string::npos) {
+        if(mst == nullptr){
+            serverSend("You didn't give an algorithm - prim as default:");
+            algo = MSTFactory::MST('p');  // Create Prim's MST solver
+            mst = algo->findMST(graph);   // Find MST for the current graph
+        }
 
         int saved_stdout = dup(STDOUT_FILENO); // save stdout
         dup2(fd, STDOUT_FILENO); // redirect stdout to client
@@ -258,16 +258,33 @@ void handleClient(int fd) {
     else if (choice.find("shortestPath") != string::npos) {
 
         vector<string> last = split(choice, ',');
-        int t = stoi(last[2]) - 1;
+        int t = stoi(last[1]);
         vector<string> first = split(last[0], ' ');
-        int s = stoi(first[1]) - 1;
+        int s = stoi(first[1]);
+        if(mst == nullptr){
+            serverSend("You didn't give an algorithm - prim as default:");
+            algo = MSTFactory::MST('p');  // Create Prim's MST solver
+            mst = algo->findMST(graph);   // Find MST for the current graph
+        }
 
         int saved_stdout = dup(STDOUT_FILENO); // save stdout
         dup2(fd, STDOUT_FILENO); // redirect stdout to client
         mst->shortestPath(s, t, mst);
         dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-    }
+    } 
+    
+    else if (choice.find("printMST") != string::npos) {
+        if(mst == nullptr){
+            serverSend("You didn't give an algorithm - prim as default:");
+            algo = MSTFactory::MST('p');  // Create Prim's MST solver
+            mst = algo->findMST(graph);   // Find MST for the current graph
+        }
+        int saved_stdout = dup(STDOUT_FILENO); // save stdout
+        dup2(fd, STDOUT_FILENO); // redirect stdout to client
+        mst->printGraph();
+        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
 
+    }
     // Algorithm options.
     else if (choice.find("p") != string::npos) { // Prim's Algorithm
         threadPool.enqueueTask([fd]() {
@@ -356,13 +373,9 @@ int get_listener_socket() {
     }
     freeaddrinfo(ai);
 
-    if (p == NULL) {
-        return -1;
-    }
+    if(p == NULL){ return -1; }
 
-    if (listen(listener, 10) == -1) {
-        return -1;
-    }
+    if(listen(listener, 10) == -1){ return -1; }
 
     return listener;
 }
