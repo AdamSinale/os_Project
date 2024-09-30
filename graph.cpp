@@ -1,5 +1,15 @@
+/*
+    Graph class implementation
+*/
+
+
 #include "graph.hpp"
 
+
+/*
+    Add an edge between two vertices with a given weight.
+    The edge is bidirectional, so it is added to both vertices.
+*/
 void Graph::addEdge(shared_ptr<Vertex> v, shared_ptr<Vertex> u, int w) {
     if(v->id == u->id){ return; }
     v->addNeighbor(u, w);
@@ -23,6 +33,11 @@ vector<tuple<shared_ptr<Vertex>, shared_ptr<Vertex>, int>> Graph::getEdges() {
     return edges;
 }
 
+
+/*
+    Print the graph in the format:
+    Vertex1 --(weight)--> Vertex2
+*/
 void Graph::printGraph(){
     for (size_t i = 0; i < vertices.size(); i++) {
         vector<pair<weak_ptr<Vertex>, int>> ns = vertices[i]->getNeighbors();
@@ -38,7 +53,9 @@ void Graph::printGraph(){
     }
 }
 
-
+/*
+    Print the total weight of the MST.
+*/
 void Graph::printWeight(){
     int count = 0;
     for (const auto& v : vertices) {
@@ -52,6 +69,16 @@ void Graph::printWeight(){
     cout << count << endl;
 }
 
+
+/*
+    Tree class implementation
+    @param v: current vertex
+    @param p: parent vertex
+    @param d: distance
+    @param fv: farthest vertex
+    @param md: max distance
+    @param sd: sum of distances
+*/
 void Tree::dfs(shared_ptr<Vertex> v,shared_ptr<Vertex> p,int d,shared_ptr<Vertex>& fv,int& md,int& sd){
     if(d > md) {                                        // if distance until here > max
         md = d;                                         //    update max
@@ -65,6 +92,10 @@ void Tree::dfs(shared_ptr<Vertex> v,shared_ptr<Vertex> p,int d,shared_ptr<Vertex
     }
 }
 
+
+/*
+    Find the maximum distance between any two vertices in the MST.
+*/
 void Tree::maxDistance(){
     shared_ptr<Vertex> sv = vertices[0];
     int md = 0;
@@ -79,6 +110,10 @@ void Tree::maxDistance(){
     cout << *sv << " --(" << md << ")-> " << *fv << endl;
 }
 
+
+/*
+    Find the average distance between all pairs of vertices in the MST.
+*/
 void Tree::avgDistance(){
     int md = 0;
     int sd = 0;
@@ -93,6 +128,13 @@ void Tree::avgDistance(){
     cout << sd/cd << endl;
 }
 
+
+/*
+    Find the shortest path between two vertices in the MST.
+    @param sID: ID of the source vertex
+    @param tID: ID of the target vertex
+    @param tree: shared_ptr to the MST
+*/
 void Graph::shortestPath(int sID, int tID, shared_ptr<Tree>& tree){  // O((V+E)logV)
     int s = sID-1;
     int t = tID-1;

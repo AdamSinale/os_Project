@@ -1,6 +1,5 @@
 #include "Threadpool.hpp"
 
-// ThreadPool constructor
 ThreadPool::ThreadPool(size_t numThreads) : stop(false) {
     // Create worker threads
     for (size_t i = 0; i < numThreads; ++i) {
@@ -8,7 +7,7 @@ ThreadPool::ThreadPool(size_t numThreads) : stop(false) {
     }
 }
 
-// ThreadPool destructor
+
 ThreadPool::~ThreadPool() {
     {
         // Lock the queue and set the stop flag to true
@@ -24,7 +23,11 @@ ThreadPool::~ThreadPool() {
     }
 }
 
-// Method to enqueue a new task into the thread pool
+
+/*
+    Method to enqueue a task into the thread pool.
+    The task is added to the queue and a worker thread is notified.
+*/
 void ThreadPool::enqueueTask(std::function<void()> task) {
     {
         // Lock the task queue
@@ -35,7 +38,12 @@ void ThreadPool::enqueueTask(std::function<void()> task) {
     condition.notify_one();
 }
 
-// Function executed by each worker thread
+
+/*
+    Worker function executed by each worker thread in the pool.
+    The worker waits for a new task to be enqueued or the stop signal.
+    If a task is available, it dequeues and executes the task.
+*/
 void ThreadPool::workerFunction() {
     while (true) {
         std::function<void()> task;

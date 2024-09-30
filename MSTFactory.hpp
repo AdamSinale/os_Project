@@ -5,6 +5,11 @@
 using std::make_unique;
 using std::unique_ptr;
 
+
+/*
+    Factory class to create MST solvers based on the input type.
+*/
+
 class MSTFactory {
 public:
     static unique_ptr<MSTSolver> MST(char type) {

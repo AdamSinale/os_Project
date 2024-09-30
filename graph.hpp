@@ -21,6 +21,12 @@ using std::greater;
 
 class Tree;
 
+
+/*
+    Graph class to represent a graph.
+    The graph is represented as a vector of vertices.
+*/
+
 class Graph {
 protected:
     vector<shared_ptr<Vertex>> vertices;  // Use shared_ptr for vertices

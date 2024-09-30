@@ -1,3 +1,10 @@
+/*
+    This file contains the implementation of the MSTAlgo class and its subclasses.
+    The MSTAlgo class is an abstract class that defines the interface for all MST algorithms.
+    The subclasses implement the Prim, Kruskal, Boruvka, Tarjan, and Integer MST algorithms.    
+*/
+
+
 #include "MSTAlgo.hpp"
 #include <queue>
 #include <limits>
@@ -18,7 +25,9 @@ using std::priority_queue;
 using std::numeric_limits;
 using std::greater;
 
-// Prim's Algorithm
+/*
+    Find MST using Prim's algorithm.
+*/
 std::unique_ptr<Tree> PrimSolver::findMST(Graph& g) {
     cout << "Finding MST using Prim's Algorithm:" << endl;
     size_t n = g.numVertices();
@@ -57,7 +66,10 @@ std::unique_ptr<Tree> PrimSolver::findMST(Graph& g) {
     return tree;
 }
 
-// Kruskal's Algorithm
+
+/*
+    Find MST using Kruskal's algorithm.
+*/
 std::unique_ptr<Tree> KruskalSolver::findMST(Graph& g) {
     cout << "Finding MST using Kruskal's Algorithm" << endl;
     size_t n = g.numVertices();
@@ -105,7 +117,10 @@ std::unique_ptr<Tree> KruskalSolver::findMST(Graph& g) {
     return tree;
 }
 
-// Borůvka's Algorithm
+
+/*
+    Find MST using Boruvka's algorithm.
+*/
 std::unique_ptr<Tree> BoruvkaSolver::findMST(Graph& g) {
     cout << "Finding MST using Boruvka's Algorithm" << endl;
     size_t n = g.numVertices();
@@ -162,17 +177,120 @@ std::unique_ptr<Tree> BoruvkaSolver::findMST(Graph& g) {
     return tree;
 }
 
-
-// Tarjan's Algorithm (Placeholder)
+/*
+    Find MST using Tarjan's algorithm.
+*/
 std::unique_ptr<Tree> TarjanSolver::findMST(Graph& g) {
-    cout << "Finding MST using Tarjan's Algorithm" << endl;
-    // Implement Tarjan's algorithm here
-    return nullptr;
+    cout << "Finding MST using Tarjan's Algorithm (MST via Union-Find)" << endl;
+
+    size_t n = g.numVertices();
+    vector<std::tuple<shared_ptr<Vertex>, shared_ptr<Vertex>, int>> edges = g.getEdges();
+    
+    // Sort edges by weight (in ascending order)
+    std::sort(edges.begin(), edges.end(), [](const std::tuple<shared_ptr<Vertex>, shared_ptr<Vertex>, int>& a, const std::tuple<shared_ptr<Vertex>, shared_ptr<Vertex>, int>& b) {
+        return get<2>(a) < get<2>(b);
+    });
+
+    // Union-Find (Disjoint Set Union) data structures
+    vector<int> parent(n), rank(n, 0);
+    std::iota(parent.begin(), parent.end(), 0); // Initialize parent array
+
+    // Helper function to find the root of a set
+    std::function<int(int)> findSet = [&](int u) {
+        if (u != parent[u]) {
+            parent[u] = findSet(parent[u]); // Path compression
+        }
+        return parent[u];
+    };
+
+    // Union by rank
+    auto unionSets = [&](int u, int v) {
+        u = findSet(u);
+        v = findSet(v);
+        if (u != v) {
+            if (rank[u] < rank[v]) {
+                parent[u] = v;
+            } else if (rank[u] > rank[v]) {
+                parent[v] = u;
+            } else {
+                parent[v] = u;
+                rank[u]++;
+            }
+        }
+    };
+
+    vector<shared_ptr<Vertex>> vertices;
+    for (size_t i = 0; i < n; ++i) {
+        vertices.push_back(make_shared<Vertex>(i));
+    }
+
+    unique_ptr<Tree> tree = make_unique<Tree>(vertices);
+
+    // Iterate over sorted edges
+    for (const auto& edge : edges) {
+        shared_ptr<Vertex> u = get<0>(edge);
+        shared_ptr<Vertex> v = get<1>(edge);
+        int w = get<2>(edge);
+
+        // Check if u and v belong to different sets (i.e., not yet connected)
+        if (findSet(u->getID()) != findSet(v->getID())) {
+            // Union the sets and add the edge to the MST
+            unionSets(u->getID(), v->getID());
+            tree->addEdge(vertices[u->getID()], vertices[v->getID()], w);
+        }
+    }
+
+    return tree;
 }
 
-// Integer MST Algorithm (Placeholder)
+
+/*
+    Find Integer MST.
+*/
 std::unique_ptr<Tree> IntegerMSTSolver::findMST(Graph& g) {
-    cout << "Finding MST using Integer MST Algorithm" << endl;
-    // Implement Integer MST algorithm here
-    return nullptr;
+    cout << "Finding MST using Integer MST Algorithm (Prim's Algorithm for Integer Weights)" << endl;
+
+    size_t n = g.numVertices();
+    vector<shared_ptr<Vertex>> ogVs = g.getVertices();
+    
+    // Priority queue to select the minimum edge at each step
+    priority_queue<std::tuple<int, int, int>, vector<std::tuple<int, int, int>>, greater<std::tuple<int, int, int>>> pq;
+    vector<int> key(n, numeric_limits<int>::max());
+    vector<bool> inMST(n, false);
+
+    vector<shared_ptr<Vertex>> vertices;
+    for (size_t i = 0; i < n; ++i) {
+        vertices.push_back(make_shared<Vertex>(i));
+    }
+    unique_ptr<Tree> tree = make_unique<Tree>(vertices);
+
+    key[0] = 0;  // Start from vertex 0
+    pq.push(std::make_tuple(0, 0, 0));  // Push (weight, u, v) where weight = 0, u = 0
+
+    while (!pq.empty()) {
+        auto [weight, u, v] = pq.top();
+        pq.pop();
+
+        // If vertex v is already in the MST, skip
+        if (inMST[v]) continue;
+        inMST[v] = true;  // Add vertex v to the MST
+
+        // Add the edge (u, v) to the MST, with the given weight
+        if (u != v) {  // Avoid adding the initial (0, 0) edge
+            tree->addEdge(vertices[u], vertices[v], weight);
+        }
+
+        // Explore all neighbors of vertex v
+        for (const auto& edge : ogVs[v]->getNeighbors()) {
+            int neighbor = edge.first.lock()->getID();  // Get neighbor's ID
+            int w = edge.second;  // Edge weight
+
+            if (!inMST[neighbor] && w < key[neighbor]) {
+                key[neighbor] = w;  // Update the key (minimum weight)
+                pq.push(std::make_tuple(w, v, neighbor));  // Push (weight, v, neighbor) to the priority queue
+            }
+        }
+    }
+
+    return tree;
 }

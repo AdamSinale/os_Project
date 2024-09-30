@@ -1,3 +1,13 @@
+/*
+    * This file contains the Vertex class, which represents a vertex in a graph.
+    * Each vertex has an ID and a list of neighbors, each with an associated weight.
+    * The neighbors are stored as a vector of pairs, where the first element is a weak_ptr to the neighbor vertex
+    * and the second element is the weight of the edge connecting the two vertices.
+    * The class also contains methods to add, remove, and check for neighbors.
+*/
+
+
+
 #ifndef VERTEX_HPP
 #define VERTEX_HPP
 
