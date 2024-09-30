@@ -1,0 +1,52 @@
+        -:    0:Source:vertex.hpp
+        -:    1:#ifndef VERTEX_HPP
+        -:    2:#define VERTEX_HPP
+        -:    3:
+        -:    4:#include <vector>
+        -:    5:#include <memory> // For std::shared_ptr and std::weak_ptr
+        -:    6:#include <algorithm>
+        -:    7:#include <iostream>
+        -:    8:
+        -:    9:using std::vector;
+        -:   10:using std::pair;
+        -:   11:using std::shared_ptr;
+        -:   12:using std::weak_ptr;
+        -:   13:
+        -:   14:class Vertex {
+        -:   15:public:
+        -:   16:    int id;
+        -:   17:    vector<pair<weak_ptr<Vertex>, int>> neighbors; // Use weak_ptr to avoid ownership cycles
+        -:   18:
+        -:   19:    Vertex() {}
+      10*:   20:    Vertex(int id) : id(id) {}
+------------------
+_ZN6VertexC2Ei:
+       10:   20:    Vertex(int id) : id(id) {}
+------------------
+_ZN6VertexC2Ei:
+    #####:   20:    Vertex(int id) : id(id) {}
+------------------
+        -:   21:
+       14:   22:    int getID(){ return id; }
+      24*:   23:    vector<pair<weak_ptr<Vertex>, int>> getNeighbors() { return neighbors; }
+------------------
+_ZN6Vertex12getNeighborsEv:
+       24:   23:    vector<pair<weak_ptr<Vertex>, int>> getNeighbors() { return neighbors; }
+------------------
+_ZN6Vertex12getNeighborsEv:
+    #####:   23:    vector<pair<weak_ptr<Vertex>, int>> getNeighbors() { return neighbors; }
+------------------
+        -:   24:    
+        -:   25:    void addNeighbor(shared_ptr<Vertex> neighbor, int weight);
+        -:   26:    void removeNeighbor(shared_ptr<Vertex> neighbor);
+        -:   27:    bool hasNeighbor(shared_ptr<Vertex> neighbor);
+        -:   28:
+        -:   29:    bool operator==(Vertex o){ return id == o.id; }
+        -:   30:    bool operator!=(Vertex o){ return id != o.id; }
+       13:   31:    friend std::ostream& operator<<(std::ostream& os, const Vertex& v){
+       13:   32:        os << v.id+1;
+       13:   33:        return os;
+        -:   34:    }
+        -:   35:};
+        -:   36:
+        -:   37:#endif

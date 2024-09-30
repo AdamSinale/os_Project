@@ -1,0 +1,79 @@
+        -:    0:Source:graph.hpp
+        -:    1:#ifndef GRAPH_HPP
+        -:    2:#define GRAPH_HPP
+        -:    3:
+        -:    4:#include <vector>
+        -:    5:#include <tuple>
+        -:    6:#include <memory> // For std::shared_ptr
+        -:    7:#include "vertex.hpp"
+        -:    8:using std::vector;
+        -:    9:using std::tuple;
+        -:   10:using std::cout;
+        -:   11:using std::endl;
+        -:   12:using std::make_tuple;
+        -:   13:using std::shared_ptr;
+        -:   14:
+        -:   15:#include <climits> // For INT_MAX
+        -:   16:#include <queue>
+        -:   17:#include <unordered_map> 
+        -:   18:using std::unordered_map;
+        -:   19:using std::priority_queue;
+        -:   20:using std::greater;
+        -:   21:
+        -:   22:class Tree;
+        -:   23:
+        -:   24:class Graph {
+        -:   25:protected:
+        -:   26:    vector<shared_ptr<Vertex>> vertices;  // Use shared_ptr for vertices
+        -:   27:
+        -:   28:public:
+        1:   29:    Graph() { vertices = {}; }
+       2*:   30:    Graph(const vector<shared_ptr<Vertex>>& vs) : vertices(vs) {}
+------------------
+_ZN5GraphC2ERKSt6vectorISt10shared_ptrI6VertexESaIS3_EE:
+        2:   30:    Graph(const vector<shared_ptr<Vertex>>& vs) : vertices(vs) {}
+------------------
+_ZN5GraphC2ERKSt6vectorISt10shared_ptrI6VertexESaIS3_EE:
+    #####:   30:    Graph(const vector<shared_ptr<Vertex>>& vs) : vertices(vs) {}
+------------------
+        -:   31:    void addVertex(shared_ptr<Vertex> v){ vertices.push_back(v); }
+        -:   32:    void addEdge(shared_ptr<Vertex> v, shared_ptr<Vertex> u, int w);
+        -:   33:    void removeEdge(shared_ptr<Vertex> v, shared_ptr<Vertex> u);
+       6*:   34:    size_t numVertices(){ return vertices.size(); }
+------------------
+_ZN5Graph11numVerticesEv:
+        6:   34:    size_t numVertices(){ return vertices.size(); }
+------------------
+_ZN5Graph11numVerticesEv:
+    #####:   34:    size_t numVertices(){ return vertices.size(); }
+------------------
+_ZN5Graph11numVerticesEv:
+    #####:   34:    size_t numVertices(){ return vertices.size(); }
+------------------
+        -:   35:    vector<tuple<shared_ptr<Vertex>, shared_ptr<Vertex>, int>> getEdges();
+    #####:   36:    vector<shared_ptr<Vertex>> getVertices(){ return vertices; }
+        2:   37:    shared_ptr<Vertex> getVertex(int id){ return vertices[id]; }
+       4*:   38:    bool hasEdge(int vID, int uID){ return vertices[vID]->hasNeighbor(vertices[uID]); }
+------------------
+_ZN5Graph7hasEdgeEii:
+        4:   38:    bool hasEdge(int vID, int uID){ return vertices[vID]->hasNeighbor(vertices[uID]); }
+------------------
+_ZN5Graph7hasEdgeEii:
+    #####:   38:    bool hasEdge(int vID, int uID){ return vertices[vID]->hasNeighbor(vertices[uID]); }
+------------------
+        -:   39:    void printGraph();
+        -:   40:    void printWeight();
+        -:   41:    void shortestPath(int sID, int tID, shared_ptr<Tree>& tree);
+        -:   42:};
+        -:   43:
+        -:   44:
+        -:   45:class Tree : public Graph {
+        -:   46:private:
+        -:   47:    void dfs(shared_ptr<Vertex> v,shared_ptr<Vertex> p,int d,shared_ptr<Vertex>& fv,int& md,int& sd);
+        -:   48:public:
+        1:   49:    Tree(const vector<shared_ptr<Vertex>>& vs) : Graph(vs) {}
+        -:   50:    void maxDistance();
+        -:   51:    void avgDistance();
+        -:   52:};
+        -:   53:
+        -:   54:#endif

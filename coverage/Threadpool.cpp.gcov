@@ -1,0 +1,61 @@
+        -:    0:Source:Threadpool.cpp
+        -:    1:#include "Threadpool.hpp"
+        -:    2:
+        -:    3:// ThreadPool constructor
+        1:    4:ThreadPool::ThreadPool(size_t numThreads) : stop(false) {
+        -:    5:    // Create worker threads
+        5:    6:    for (size_t i = 0; i < numThreads; ++i) {
+        8:    7:        workers.emplace_back([this] { workerFunction(); });
+        -:    8:    }
+        1:    9:}
+        -:   10:
+        -:   11:// ThreadPool destructor
+        1:   12:ThreadPool::~ThreadPool() {
+        -:   13:    {
+        -:   14:        // Lock the queue and set the stop flag to true
+        1:   15:        std::unique_lock<std::mutex> lock(queueMutex);
+        1:   16:        stop = true;
+        1:   17:    }
+        -:   18:    // Notify all worker threads to wake up
+        1:   19:    condition.notify_all();
+        -:   20:
+        -:   21:    // Join all threads to ensure proper cleanup
+        5:   22:    for (std::thread &worker : workers) {
+        4:   23:        worker.join();
+        -:   24:    }
+        1:   25:}
+        -:   26:
+        -:   27:// Method to enqueue a new task into the thread pool
+        1:   28:void ThreadPool::enqueueTask(std::function<void()> task) {
+        -:   29:    {
+        -:   30:        // Lock the task queue
+        1:   31:        std::unique_lock<std::mutex> lock(queueMutex);
+        1:   32:        tasks.push(task);
+        1:   33:    }
+        -:   34:    // Notify one worker thread that a new task is available
+        1:   35:    condition.notify_one();
+        1:   36:}
+        -:   37:
+        -:   38:// Function executed by each worker thread
+        5:   39:void ThreadPool::workerFunction() {
+        -:   40:    while (true) {
+        5:   41:        std::function<void()> task;
+        -:   42:        {
+        -:   43:            // Lock the queue and wait for a task or stop signal
+        5:   44:            std::unique_lock<std::mutex> lock(queueMutex);
+       15:   45:            condition.wait(lock, [this] { return stop || !tasks.empty(); });
+        -:   46:
+        -:   47:            // If stop flag is true and no tasks remain, exit the worker function
+        5:   48:            if (stop && tasks.empty()) {
+        8:   49:                return;
+        -:   50:            }
+        -:   51:
+        -:   52:            // Retrieve the next task from the queue
+        1:   53:            task = std::move(tasks.front());
+        1:   54:            tasks.pop();
+        5:   55:        }
+        -:   56:
+        -:   57:        // Execute the task
+        1:   58:        task();
+        6:   59:    }
+        -:   60:}

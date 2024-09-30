@@ -1,0 +1,27 @@
+        -:    0:Source:MSTFactory.hpp
+        -:    1:#include "MSTAlgo.hpp"
+        -:    2:
+        -:    3:#include <iostream>
+        -:    4:#include <memory>
+        -:    5:using std::make_unique;
+        -:    6:using std::unique_ptr;
+        -:    7:
+        -:    8:class MSTFactory {
+        -:    9:public:
+        1:   10:    static unique_ptr<MSTSolver> MST(char type) {
+        1:   11:        switch(type) {
+    #####:   12:            case 'b':
+    #####:   13:                return make_unique<BoruvkaSolver>();
+    #####:   14:            case 'p':
+    #####:   15:                return make_unique<PrimSolver>();
+        1:   16:            case 'k':
+        1:   17:                return make_unique<KruskalSolver>();
+    #####:   18:            case 't':
+    #####:   19:                return make_unique<TarjanSolver>();
+    #####:   20:            case 'i':
+    #####:   21:                return make_unique<IntegerMSTSolver>();
+    #####:   22:            default:
+    #####:   23:                return nullptr;
+        -:   24:        }
+        -:   25:    }
+        -:   26:};

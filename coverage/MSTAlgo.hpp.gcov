@@ -1,0 +1,55 @@
+        -:    0:Source:MSTAlgo.hpp
+        -:    1:#ifndef MSTFACTORY_HPP
+        -:    2:#define MSTFACTORY_HPP
+        -:    3:
+        -:    4:#include "graph.hpp"
+        -:    5:#include <vector>
+        -:    6:#include <memory>
+        -:    7:#include <functional>
+        -:    8:#include <tuple>
+        -:    9:
+        -:   10:// Abstract base class for MST algorithms
+        -:   11:class MSTSolver {
+        -:   12:public:
+        -:   13:    virtual std::unique_ptr<Tree> findMST(Graph& g) = 0; // Pure virtual function for finding the MST
+       1*:   14:    virtual ~MSTSolver() = default;
+------------------
+_ZN9MSTSolverD0Ev:
+    #####:   14:    virtual ~MSTSolver() = default;
+------------------
+_ZN9MSTSolverD2Ev:
+        1:   14:    virtual ~MSTSolver() = default;
+------------------
+        -:   15:};
+        -:   16:
+        -:   17:// Prim's Algorithm
+        -:   18:class PrimSolver : public MSTSolver {
+        -:   19:public:
+        -:   20:    std::unique_ptr<Tree> findMST(Graph& g) override;
+        -:   21:};
+        -:   22:
+        -:   23:// Kruskal's Algorithm
+        -:   24:class KruskalSolver : public MSTSolver {
+        -:   25:public:
+        -:   26:    std::unique_ptr<Tree> findMST(Graph& g) override;
+        -:   27:};
+        -:   28:
+        -:   29:// Borůvka's Algorithm
+        -:   30:class BoruvkaSolver : public MSTSolver {
+        -:   31:public:
+        -:   32:    std::unique_ptr<Tree> findMST(Graph& g) override;
+        -:   33:};
+        -:   34:
+        -:   35:// Tarjan's Algorithm
+        -:   36:class TarjanSolver : public MSTSolver {
+        -:   37:public:
+        -:   38:    std::unique_ptr<Tree> findMST(Graph& g) override;
+        -:   39:};
+        -:   40:
+        -:   41:// Integer MST Algorithm
+        -:   42:class IntegerMSTSolver : public MSTSolver {
+        -:   43:public:
+        -:   44:    std::unique_ptr<Tree> findMST(Graph& g) override;
+        -:   45:};
+        -:   46:
+        -:   47:#endif // MSTFACTORY_HPP

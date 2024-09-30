@@ -1,0 +1,139 @@
+        -:    0:Source:graph.cpp
+        -:    1:#include "graph.hpp"
+        -:    2:
+        6:    3:void Graph::addEdge(shared_ptr<Vertex> v, shared_ptr<Vertex> u, int w) {
+       6*:    4:    if(v->id == u->id){ return; }
+        6:    5:    v->addNeighbor(u, w);
+        6:    6:    u->addNeighbor(v, w);
+        -:    7:}
+        1:    8:void Graph::removeEdge(shared_ptr<Vertex> v, shared_ptr<Vertex> u) {
+       1*:    9:    if(v->id == u->id){ return; }
+        1:   10:    v->removeNeighbor(u);
+        1:   11:    u->removeNeighbor(v);
+        -:   12:}
+        -:   13:
+        1:   14:vector<tuple<shared_ptr<Vertex>, shared_ptr<Vertex>, int>> Graph::getEdges() {
+        1:   15:    vector<tuple<shared_ptr<Vertex>, shared_ptr<Vertex>, int>> edges;
+        6:   16:    for (const auto& v : vertices) {
+       11:   17:        for (const auto& n : v->neighbors) {
+        6:   18:            if (v->id < n.first.lock()->id) {  // Use weak_ptr's lock() to get shared_ptr
+        3:   19:                edges.push_back(make_tuple(v, n.first.lock(), n.second));
+        -:   20:            }
+        -:   21:        }
+        -:   22:    }
+        1:   23:    return edges;
+    =====:   24:}
+        -:   25:
+        1:   26:void Graph::printGraph(){
+        6:   27:    for (size_t i = 0; i < vertices.size(); i++) {
+        5:   28:        vector<pair<weak_ptr<Vertex>, int>> ns = vertices[i]->getNeighbors();
+       11:   29:        for (size_t j = 0; j < ns.size(); j++) {
+        6:   30:            shared_ptr<Vertex> neighbor = ns[j].first.lock();
+        6:   31:            if(vertices[i]->id < neighbor->id){ continue; }
+        3:   32:            if (neighbor) {
+        3:   33:                std::cout << *vertices[i] << " --("<<ns[j].second<<")-> " << *neighbor << std::endl;
+        -:   34:            } else {
+    #####:   35:                std::cout << *vertices[i] << " -> [expired]" << std::endl;
+        -:   36:            }
+        6:   37:        }
+        5:   38:    }
+        1:   39:}
+        -:   40:
+        -:   41:
+        1:   42:void Graph::printWeight(){
+        1:   43:    int count = 0;
+        6:   44:    for (const auto& v : vertices) {
+        9:   45:        for (const auto& n : v->neighbors) {
+        4:   46:            if (v->id < n.first.lock()->id) {  // Use weak_ptr's lock() to get shared_ptr
+        2:   47:                count += n.second;
+        -:   48:            }
+        -:   49:        }
+        -:   50:    }
+        1:   51:    cout << "Total weight of MST:" << endl;
+        1:   52:    cout << count << endl;
+        1:   53:}
+        -:   54:
+       17:   55:void Tree::dfs(shared_ptr<Vertex> v,shared_ptr<Vertex> p,int d,shared_ptr<Vertex>& fv,int& md,int& sd){
+       17:   56:    if(d > md) {                                        // if distance until here > max
+        6:   57:        md = d;                                         //    update max
+        6:   58:        fv = v;
+        -:   59:    }
+       37:   60:    for (const auto& n : v->getNeighbors()) {           // for vertex's neighbors
+       20:   61:        if (n.first.lock() != p) {                      //    already checked, no infinite loop
+       10:   62:            sd += d+n.second;                           //    add distance
+       10:   63:            dfs(n.first.lock(),v,d+n.second,fv,md,sd);  //    check neighbors
+        -:   64:        }
+       17:   65:    }
+       17:   66:}
+        -:   67:
+        1:   68:void Tree::maxDistance(){
+        1:   69:    shared_ptr<Vertex> sv = vertices[0];
+        1:   70:    int md = 0;
+        1:   71:    int sd = 0;
+        1:   72:    dfs(sv, nullptr, 0, sv, md, sd);
+        -:   73:
+        1:   74:    md = 0;
+        1:   75:    shared_ptr<Vertex> fv = sv;
+        1:   76:    dfs(sv, nullptr, 0, sv, md, sd);
+        -:   77:
+        1:   78:    cout << "Longest distance in MST:" << endl;
+        1:   79:    cout << *sv << " --(" << md << ")-> " << *fv << endl;
+        1:   80:}
+        -:   81:
+        1:   82:void Tree::avgDistance(){
+        1:   83:    int md = 0;
+        1:   84:    int sd = 0;
+        1:   85:    double cd = 0;
+        1:   86:    shared_ptr<Vertex> sv = vertices[0];
+        6:   87:    for(auto& v : vertices){
+        5:   88:        dfs(v, nullptr, 0, sv, md, sd);
+        -:   89:    }
+        1:   90:    sd = sd/2;
+        5:   91:    for(size_t i=1; i<vertices.size(); i++){ cd += i; }
+        1:   92:    cout << "Average distances of MST:" << endl;
+        1:   93:    cout << sd/cd << endl;
+        1:   94:}
+        -:   95:
+        1:   96:void Graph::shortestPath(int sID, int tID, shared_ptr<Tree>& tree){  // O((V+E)logV)
+        1:   97:    int s = sID-1;
+        1:   98:    int t = tID-1;
+        -:   99:    
+        1:  100:    vector<int> dist(numVertices(),INT_MAX);
+        1:  101:    vector<int> prev(numVertices(),-1);  // path uses 1+ MST edge -> True
+        1:  102:    vector<bool> hasEdge(numVertices(),false);  // path uses 1+ MST edge -> True
+        1:  103:    dist[s] = 0;
+        -:  104:    // Priority queue to store (distance, vertex) pairs
+        -:  105:    using pqElement = tuple<int,int,bool>;
+        1:  106:    priority_queue<pqElement,vector<pqElement>,greater<pqElement>> pq;
+        1:  107:    pq.push({0, s, false}); 
+        -:  108:
+        3:  109:    while (!pq.empty()) {                                 // for each edge kept  O(m)
+        3:  110:        auto [cd,cv,hasMSTedge] = pq.top();               // get current edge
+        3:  111:        pq.pop(); 
+        3:  112:        if(cv == t && hasMSTedge) break;                  // Target reached - finish
+        5:  113:        for(auto &n : vertices[cv]->getNeighbors()){                // for each neighbor  O(n)
+        3:  114:            auto nv = n.first.lock()->id;
+        3:  115:            int w = n.second;
+        3:  116:            int nd = cd + w;
+        3:  117:            bool edgeInMST = tree->hasEdge(cv,nv);
+       3*:  118:            if (nd < dist[nv] || (nd == dist[nv] && hasMSTedge && !hasEdge[nv])){
+        2:  119:                dist[nv] = nd;
+        2:  120:                prev[nv] = cv;
+       2*:  121:                hasEdge[nv] = hasMSTedge || edgeInMST;  // update edge 
+        2:  122:                pq.push({nd, nv, hasEdge[nv]});
+        -:  123:            }
+        2:  124:        }
+        -:  125:    }
+        1:  126:    shared_ptr<Vertex> sv = vertices[s];
+        1:  127:    shared_ptr<Vertex> tv = vertices[t];
+       1*:  128:    if(dist[t] == INT_MAX){ cout << "No path from "<<*sv<<" to "<<*tv<< endl; }
+        -:  129:    else {
+        1:  130:        cout << "Shortest path from " << *sv << " to " << *tv << " = " << dist[t] << endl;
+        1:  131:        cout << "Path: ";
+        3:  132:        for (shared_ptr<Vertex> v = tv; v != nullptr; v = vertices[prev[v->id]]) {
+        3:  133:            cout << *v << " ";
+        3:  134:            if (v == sv) break;
+        1:  135:        }
+        1:  136:        cout << endl;
+        -:  137:    }
+        1:  138:}

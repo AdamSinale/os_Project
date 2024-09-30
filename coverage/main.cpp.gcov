@@ -1,0 +1,417 @@
+        -:    0:Source:main.cpp
+        -:    1:#include "graph.hpp"
+        -:    2:#include "MSTFactory.hpp"
+        -:    3:#include <vector>
+        -:    4:#include <iostream>
+        -:    5:#include <memory> // For std::shared_ptr
+        -:    6:#include <list>
+        -:    7:#include <string>
+        -:    8:#include <sstream>
+        -:    9:#include <cstring>
+        -:   10:#include <unistd.h>
+        -:   11:#include <sys/types.h>
+        -:   12:#include <sys/socket.h>
+        -:   13:#include <netinet/in.h>
+        -:   14:#include <arpa/inet.h>
+        -:   15:#include <netdb.h>
+        -:   16:#include <mutex>
+        -:   17:#include "reactor.hpp"
+        -:   18:#include "Threadpool.hpp"
+        -:   19:
+        -:   20:#define PORT "9034" // Port we're listening on
+        -:   21:
+        -:   22://mutex mtx;
+        -:   23:
+        -:   24:#define invalid 0
+        -:   25:#define valid 1
+        -:   26:
+        -:   27:using std::istringstream;
+        -:   28:using std::list;
+        -:   29:using std::string;
+        -:   30:using std::cerr;
+        -:   31:using std::cin;
+        -:   32:using std::cout;
+        -:   33:using std::endl;
+        -:   34:using std::vector;
+        -:   35:using std::shared_ptr;
+        -:   36:using std::make_shared;
+        -:   37:using std::mutex;
+        -:   38:
+        -:   39:// Function declarations
+        -:   40:void handleClient(int fd);
+        -:   41:void acceptConnection(int listener);
+        -:   42:vector<string> split(const string &s, char delimiter);
+        -:   43:int checkValid(int n, int m);
+        -:   44:int get_listener_socket();
+        -:   45:void *get_in_addr(struct sockaddr *sa);
+        -:   46:
+        -:   47:
+        -:   48:ThreadPool threadPool(4); // Create a thread pool with 4 threads
+        -:   49:void* reactor; // Reactor instance
+        -:   50:Graph graph; // Graph instance
+        -:   51:vector<shared_ptr<Vertex>> vertices;  // Use shared_ptr to manage Vertex objects
+        -:   52:shared_ptr<MSTSolver> algo; // MST algorithm instance
+        -:   53:shared_ptr<Tree> mst; // MST tree instance
+        -:   54:int newfd;
+        -:   55:
+        2:   56:void serverSend(string message){
+        2:   57:    int saved_stdout = dup(STDOUT_FILENO); // save stdout
+        2:   58:    dup2(newfd, STDOUT_FILENO);            // redirect stdout to client
+        2:   59:    cout << message << endl;               // send message
+        2:   60:    dup2(saved_stdout, STDOUT_FILENO);     // restore stdout
+        2:   61:}
+        1:   62:int checkValid(int n, int m) {
+       1*:   63:    if (n <= 0 || m < 0) { return invalid; }  // Should be 1+ vertices and 0+ edges
+       1*:   64:    if (m > n * (n - 1)) { return invalid; }  // m should be less than n*(n-1)
+        1:   65:    return valid;
+        -:   66:}
+        -:   67:
+        1:   68:void acceptConnection(int listener) {
+        -:   69:    struct sockaddr_storage remoteaddr; // Client address
+        1:   70:    socklen_t addrlen = sizeof remoteaddr;
+        1:   71:    newfd = accept(listener, (struct sockaddr *)&remoteaddr, &addrlen);
+        1:   72:    if (newfd == -1) {
+    #####:   73:        perror("accept");
+    #####:   74:        return;
+        -:   75:    }
+        -:   76:
+        1:   77:    addFdToReactor(reactor, newfd, handleClient);
+        -:   78:
+        1:   79:    int saved_stdout = dup(STDOUT_FILENO); // save stdout
+        1:   80:    dup2(newfd, STDOUT_FILENO); // redirect stdout to client
+        1:   81:    cout << "Welcome to the server!" << endl;
+        1:   82:    cout << "Here is the commanads:" << endl;
+        1:   83:    cout << "Newgraph n,m: Creates a new undirected weighted graph with n vertices and m edges." << endl;
+        1:   84:    cout << "Newedge u,v,w: Creates a new edge between vertex u and v of weight w" << endl;
+        1:   85:    cout << "Removeedge u,v: Removes an edge between vertex u and v" << endl;
+        1:   86:    cout << "--------------------------------------" << endl;
+        1:   87:    cout << "-=+ Choose a MST algorithm +=-" << endl;
+        1:   88:    cout << "p: Prim's Algorithm" << endl;
+        1:   89:    cout << "t: Tarjan's Algorithm" << endl;
+        1:   90:    cout << "k: Kruskal's Algorithm" << endl;
+        1:   91:    cout << "b: Boruvka's Algorithm" << endl;
+        1:   92:    cout << "i: IntegerMST's Algorithm" << endl;
+        1:   93:    cout << "--------------------------------------" << endl;
+        1:   94:    cout << "-=+ Some data about the MST +=-" << endl;
+        1:   95:    cout << "printGraph: Prints the graph" << endl;
+        1:   96:    cout << "printMST: Prints the MST" << endl;
+        1:   97:    cout << "printWeight: Prints the weight of the MST" << endl;
+        1:   98:    cout << "maxDistance: Prints the maximum distance between any two vertices" << endl;
+        1:   99:    cout << "avgDistance: Prints the average distance between any two vertices" << endl;
+        1:  100:    cout << "shortestPath s,t: Prints the shortest path between vertex s and vertex t with an edge in the MST" << endl;
+        1:  101:    cout << "--------------------------------------" << endl;
+        1:  102:    cout << "Don't forget- first you create a Graph, then you choose a MST algorithm and then you can collect some data on the MST." << endl;
+        1:  103:    dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+        -:  104:
+        -:  105:    char remoteIP[INET6_ADDRSTRLEN];
+        -:  106:    cout << "pollserver: new connection from "
+        2:  107:         << inet_ntop(remoteaddr.ss_family, get_in_addr((struct sockaddr *)&remoteaddr), remoteIP, INET6_ADDRSTRLEN)
+        1:  108:         << " on socket " << newfd << endl;
+        -:  109:}
+        -:  110:// Newgraph 6,7 1 5 1 1 6 3 1 4 5 1 3 2 1 2 1 2 3 3 5 6 2
+        1:  111:void *get_in_addr(struct sockaddr *sa) {
+        1:  112:    if (sa->sa_family == AF_INET) {
+        1:  113:        return &(((struct sockaddr_in*)sa)->sin_addr);
+        -:  114:    }
+        -:  115:
+    #####:  116:    return &(((struct sockaddr_in6*)sa)->sin6_addr);
+        -:  117:}
+        -:  118:
+       10:  119:void handleClient(int fd) {
+        -:  120:    char buf[256];
+       10:  121:    int nbytes = recv(fd, buf, sizeof(buf), 0);
+       10:  122:    if (nbytes <= 0) {
+    #####:  123:        if (nbytes == 0) {
+    #####:  124:            cout << "Connection closed on fd " << fd << endl;
+        -:  125:        } else {
+    #####:  126:            perror("recv");
+        -:  127:        }
+    #####:  128:        close(fd);
+    #####:  129:        removeFdFromReactor(reactor, fd);
+    #####:  130:        return;
+        -:  131:    }
+        -:  132:
+       10:  133:    buf[nbytes] = '\0';
+       10:  134:    string choice = buf;
+       10:  135:    cout << "Received: " << choice << endl;
+        -:  136:
+       10:  137:    if (choice.find("Newgraph") != string::npos) { // Creating a new undirected weighted graph.
+        -:  138:
+        1:  139:        int saved_stdout = dup(STDOUT_FILENO); // save stdout
+        1:  140:        dup2(fd, STDOUT_FILENO); // redirect stdout to client
+        -:  141:
+        1:  142:        vector<string> last = split(choice, ',');
+        1:  143:        int m = stoi(last[1]);
+        1:  144:        vector<string> first = split(last[0], ' ');
+        1:  145:        int n = stoi(first[1]);
+        1:  146:        if (checkValid(n, m) == invalid) {
+    #####:  147:            cout << "Invalid input" << endl;
+    #####:  148:            return;
+        -:  149:        }
+        -:  150:        
+        1:  151:        int saved_stdin = dup(STDIN_FILENO); // save stdin
+        1:  152:        dup2(fd, STDIN_FILENO); // redirect stdin to client
+        -:  153:
+        1:  154:        vertices.clear(); // Clear the vertices vector
+        6:  155:        for (int i = 0; i < n; ++i) {
+        5:  156:            vertices.push_back(make_shared<Vertex>(i)); // Create new Vertex using shared_ptr
+        -:  157:        }
+        -:  158:
+        1:  159:        graph = Graph(vertices); // Pass vector of shared_ptr to Graph
+        -:  160:
+        1:  161:        cout << "A graph of " << n << " vertices." << endl;
+        1:  162:        cout << "Add " << m << " edges:" << endl;
+        -:  163:
+        4:  164:        for (int i = 0; i < m; i++) { // input edges
+        -:  165:            int u, v, w;
+        3:  166:            cin >> u >> v;
+        3:  167:            u--;
+        3:  168:            v--;
+       3*:  169:            if (u < 0 || u >= n || v < 0 || v >= n) { // vertex should be in range
+    #####:  170:                cout << "The input should be between 1-" <<n << endl;
+    #####:  171:                i--;
+    #####:  172:                continue;
+        -:  173:            }
+       3*:  174:            if (u == v) { // self loop
+    #####:  175:                cout << "No inside edge" << endl;
+    #####:  176:                i--;
+    #####:  177:                continue;
+        -:  178:            }
+       3*:  179:            if (vertices[v]->hasNeighbor(vertices[u])) { // multiple edges
+    #####:  180:                cout << "Edge already exists" << endl;
+    #####:  181:                i--;
+    #####:  182:                continue;
+        -:  183:            }
+        3:  184:            cout << "Give a weight for the edge:" << endl;
+        3:  185:            cin >> w;
+        3:  186:            graph.addEdge(vertices[v], vertices[u], w);
+        -:  187:        }
+        1:  188:        cout << "Graph created" << endl;
+        1:  189:        dup2(saved_stdin, STDIN_FILENO); // restore stdin
+        1:  190:        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+        -:  191:        
+       10:  192:    } else if (choice.find("Newedge") != string::npos) { // Add weighted edge to the graph from client input
+        1:  193:        int n = graph.numVertices();
+        1:  194:        vector<string> last = split(choice, ',');
+        1:  195:        int w = stoi(last[2]);
+        1:  196:        int u = stoi(last[1]) -1;
+        1:  197:        vector<string> first = split(last[0], ' ');
+        1:  198:        int v = stoi(first[1]) -1;
+        -:  199:
+       1*:  200:        if(u<0 || u>=n || v<0 || v>=n){ serverSend("Input between 1-n"); return; }              // vertex should be in range
+       1*:  201:        if(u == v){ serverSend("No inside edge"); return; }                                     // self loop
+       1*:  202:        if(vertices[v]->hasNeighbor(vertices[u])){ serverSend("Edge already exists"); return; } // multiple edges
+        1:  203:        serverSend("Edge added");
+        1:  204:        graph.addEdge(vertices[v], vertices[u], w);
+        -:  205:
+        9:  206:    } else if (choice.find("Removeedge") != string::npos) { // Remove edge from the graph from client input
+        1:  207:        int n = graph.numVertices();
+        1:  208:        vector<string> last = split(choice, ',');
+        1:  209:        int u = stoi(last[1]) - 1;
+        1:  210:        vector<string> first = split(last[0], ' ');
+        1:  211:        int v = stoi(first[1]) - 1;
+       1*:  212:        if(!graph.hasEdge(v,u)){ serverSend("no edge to remove"); return; }
+       1*:  213:        if(u<0 || u>=n || v<0 || v>=n){ serverSend("Input between 1-n"); return; }  // vertex should be in range
+        1:  214:        serverSend("Edge removed");
+        1:  215:        graph.removeEdge(graph.getVertex(v),graph.getVertex(u)); // Remove edge
+        -:  216:
+        8:  217:    }else if (choice.find("printGraph") != string::npos) {
+        1:  218:        int saved_stdout = dup(STDOUT_FILENO); // save stdout
+        1:  219:        dup2(fd, STDOUT_FILENO); // redirect stdout to client
+        1:  220:        graph.printGraph();
+        1:  221:        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+        -:  222:    }
+        6:  223:    else if (choice.find("printWeight") != string::npos) {
+        1:  224:        if(mst == nullptr){
+    #####:  225:            serverSend("You didn't give an algorithm - prim as default:");
+    #####:  226:            algo = MSTFactory::MST('p');  // Create Prim's MST solver
+    #####:  227:            mst = algo->findMST(graph);   // Find MST for the current graph
+        -:  228:        }
+        -:  229:        
+        1:  230:        int saved_stdout = dup(STDOUT_FILENO); // save stdout
+        1:  231:        dup2(fd, STDOUT_FILENO); // redirect stdout to client
+        1:  232:        mst->printWeight();
+        1:  233:        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+        -:  234:
+        -:  235:    }
+        5:  236:    else if (choice.find("maxDistance") != string::npos) {
+        1:  237:        if(mst == nullptr){
+    #####:  238:            serverSend("You didn't give an algorithm - prim as default:");
+    #####:  239:            algo = MSTFactory::MST('p');  // Create Prim's MST solver
+    #####:  240:            mst = algo->findMST(graph);   // Find MST for the current graph
+        -:  241:        }
+        -:  242:
+        1:  243:        int saved_stdout = dup(STDOUT_FILENO); // save stdout
+        1:  244:        dup2(fd, STDOUT_FILENO); // redirect stdout to client
+        1:  245:        mst->maxDistance();
+        1:  246:        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+        -:  247:
+        -:  248:    }
+        4:  249:    else if (choice.find("avgDistance") != string::npos) {
+        1:  250:        if(mst == nullptr){
+    #####:  251:            serverSend("You didn't give an algorithm - prim as default:");
+    #####:  252:            algo = MSTFactory::MST('p');  // Create Prim's MST solver
+    #####:  253:            mst = algo->findMST(graph);   // Find MST for the current graph
+        -:  254:        }
+        -:  255:
+        1:  256:        int saved_stdout = dup(STDOUT_FILENO); // save stdout
+        1:  257:        dup2(fd, STDOUT_FILENO); // redirect stdout to client
+        1:  258:        mst->avgDistance();
+        1:  259:        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+        -:  260:
+        -:  261:    }
+        3:  262:    else if (choice.find("shortestPath") != string::npos) {
+        -:  263:
+        1:  264:        vector<string> last = split(choice, ',');
+        1:  265:        int t = stoi(last[1]);
+        1:  266:        vector<string> first = split(last[0], ' ');
+        1:  267:        int s = stoi(first[1]);
+        1:  268:        if(mst == nullptr){
+    #####:  269:            serverSend("You didn't give an algorithm - prim as default:");
+    #####:  270:            algo = MSTFactory::MST('p');  // Create Prim's MST solver
+    #####:  271:            mst = algo->findMST(graph);   // Find MST for the current graph
+        -:  272:        }
+        -:  273:
+        1:  274:        int saved_stdout = dup(STDOUT_FILENO); // save stdout
+        1:  275:        dup2(fd, STDOUT_FILENO); // redirect stdout to client
+        1:  276:        mst->shortestPath(s, t, mst);
+        1:  277:        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+        1:  278:    } 
+        -:  279:    
+        2:  280:    else if (choice.find("printMST") != string::npos) {
+    #####:  281:        if(mst == nullptr){
+    #####:  282:            serverSend("You didn't give an algorithm - prim as default:");
+    #####:  283:            algo = MSTFactory::MST('p');  // Create Prim's MST solver
+    #####:  284:            mst = algo->findMST(graph);   // Find MST for the current graph
+        -:  285:        }
+    #####:  286:        int saved_stdout = dup(STDOUT_FILENO); // save stdout
+    #####:  287:        dup2(fd, STDOUT_FILENO); // redirect stdout to client
+    #####:  288:        mst->printGraph();
+    #####:  289:        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+        -:  290:
+        -:  291:    }
+        -:  292:    // Algorithm options.
+        2:  293:    else if (choice.find("p") != string::npos) { // Prim's Algorithm
+    #####:  294:        threadPool.enqueueTask([fd]() {
+    #####:  295:            int saved_stdout = dup(STDOUT_FILENO);
+    #####:  296:            dup2(fd, STDOUT_FILENO);
+    #####:  297:            algo = MSTFactory::MST('p');  // Create Prim's MST solver
+    #####:  298:            mst = algo->findMST(graph);   // Find MST for the current graph
+    #####:  299:            dup2(saved_stdout, STDOUT_FILENO); // Restore stdout
+    #####:  300:        });
+        -:  301:    }
+        -:  302:    // Tarjan's Algorithm using thread pool
+        2:  303:    else if (choice.find("t") != string::npos) { // Tarjan's Algorithm
+    #####:  304:        threadPool.enqueueTask([fd]() {
+    #####:  305:            int saved_stdout = dup(STDOUT_FILENO);
+    #####:  306:            dup2(fd, STDOUT_FILENO);
+    #####:  307:            algo = MSTFactory::MST('t');  // Create Tarjan's MST solver
+    #####:  308:            mst = algo->findMST(graph);   // Find MST for the current graph
+    #####:  309:            dup2(saved_stdout, STDOUT_FILENO);
+    #####:  310:        });
+        -:  311:    }
+        -:  312:    // Kruskal's Algorithm using thread pool
+        2:  313:    else if (choice.find("k") != string::npos) { // Kruskal's Algorithm
+        1:  314:        threadPool.enqueueTask([fd]() {
+        1:  315:            int saved_stdout = dup(STDOUT_FILENO);
+        1:  316:            dup2(fd, STDOUT_FILENO);
+        1:  317:            algo = MSTFactory::MST('k');  // Create Kruskal's MST solver
+        1:  318:            mst = algo->findMST(graph);   // Find MST for the current graph
+        1:  319:            dup2(saved_stdout, STDOUT_FILENO);
+        1:  320:        });
+        -:  321:    }
+        -:  322:    // Borůvka's Algorithm using thread pool
+        1:  323:    else if (choice.find("b") != string::npos) { // Borůvka's Algorithm
+    #####:  324:        threadPool.enqueueTask([fd]() {
+    #####:  325:            int saved_stdout = dup(STDOUT_FILENO);
+    #####:  326:            dup2(fd, STDOUT_FILENO);
+    #####:  327:            algo = MSTFactory::MST('b');  // Create Borůvka's MST solver
+    #####:  328:            mst = algo->findMST(graph);   // Find MST for the current graph
+    #####:  329:            dup2(saved_stdout, STDOUT_FILENO);
+    #####:  330:        });
+        -:  331:    }
+        -:  332:    // Integer MST Algorithm using thread pool
+        1:  333:    else if (choice.find("i") != string::npos) { // Integer MST Algorithm
+    #####:  334:        threadPool.enqueueTask([fd]() {
+    #####:  335:            int saved_stdout = dup(STDOUT_FILENO);
+    #####:  336:            dup2(fd, STDOUT_FILENO);
+    #####:  337:            algo = MSTFactory::MST('i');  // Create Integer MST solver
+    #####:  338:            mst = algo->findMST(graph);   // Find MST for the current graph
+    #####:  339:            dup2(saved_stdout, STDOUT_FILENO);
+    #####:  340:        });
+        -:  341:    }
+        -:  342:    else { // The client input is invalid
+        -:  343:
+        1:  344:        cout << "Invalid command, closing the connection with the socket." << endl;
+        1:  345:        close(fd);
+        1:  346:        removeFdFromReactor(reactor, fd);
+        1:  347:        stopReactor(reactor);
+        -:  348:
+        -:  349:    }
+       10:  350:}
+        -:  351:
+        1:  352:int get_listener_socket() {
+        -:  353:    int listener;
+        1:  354:    int yes = 1;
+        -:  355:    int rv;
+        -:  356:    struct addrinfo hints, *ai, *p;
+        -:  357:
+        1:  358:    memset(&hints, 0, sizeof hints);
+        1:  359:    hints.ai_family = AF_UNSPEC;
+        1:  360:    hints.ai_socktype = SOCK_STREAM;
+        1:  361:    hints.ai_flags = AI_PASSIVE;
+        1:  362:    if ((rv = getaddrinfo(NULL, PORT, &hints, &ai)) != 0) {
+    #####:  363:        cerr << "selectserver: " << gai_strerror(rv) << endl;
+    #####:  364:        exit(1);
+        -:  365:    }
+        -:  366:
+       1*:  367:    for (p = ai; p != NULL; p = p->ai_next) {
+        1:  368:        listener = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
+       1*:  369:        if (listener < 0) {
+    #####:  370:            continue;
+        -:  371:        }
+        1:  372:        setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
+       1*:  373:        if (bind(listener, p->ai_addr, p->ai_addrlen) < 0) {
+    #####:  374:            close(listener);
+    #####:  375:            continue;
+        -:  376:        }
+        1:  377:        break;
+        -:  378:    }
+        1:  379:    freeaddrinfo(ai);
+        -:  380:
+       1*:  381:    if(p == NULL){ return -1; }
+        -:  382:
+       1*:  383:    if(listen(listener, 10) == -1){ return -1; }
+        -:  384:
+        1:  385:    return listener;
+        -:  386:}
+        -:  387:
+        8:  388:vector<string> split(const string &s, char delimiter) {
+        8:  389:    vector<string> tokens;
+        8:  390:    string token;
+        8:  391:    istringstream tokenStream(s);
+       25:  392:    while (getline(tokenStream, token, delimiter)) {
+       17:  393:        tokens.push_back(token);
+        -:  394:    }
+       16:  395:    return tokens;
+        8:  396:}
+        -:  397:
+        1:  398:int main() {
+        -:  399:
+        -:  400:    // Create a listener socket
+        1:  401:    int listener = get_listener_socket();
+        1:  402:    if (listener == -1) {
+    #####:  403:        cerr << "Error getting listening socket" << endl;
+    #####:  404:        return 1;
+        -:  405:    }
+        -:  406:
+        1:  407:    cout << "In order to connect, write: nc 127.0.0.1 9034 in another terminal" << endl;
+        -:  408:
+        1:  409:    reactor = startReactor();
+        1:  410:    addFdToReactor(reactor, listener, acceptConnection);
+        1:  411:    runReactor(reactor);
+        1:  412:    stopReactor(reactor);
+        1:  413:    delete static_cast<Reactor*>(reactor);
+        -:  414:
+        1:  415:    return 0;
+        -:  416:}

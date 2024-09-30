@@ -1,0 +1,33 @@
+        -:    0:Source:pipeline.cpp
+        -:    1:#include "pipeline.hpp"
+        -:    2:#include <iostream>  
+        -:    3:
+        -:    4:/*
+        -:    5:    The Pipeline class is a static class that contains the main logic of the program.
+        -:    6:    It is responsible for orchestrating the different stages of the pipeline.
+        -:    7:    The pipeline consists of the following stages:
+        -:    8:    1. Compute the Minimum Spanning Tree (MST) of the graph
+        -:    9:    2. Compute the total weight of the MST
+        -:   10:    3. Compute the maximum distance in the MST
+        -:   11:    4. Compute the average distance in the MST
+        -:   12:*/
+        -:   13:
+    #####:   14:void Pipeline::computeMST(std::shared_ptr<MSTSolver> algo, Graph& graph, std::shared_ptr<Tree>& mst) {
+    #####:   15:    mst = algo->findMST(graph);
+    #####:   16:}
+        -:   17:
+    #####:   18:void Pipeline::computeTotalWeight(std::shared_ptr<Tree>& mst) {
+    #####:   19:    mst->printWeight();
+    #####:   20:}
+        -:   21:
+    #####:   22:void Pipeline::computeMaxDistance(std::shared_ptr<Tree>& mst) {
+    #####:   23:    mst->maxDistance();
+    #####:   24:}
+        -:   25:
+    #####:   26:void Pipeline::computeAverageDistance(std::shared_ptr<Tree>& mst) {
+    #####:   27:    mst->avgDistance();
+    #####:   28:}
+        -:   29:
+    #####:   30:void Pipeline::computeShortestPath(std::shared_ptr<Tree>& mst, int s, int t) {
+    #####:   31:    mst->shortestPath(s, t, mst);
+    #####:   32:}
