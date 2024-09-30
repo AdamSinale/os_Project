@@ -42,6 +42,8 @@ void *get_in_addr(struct sockaddr *sa);
 
 
 ThreadPool threadPool(4); // Create a thread pool with 4 threads
+std::mutex graphMutex;
+
 void* reactor; // Reactor instance
 Graph graph; // Graph instance
 vector<shared_ptr<Vertex>> vertices;  // Use shared_ptr to manage Vertex objects
@@ -103,7 +105,6 @@ void acceptConnection(int listener) {
          << inet_ntop(remoteaddr.ss_family, get_in_addr((struct sockaddr *)&remoteaddr), remoteIP, INET6_ADDRSTRLEN)
          << " on socket " << newfd << endl;
 }
-// Newgraph 6,7 1 5 1 1 6 3 1 4 5 1 3 2 1 2 1 2 3 3 5 6 2
 void *get_in_addr(struct sockaddr *sa) {
     if (sa->sa_family == AF_INET) {
         return &(((struct sockaddr_in*)sa)->sin_addr);
@@ -113,235 +114,226 @@ void *get_in_addr(struct sockaddr *sa) {
 }
 
 void handleClient(int fd) {
-    char buf[256];
-    int nbytes = recv(fd, buf, sizeof(buf), 0);
-    if (nbytes <= 0) {
-        if (nbytes == 0) {
-            cout << "Connection closed on fd " << fd << endl;
-        } else {
-            perror("recv");
-        }
-        close(fd);
-        removeFdFromReactor(reactor, fd);
-        return;
-    }
+    threadPool.enqueueTask([fd]() {
+        std::lock_guard<std::mutex> lock(graphMutex);
 
-    buf[nbytes] = '\0';
-    string choice = buf;
-    cout << "Received: " << choice << endl;
-
-    if (choice.find("Newgraph") != string::npos) { // Creating a new undirected weighted graph.
-
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-
-        vector<string> last = split(choice, ',');
-        int m = stoi(last[1]);
-        vector<string> first = split(last[0], ' ');
-        int n = stoi(first[1]);
-        if (checkValid(n, m) == invalid) {
-            cout << "Invalid input" << endl;
+        char buf[256];
+        int nbytes = recv(fd, buf, sizeof(buf), 0);
+        if (nbytes <= 0) {
+            if (nbytes == 0) {
+                cout << "Connection closed on fd " << fd << endl;
+            } else {
+                perror("recv");
+            }
+            close(fd);
+            removeFdFromReactor(reactor, fd);
             return;
         }
-        
-        int saved_stdin = dup(STDIN_FILENO); // save stdin
-        dup2(fd, STDIN_FILENO); // redirect stdin to client
 
-        vertices.clear(); // Clear the vertices vector
-        for (int i = 0; i < n; ++i) {
-            vertices.push_back(make_shared<Vertex>(i)); // Create new Vertex using shared_ptr
-        }
+        buf[nbytes] = '\0';
+        string choice = buf;
+        cout << "Received: " << choice << endl;
 
-        graph = Graph(vertices); // Pass vector of shared_ptr to Graph
+        if (choice.find("Newgraph") != string::npos) { // Creating a new undirected weighted graph.
 
-        cout << "A graph of " << n << " vertices." << endl;
-        cout << "Add " << m << " edges:" << endl;
+            int saved_stdout = dup(STDOUT_FILENO); // save stdout
+            dup2(fd, STDOUT_FILENO); // redirect stdout to client
 
-        for (int i = 0; i < m; i++) { // input edges
-            int u, v, w;
-            cin >> u >> v;
-            u--;
-            v--;
-            if (u < 0 || u >= n || v < 0 || v >= n) { // vertex should be in range
-                cout << "The input should be between 1-" <<n << endl;
-                i--;
-                continue;
+            vector<string> last = split(choice, ',');
+            int m = stoi(last[1]);
+            vector<string> first = split(last[0], ' ');
+            int n = stoi(first[1]);
+            if (checkValid(n, m) == invalid) {
+                cout << "Invalid input" << endl;
+                return;
             }
-            if (u == v) { // self loop
-                cout << "No inside edge" << endl;
-                i--;
-                continue;
+            
+            int saved_stdin = dup(STDIN_FILENO); // save stdin
+            dup2(fd, STDIN_FILENO); // redirect stdin to client
+
+            vertices.clear(); // Clear the vertices vector
+            for (int i = 0; i < n; ++i) {
+                vertices.push_back(make_shared<Vertex>(i)); // Create new Vertex using shared_ptr
             }
-            if (vertices[v]->hasNeighbor(vertices[u])) { // multiple edges
-                cout << "Edge already exists" << endl;
-                i--;
-                continue;
+
+            graph = Graph(vertices); // Pass vector of shared_ptr to Graph
+
+            cout << "A graph of " << n << " vertices." << endl;
+            cout << "Add " << m << " edges:" << endl;
+
+            for (int i = 0; i < m; i++) { // input edges
+                int u, v, w;
+                cin >> u >> v;
+                u--;
+                v--;
+                if (u < 0 || u >= n || v < 0 || v >= n) { // vertex should be in range
+                    cout << "The input should be between 1-" <<n << endl;
+                    i--;
+                    continue;
+                }
+                if (u == v) { // self loop
+                    cout << "No inside edge" << endl;
+                    i--;
+                    continue;
+                }
+                if (vertices[v]->hasNeighbor(vertices[u])) { // multiple edges
+                    cout << "Edge already exists" << endl;
+                    i--;
+                    continue;
+                }
+                cout << "Give a weight for the edge:" << endl;
+                cin >> w;
+                graph.addEdge(vertices[v], vertices[u], w);
             }
-            cout << "Give a weight for the edge:" << endl;
-            cin >> w;
+            cout << "Graph created" << endl;
+            dup2(saved_stdin, STDIN_FILENO); // restore stdin
+            dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+            
+        } else if (choice.find("Newedge") != string::npos) { // Add weighted edge to the graph from client input
+            int n = graph.numVertices();
+            vector<string> last = split(choice, ',');
+            int w = stoi(last[2]);
+            int u = stoi(last[1]) -1;
+            vector<string> first = split(last[0], ' ');
+            int v = stoi(first[1]) -1;
+
+            if(u<0 || u>=n || v<0 || v>=n){ serverSend("Input between 1-n"); return; }              // vertex should be in range
+            if(u == v){ serverSend("No inside edge"); return; }                                     // self loop
+            if(vertices[v]->hasNeighbor(vertices[u])){ serverSend("Edge already exists"); return; } // multiple edges
+            serverSend("Edge added");
             graph.addEdge(vertices[v], vertices[u], w);
+
+        } else if (choice.find("Removeedge") != string::npos) { // Remove edge from the graph from client input
+            int n = graph.numVertices();
+            vector<string> last = split(choice, ',');
+            int u = stoi(last[1]) - 1;
+            vector<string> first = split(last[0], ' ');
+            int v = stoi(first[1]) - 1;
+            if(!graph.hasEdge(v,u)){ serverSend("no edge to remove"); return; }
+            if(u<0 || u>=n || v<0 || v>=n){ serverSend("Input between 1-n"); return; }  // vertex should be in range
+            serverSend("Edge removed");
+            graph.removeEdge(graph.getVertex(v),graph.getVertex(u)); // Remove edge
+
+        } else if (choice.find("printGraph") != string::npos) {
+            int saved_stdout = dup(STDOUT_FILENO); // save stdout
+            dup2(fd, STDOUT_FILENO); // redirect stdout to client
+            graph.printGraph();
+            dup2(saved_stdout, STDOUT_FILENO); // restore stdout
         }
-        cout << "Graph created" << endl;
-        dup2(saved_stdin, STDIN_FILENO); // restore stdin
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+        else if (choice.find("printWeight") != string::npos) {
+            if(mst == nullptr){
+                serverSend("You didn't give an algorithm - prim as default:");
+                algo = MSTFactory::MST('p');  // Create Prim's MST solver
+                mst = algo->findMST(graph);   // Find MST for the current graph
+            }
+            
+            int saved_stdout = dup(STDOUT_FILENO); // save stdout
+            dup2(fd, STDOUT_FILENO); // redirect stdout to client
+            mst->printWeight();
+            dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+
+        }
+        else if (choice.find("maxDistance") != string::npos) {
+            if(mst == nullptr){
+                serverSend("You didn't give an algorithm - prim as default:");
+                algo = MSTFactory::MST('p');  // Create Prim's MST solver
+                mst = algo->findMST(graph);   // Find MST for the current graph
+            }
+
+            int saved_stdout = dup(STDOUT_FILENO); // save stdout
+            dup2(fd, STDOUT_FILENO); // redirect stdout to client
+            mst->maxDistance();
+            dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+
+        }
+        else if (choice.find("avgDistance") != string::npos) {
+            if(mst == nullptr){
+                serverSend("You didn't give an algorithm - prim as default:");
+                algo = MSTFactory::MST('p');  // Create Prim's MST solver
+                mst = algo->findMST(graph);   // Find MST for the current graph
+            }
+
+            int saved_stdout = dup(STDOUT_FILENO); // save stdout
+            dup2(fd, STDOUT_FILENO); // redirect stdout to client
+            mst->avgDistance();
+            dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+
+        }
+        else if (choice.find("shortestPath") != string::npos) {
+            vector<string> last = split(choice, ',');
+            int t = stoi(last[1]);
+            vector<string> first = split(last[0], ' ');
+            int s = stoi(first[1]);
+            if(mst == nullptr){
+                serverSend("You didn't give an algorithm - prim as default:");
+                algo = MSTFactory::MST('p');  // Create Prim's MST solver
+                mst = algo->findMST(graph);   // Find MST for the current graph
+            }
+
+            int saved_stdout = dup(STDOUT_FILENO); // save stdout
+            dup2(fd, STDOUT_FILENO); // redirect stdout to client
+            mst->shortestPath(s, t, mst);
+            dup2(saved_stdout, STDOUT_FILENO); // restore stdout
+        } 
         
-    } else if (choice.find("Newedge") != string::npos) { // Add weighted edge to the graph from client input
-        int n = graph.numVertices();
-        vector<string> last = split(choice, ',');
-        int w = stoi(last[2]);
-        int u = stoi(last[1]) -1;
-        vector<string> first = split(last[0], ' ');
-        int v = stoi(first[1]) -1;
+        else if (choice.find("printMST") != string::npos) {
+            if(mst == nullptr){
+                serverSend("You didn't give an algorithm - prim as default:");
+                algo = MSTFactory::MST('p');  // Create Prim's MST solver
+                mst = algo->findMST(graph);   // Find MST for the current graph
+            }
+            int saved_stdout = dup(STDOUT_FILENO); // save stdout
+            dup2(fd, STDOUT_FILENO); // redirect stdout to client
+            mst->printGraph();
+            dup2(saved_stdout, STDOUT_FILENO); // restore stdout
 
-        if(u<0 || u>=n || v<0 || v>=n){ serverSend("Input between 1-n"); return; }              // vertex should be in range
-        if(u == v){ serverSend("No inside edge"); return; }                                     // self loop
-        if(vertices[v]->hasNeighbor(vertices[u])){ serverSend("Edge already exists"); return; } // multiple edges
-        serverSend("Edge added");
-        graph.addEdge(vertices[v], vertices[u], w);
-
-    } else if (choice.find("Removeedge") != string::npos) { // Remove edge from the graph from client input
-        int n = graph.numVertices();
-        vector<string> last = split(choice, ',');
-        int u = stoi(last[1]) - 1;
-        vector<string> first = split(last[0], ' ');
-        int v = stoi(first[1]) - 1;
-        if(!graph.hasEdge(v,u)){ serverSend("no edge to remove"); return; }
-        if(u<0 || u>=n || v<0 || v>=n){ serverSend("Input between 1-n"); return; }  // vertex should be in range
-        serverSend("Edge removed");
-        graph.removeEdge(graph.getVertex(v),graph.getVertex(u)); // Remove edge
-
-    }else if (choice.find("printGraph") != string::npos) {
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        graph.printGraph();
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-    }
-    else if (choice.find("printWeight") != string::npos) {
-        if(mst == nullptr){
-            serverSend("You didn't give an algorithm - prim as default:");
-            algo = MSTFactory::MST('p');  // Create Prim's MST solver
-            mst = algo->findMST(graph);   // Find MST for the current graph
         }
-        
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        mst->printWeight();
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-
-    }
-    else if (choice.find("maxDistance") != string::npos) {
-        if(mst == nullptr){
-            serverSend("You didn't give an algorithm - prim as default:");
-            algo = MSTFactory::MST('p');  // Create Prim's MST solver
-            mst = algo->findMST(graph);   // Find MST for the current graph
-        }
-
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        mst->maxDistance();
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-
-    }
-    else if (choice.find("avgDistance") != string::npos) {
-        if(mst == nullptr){
-            serverSend("You didn't give an algorithm - prim as default:");
-            algo = MSTFactory::MST('p');  // Create Prim's MST solver
-            mst = algo->findMST(graph);   // Find MST for the current graph
-        }
-
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        mst->avgDistance();
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-
-    }
-    else if (choice.find("shortestPath") != string::npos) {
-
-        vector<string> last = split(choice, ',');
-        int t = stoi(last[1]);
-        vector<string> first = split(last[0], ' ');
-        int s = stoi(first[1]);
-        if(mst == nullptr){
-            serverSend("You didn't give an algorithm - prim as default:");
-            algo = MSTFactory::MST('p');  // Create Prim's MST solver
-            mst = algo->findMST(graph);   // Find MST for the current graph
-        }
-
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        mst->shortestPath(s, t, mst);
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-    } 
-    
-    else if (choice.find("printMST") != string::npos) {
-        if(mst == nullptr){
-            serverSend("You didn't give an algorithm - prim as default:");
-            algo = MSTFactory::MST('p');  // Create Prim's MST solver
-            mst = algo->findMST(graph);   // Find MST for the current graph
-        }
-        int saved_stdout = dup(STDOUT_FILENO); // save stdout
-        dup2(fd, STDOUT_FILENO); // redirect stdout to client
-        mst->printGraph();
-        dup2(saved_stdout, STDOUT_FILENO); // restore stdout
-
-    }
-    // Algorithm options.
-    else if (choice.find("p") != string::npos) { // Prim's Algorithm
-        threadPool.enqueueTask([fd]() {
+        // Algorithm options.
+        else if (choice.find("p") != string::npos) { // Prim's Algorithm
             int saved_stdout = dup(STDOUT_FILENO);
             dup2(fd, STDOUT_FILENO);
             algo = MSTFactory::MST('p');  // Create Prim's MST solver
             mst = algo->findMST(graph);   // Find MST for the current graph
             dup2(saved_stdout, STDOUT_FILENO); // Restore stdout
-        });
-    }
-    // Tarjan's Algorithm using thread pool
-    else if (choice.find("t") != string::npos) { // Tarjan's Algorithm
-        threadPool.enqueueTask([fd]() {
+        }
+        // Tarjan's Algorithm using thread pool
+        else if (choice.find("t") != string::npos) { // Tarjan's Algorithm
             int saved_stdout = dup(STDOUT_FILENO);
             dup2(fd, STDOUT_FILENO);
             algo = MSTFactory::MST('t');  // Create Tarjan's MST solver
             mst = algo->findMST(graph);   // Find MST for the current graph
             dup2(saved_stdout, STDOUT_FILENO);
-        });
-    }
-    // Kruskal's Algorithm using thread pool
-    else if (choice.find("k") != string::npos) { // Kruskal's Algorithm
-        threadPool.enqueueTask([fd]() {
+        }
+        // Kruskal's Algorithm using thread pool
+        else if (choice.find("k") != string::npos) { // Kruskal's Algorithm
             int saved_stdout = dup(STDOUT_FILENO);
             dup2(fd, STDOUT_FILENO);
             algo = MSTFactory::MST('k');  // Create Kruskal's MST solver
             mst = algo->findMST(graph);   // Find MST for the current graph
             dup2(saved_stdout, STDOUT_FILENO);
-        });
-    }
-    // Borůvka's Algorithm using thread pool
-    else if (choice.find("b") != string::npos) { // Borůvka's Algorithm
-        threadPool.enqueueTask([fd]() {
+        }
+        // Borůvka's Algorithm using thread pool
+        else if (choice.find("b") != string::npos) { // Borůvka's Algorithm
             int saved_stdout = dup(STDOUT_FILENO);
             dup2(fd, STDOUT_FILENO);
             algo = MSTFactory::MST('b');  // Create Borůvka's MST solver
             mst = algo->findMST(graph);   // Find MST for the current graph
             dup2(saved_stdout, STDOUT_FILENO);
-        });
-    }
-    // Integer MST Algorithm using thread pool
-    else if (choice.find("i") != string::npos) { // Integer MST Algorithm
-        threadPool.enqueueTask([fd]() {
+        }
+        // Integer MST Algorithm using thread pool
+        else if (choice.find("i") != string::npos) { // Integer MST Algorithm
             int saved_stdout = dup(STDOUT_FILENO);
             dup2(fd, STDOUT_FILENO);
             algo = MSTFactory::MST('i');  // Create Integer MST solver
             mst = algo->findMST(graph);   // Find MST for the current graph
             dup2(saved_stdout, STDOUT_FILENO);
-        });
-    }
-    else { // The client input is invalid
-
-        cout << "Invalid command, closing the connection with the socket." << endl;
-        close(fd);
-        removeFdFromReactor(reactor, fd);
-
-    }
+        }
+        else {  // The client input is invalid
+            cout << "Invalid command, closing the connection with the socket." << endl;
+            close(fd);
+            removeFdFromReactor(reactor, fd);
+        }
+    });
 }
 
 int get_listener_socket() {
