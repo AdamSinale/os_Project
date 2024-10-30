@@ -272,7 +272,7 @@ void handleClient(int fd) {
 
             int saved_stdout = dup(STDOUT_FILENO); // save stdout
             dup2(fd, STDOUT_FILENO); // redirect stdout to client
-            mst->shortestPath(s, t, mst);
+            graph.shortestPath(s, t, mst);
             dup2(saved_stdout, STDOUT_FILENO); // restore stdout
         } 
         

@@ -9,16 +9,20 @@
 
 class MSTPipeline {
 public:
-    MSTPipeline(char algorithmType, Graph& graph);  // Initializes the pipeline with an algorithm type
+    MSTPipeline(char algorithmType, Graph& graph) : mstSolver(MSTFactory::MST(algorithmType)), graph(graph){
+        // cout << "recieved " << algorithmType << "with graph:" << endl;
+        // graph.printGraph();
+    }
     void runPipeline();   // Runs the pipeline stages
     void stopPipeline();  // Stops the pipeline
 
 private:
-    std::unique_ptr<MSTSolver> mstSolver; // MST algorithm solver
+    shared_ptr<MSTSolver> mstSolver; // MST algorithm solver
     Graph& graph;                         // Reference to the original graph
     
-
     // Pipeline stages as Active Objects
+    ActiveObject mstSolveStage;
+    ActiveObject printGraphStage;
     ActiveObject totalWeightStage;
     ActiveObject maxDistanceStage;
     ActiveObject avgDistanceStage;

@@ -109,8 +109,8 @@ void handleClient(int fd) {
 
     if (choice.rfind("runMST ", 0) == 0) {  // Run MST calculation
         // Extract algorithm type
-        char algorithmType = choice.back(); // Last character is the algorithm type
-
+        char algorithmType = split(choice, ' ')[1][0]; // Last character is the algorithm type
+        cout << algorithmType << endl;
         // Use MSTPipeline for pipeline processing
         std::thread pipelineThread([algorithmType]() {
             MSTPipeline pipeline(algorithmType, graph);

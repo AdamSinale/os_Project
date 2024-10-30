@@ -56,7 +56,7 @@ void Graph::printGraph(){
 /*
     Print the total weight of the MST.
 */
-void Graph::printWeight(){
+int Graph::printWeight(){
     int count = 0;
     for (const auto& v : vertices) {
         for (const auto& n : v->neighbors) {
@@ -67,6 +67,7 @@ void Graph::printWeight(){
     }
     cout << "Total weight of MST:" << endl;
     cout << count << endl;
+    return count;
 }
 
 
@@ -96,7 +97,7 @@ void Tree::dfs(shared_ptr<Vertex> v,shared_ptr<Vertex> p,int d,shared_ptr<Vertex
 /*
     Find the maximum distance between any two vertices in the MST.
 */
-void Tree::maxDistance(){
+int Tree::maxDistance(){
     shared_ptr<Vertex> sv = vertices[0];
     int md = 0;
     int sd = 0;
@@ -108,13 +109,14 @@ void Tree::maxDistance(){
 
     cout << "Longest distance in MST:" << endl;
     cout << *sv << " --(" << md << ")-> " << *fv << endl;
+    return md;
 }
 
 
 /*
     Find the average distance between all pairs of vertices in the MST.
 */
-void Tree::avgDistance(){
+int Tree::avgDistance(){
     int md = 0;
     int sd = 0;
     double cd = 0;
@@ -126,6 +128,7 @@ void Tree::avgDistance(){
     for(size_t i=1; i<vertices.size(); i++){ cd += i; }
     cout << "Average distances of MST:" << endl;
     cout << sd/cd << endl;
+    return md;
 }
 
 
@@ -135,7 +138,7 @@ void Tree::avgDistance(){
     @param tID: ID of the target vertex
     @param tree: shared_ptr to the MST
 */
-void Graph::shortestPath(int sID, int tID, shared_ptr<Tree>& tree){  // O((V+E)logV)
+vector<shared_ptr<Vertex>> Graph::shortestPath(int sID, int tID, const shared_ptr<Tree>& tree){  // O((V+E)logV)
     int s = sID-1;
     int t = tID-1;
     
@@ -167,14 +170,21 @@ void Graph::shortestPath(int sID, int tID, shared_ptr<Tree>& tree){  // O((V+E)l
     }
     shared_ptr<Vertex> sv = vertices[s];
     shared_ptr<Vertex> tv = vertices[t];
-    if(dist[t] == INT_MAX){ cout << "No path from "<<*sv<<" to "<<*tv<< endl; }
+
+    vector<shared_ptr<Vertex>> sp = {};
+    if(dist[t] == INT_MAX){ 
+        cout << "No path from "<<*sv<<" to "<<*tv<< endl; 
+        return sp;
+    }
     else {
         cout << "Shortest path from " << *sv << " to " << *tv << " = " << dist[t] << endl;
         cout << "Path: ";
         for (shared_ptr<Vertex> v = tv; v != nullptr; v = vertices[prev[v->id]]) {
             cout << *v << " ";
+            sp.push_back(v);
             if (v == sv) break;
         }
         cout << endl;
     }
+    return sp;
 }

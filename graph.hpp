@@ -43,8 +43,8 @@ public:
     shared_ptr<Vertex> getVertex(int id){ return vertices[id]; }
     bool hasEdge(int vID, int uID){ return vertices[vID]->hasNeighbor(vertices[uID]); }
     void printGraph();
-    void printWeight();
-    void shortestPath(int sID, int tID, shared_ptr<Tree>& tree);
+    int printWeight();
+    vector<shared_ptr<Vertex>> shortestPath(int sID, int tID, const shared_ptr<Tree>& tree);
 };
 
 
@@ -53,8 +53,8 @@ private:
     void dfs(shared_ptr<Vertex> v,shared_ptr<Vertex> p,int d,shared_ptr<Vertex>& fv,int& md,int& sd);
 public:
     Tree(const vector<shared_ptr<Vertex>>& vs) : Graph(vs) {}
-    void maxDistance();
-    void avgDistance();
+    int maxDistance();
+    int avgDistance();
 };
 
 #endif

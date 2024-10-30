@@ -1,46 +1,41 @@
 #include "MSTPipeline.hpp"
 
 
-MSTPipeline::MSTPipeline(char algorithmType, Graph& graph)
-    : mstSolver(MSTFactory::MST(algorithmType)), graph(graph) {
-    // 
-    // 
-}
-
 void MSTPipeline::runPipeline() {
-    totalWeightStage.submitTask([this]() {
-        // Calculate the total weight of all edges in the graph
-        int totalWeight = 0;
-        for (const auto& edge : graph.getEdges()) {
-            totalWeight += std::get<2>(edge);  // Sum edge weights directly from the graph
-        }
-        std::cout << "Total Weight: " << totalWeight << std::endl;
+    mstSolveStage.submitTask([this]() {
+        cout << "running PL mstSolver" << endl;
+        shared_ptr<Tree> mstree  = mstSolver->findMST(graph);
 
-        maxDistanceStage.submitTask([this, totalWeight]() {
-            // Calculate the maximum edge weight in the graph
-            int maxDistance = 0;
-            for (const auto& edge : graph.getEdges()) {
-                maxDistance = std::max(maxDistance, std::get<2>(edge));
-            }
-            std::cout << "Max Distance: " << maxDistance << std::endl;
+        printGraphStage.submitTask([this, mstree]() {
+            cout << "running PL printGraph" << endl;
+            mstree->printGraph();
 
-            avgDistanceStage.submitTask([this, maxDistance]() {
-                // Calculate the average distance (average edge weight)
-                int totalWeight = 0;
-                int edgeCount = 0;
-                for (const auto& edge : graph.getEdges()) {
-                    totalWeight += std::get<2>(edge);
-                    ++edgeCount;
-                }
-                double avgDistance = edgeCount == 0 ? 0 : static_cast<double>(totalWeight) / edgeCount;
-                std::cout << "Average Distance: " << avgDistance << std::endl;
+            totalWeightStage.submitTask([this, mstree]() {
+                cout << "running PL totalWeight" << endl;
+                int totalWeight = mstree->printWeight();
+
+                maxDistanceStage.submitTask([this, mstree]() {
+                    int maxDistance = mstree->maxDistance();
+
+                    avgDistanceStage.submitTask([this, mstree]() {
+                        int avgDistance = mstree->avgDistance();
+
+                        shortestPathStage.submitTask([this, mstree]() {
+                            vector<shared_ptr<Vertex>> sp = graph.shortestPath(1,2,mstree);
+
+                        });
+                    });
+                });
             });
         });
     });
 }
 
 void MSTPipeline::stopPipeline() {
+    mstSolveStage.stop();
+    printGraphStage.stop();
     totalWeightStage.stop();
     maxDistanceStage.stop();
     avgDistanceStage.stop();
+    shortestPathStage.stop();
 }
